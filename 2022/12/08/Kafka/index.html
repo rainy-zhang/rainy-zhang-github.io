@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Kafka">
+<meta property="og:url" content="http://example.com/2022/12/08/Kafka/index.html">
+<meta property="og:site_name" content="Rainy Blogs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-08T09:00:15.000Z">
+<meta property="article:modified_time" content="2022-12-08T09:05:57.882Z">
+<meta property="article:author" content="Rainy">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/12/08/Kafka/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Kafka | Rainy Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rainy Blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/Kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 17:00:15 / 修改时间：17:05:57" itemprop="dateCreated datePublished" datetime="2022-12-08T17:00:15+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">消息队列</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description"> </div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="⭐应用场景"><a href="#⭐应用场景" class="headerlink" title="⭐应用场景"></a>⭐应用场景</h2><p><strong>异步处理</strong>：</p>
+<p>比如某些业务请求需要3个步骤才能完成，如果前2个步骤完成之后，就已经可以保证业务可以正常完成，就可以直接返回给客户端响应结果，然后把第三个步骤通过消息队列发送给消费者，由消费者来完成后续的流程。这样就可以提高服务的响应速度。</p>
+<p>比如我们系统中的某些发行业务都是需要<strong>请求</strong>和<strong>确认</strong>2个步骤才能完成，如果每一个请求都需要把这2个步骤执行完才给用户响应结果的话，就会导致处理请求的时间变长。如果想要提高程序处理请求的速度，就可以在完成第1个步骤之后，直接给用户返回结果，然后把确认消息放到消息队列中，由消费者完成后续的步骤。</p>
+<p><strong>流量控制</strong>：</p>
+<p>通过消息队列把前端和后端隔离起来，后端按照自己的处理能力从消息队列中处理请求。</p>
+<p>这样就可以避免大量的请求直接冲击到后端，可以减少后端服务的压力。</p>
+<p>这种方案的缺点是，消息队列会导致总体的响应时间变长，增加系统的复杂度。</p>
+<p><strong>服务解耦</strong>：</p>
+<p>在微服务架构中，有些下游服务需要获取上游服务的数据，但是下游服务是会增加或者减少的的，如果每次增减下游服务，都需要调整上游服务的接口，这样服务之间的耦合度就太高了。</p>
+<p>可以通过消息队列让服务之间解耦，上游服务可以把数据发送到消息队列中，下游服务只需要订阅这个消息队列就可以实时获得数据。无论增加还是减少下游服务，上游服务都不需要修改。</p>
+<h2 id="如何选择消息队列"><a href="#如何选择消息队列" class="headerlink" title="如何选择消息队列"></a>如何选择消息队列</h2><p>RocketMQ 对响应时延做了很多的优化，大多数情况下可以做到毫秒级的响应，<strong>对于响应时延有要求的业务场景，那应该选择使用 RocketMQ</strong>。</p>
+<p>Kafka在设计上采用的是批量和异步的思想，这种设计让Kafka能做到超高的性能。但是带来的问题是，它同步收发消息的响应时延比较高，因为当生产者发送一条消息的时候，Kafka 并不会立即发送出去，而是要等一会儿攒一批再发送。所以，<strong>Kafka更适合离线类的场景</strong>。</p>
+<p>也可以通过<code>linger_ms_config</code>和<code>batch_size_config</code>这两个参数控制发送消息的时机。</p>
+<blockquote>
+<p><code>batch.size</code>：用来控制单次提交的字节数大小，默认是16k。当缓冲区中的数据达到16k时，就会触发一次提交。</p>
+<p><code>linger_ms</code>：用来控制两次提交的时间间隔，如果两次提交的时间间隔达到了这个阈值，不管batch有没有满，都会发送出去。</p>
+</blockquote>
+<h2 id="⭐消息模型"><a href="#⭐消息模型" class="headerlink" title="⭐消息模型"></a>⭐消息模型</h2><p>Kafka使用的消息模型是发布-订阅模型。</p>
+<p><strong>可靠性</strong>：</p>
+<p>Kafka是通过请求-确认机制，来保证消息的可靠性。</p>
+<p>具体来说就是：</p>
+<ul>
+<li><p>生产者先将消息发送给Broker，Broker收到消息会把消息写进topic的partition中，然后给生产者发送确认的响应。如果生产者没有收到服务端的确认或者收到了失败的响应，就表示消息发送失败。</p>
+</li>
+<li><p>消费者在收到消息并完成消费业务逻辑后，也会给Broker发送确认响应，Broker收到消费者的确认后，才会认为消息被消费成功。否则消费者下一次拉取到的数据还是同一条消息。</p>
+</li>
+</ul>
+<p><strong>有序性</strong>：</p>
+<p>Kafka只在partition层面保证有序性，topic层面是无法保证有序性的，在同一个partition中，前一条消息被成功消费，才能继续消费下一条消息。</p>
+<p>也就是说同一个partition，同一时刻最多只能有一个消费者进行消费，所以如果消费者的节点数量大于partition的数量，多出来的消费者是没有意义的。</p>
+<p>在Kafka中每个消费者组都会消费主题中一份完整的消息，不同消费组之间互不影响，也就是说一条消息被消费组A消费过，还会再给消费组B消费。同一个组内的消费者是竞争关系，如果一条消息被一个消费者消费了，组内其他消费者就不会再收到这条消息了。</p>
+<p>消息需要被不同的组进行多次消费，所以消息被消费后不会被删除。Kafka会为每个消费者组维护一个offset，每成功消费一条消息，就把对应的offset就+1。</p>
+<h2 id="⭐Kafka分布式事务"><a href="#⭐Kafka分布式事务" class="headerlink" title="⭐Kafka分布式事务"></a>⭐Kafka分布式事务</h2><p>逻辑是这样的：</p>
+<ol>
+<li>首先在消息队列上开启一个事务，然后给消息队列发送一个“事务消息”，这个事务消息在事务提交之前，对消费者是不可见的。</li>
+<li>事务消息发送成功之后，就可以开始执行本地事务了。</li>
+<li>然后根据本地事务的执行结果决定是提交事务或者回滚事务，这样就基本实现了 “要么都成功，要么都失败”的一致性要求。</li>
+</ol>
+<p>但是最后提交事务的消息有可能会发送失败，<strong>Kafka的解决方案比较简单，就是直接抛异常，让用户自己处理，我们可以在业务代码中重试，或者回滚之前的操作</strong>。所以在写代码的时候，调用send方法时一定要捕获异常。</p>
+<h2 id="⭐事务实现原理"><a href="#⭐事务实现原理" class="headerlink" title="⭐事务实现原理"></a>⭐事务实现原理</h2><p>Kafka中的事务是基于<strong>两阶段提交</strong>来实现的。</p>
+<p>Kafka引入了事务协调者来负责管理服务端的事务，这个事务协调者是Broker的一部分。</p>
+<p>Kafka中有一个特殊的Topic，用来记录事务日志。在Kafka集群中，可以存在多个协调者，每个协调者负责管理事务日志中的几个分区，这样是为了并行执行多个事务。</p>
+<p>具体的逻辑是这样的：</p>
+<ol>
+<li><p>在开启事务的时候，生产者会给协调者发送一个开启事务的请求，协调者会在事务日志中记录下事务ID。</p>
+</li>
+<li><p>然后，Producer在发送消息之前，还要给协调者发送请求，告诉消息属于哪个topic和哪个partition。这些信息会被协调者记录在事务日志里面。</p>
+</li>
+<li><p>然后就可以正常发送消息了，Kafka会在Consumer端过滤掉未提交的事务消息。</p>
+</li>
+<li><p>消息发送完成后，Producer会给协调者发送提交或者回滚事务的请求，然后协调者就会开始<strong>两阶段提交</strong>：</p>
+<ul>
+<li>第一阶段：协调者会把事务的状态设置为prepare预提交，然后写到事务日志里。</li>
+<li>第二阶段：协调者会写一条“事务结束”的消息并把事务状态改为 “已提交”。Consumer读到事务提交的消息之后，就会去消费对应的事务消息。</li>
+</ul>
+</li>
+<li><p>最后协调者会记录最后一条事务日志，表示这个事务已经结束了。</p>
+</li>
+</ol>
+<p>⭐Kafka高性能IO原理</p>
+<ol>
+<li><a href="#%E6%89%B9%E9%87%8F%E6%94%B6%E5%8F%91%E6%B6%88%E6%81%AF%E5%87%8F%E5%B0%91%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E7%9A%84%E5%BC%80%E9%94%80">批处理消息，减少网络通信的开销</a>。</li>
+<li><a href="#%E5%88%A9%E7%94%A8%E9%A1%BA%E5%BA%8F%E8%AF%BB%E5%86%99%E6%8F%90%E5%8D%87%E7%A3%81%E7%9B%98IO%E6%80%A7%E8%83%BD">顺序读写磁盘，减少磁盘寻址时间</a>。</li>
+<li><a href="#%E5%88%A9%E7%94%A8PageCache%E5%8A%A0%E9%80%9F%E6%B6%88%E6%81%AF%E8%AF%BB%E5%86%99">利用PageCache加速消息的读写</a>。</li>
+<li><a href="#%E9%9B%B6%E6%8B%B7%E8%B4%9D%E6%8A%80%E6%9C%AF">零拷贝</a>。</li>
+</ol>
+<p><b id='批量收发消息减少网络通信的开销'>批量收发消息减少网络通信的开销</b>：</p>
+<p>在Kafka内部消息都是批量处理的：</p>
+<ul>
+<li><p>在生产端，虽然Kafka的Producer只提供了单条发送的API，实际上Kafka采用了批量和异步的发送机制。</p>
+<ul>
+<li><p>调用<code>send()</code>方法时，不管是同步发送还是异步发送，Kafka都不会立刻把这条消息发送出去，而是放到内存中缓存起来，然后在合适的时候一次性把缓存中的数据全部发送出去。这样可以减少网络通信的次数。</p>
+<blockquote>
+<p>可以通过<code>linger_ms_config</code>和<code>batch_size_config</code>这两个参数控制发送消息的时机。</p>
+<p><code>batch.size</code>：用来控制单次提交的字节数大小，默认是16k。当缓冲区中的数据达到16k时，就会触发一次提交。</p>
+<p><code>linger_ms</code>：用来控制两次提交的时间间隔，如果两次提交的时间间隔达到了这个阈值，不管batch有没有满，都会发送出去。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>在消费端，消息也是批量处理的，Consumer拉到一批消息后，会把消息拆分开，再一条一条发送给我们的程序来处理。</p>
+</li>
+</ul>
+<p><b id='利用顺序读写提升磁盘IO性能'>利用顺序读写提升磁盘IO性能</b>：</p>
+<blockquote>
+<p>磁盘有一个特性，就是顺序读写的性能要比随机读写快好几倍。</p>
+<p>因为操作系统每次从磁盘读写数据的时候，需要先寻址，也就是找到数据在磁盘上的物理位置，然后再进行数据读写。</p>
+<p>顺序读写比随机读写省去了大部分的寻址时间，因为它只要一次寻址，就可以连续的写下去，所以性能会好很多。</p>
+</blockquote>
+<p><strong>Kafka利用了磁盘顺序读写速度很快的特点，对于每个分区，它从Producer接收的消息，会顺序的写入到对应的log文件中，一个文件写满了，就开启一个新的文件这样顺序写下去</strong>。</p>
+<p>消费的时候也是从某个log文件中的某个位置，顺序的把消息读出来。</p>
+<p><b id='利用PageCache加速消息读写'>利用PageCache加速消息读写</b>：</p>
+<p>Kafka还会利用PageCache加速消息的读写。</p>
+<blockquote>
+<p>PageCache是操作系统都有的一个特性，可以简单的理解为PageCache就是操作系统在内存中给磁盘上的文件建立的缓存，读写文件的时候，并不会直接去读写磁盘上的文件，应用程序实际上操作的是PageCache，也就是文件在内存中缓存的副本。</p>
+</blockquote>
+<p>PageCache有两种情况：</p>
+<ul>
+<li>一种情况是PageCache中有数据，那就直接读取，这样就节省了从磁盘上读取数据的时间。</li>
+<li>另一种情况是PageCache中没有数据，这个时候应用程序会被阻塞，操作系统会把数据从文件复制到PageCache中，这种情况下，才会真正的读一次磁盘上的文件，这样就比较慢。</li>
+</ul>
+<p>应用程序用完某块PageCache后，操作系统并不会立刻就清理PageCache中的数据，除非系统内存不够用，操作系统才会去清理一部分数据。</p>
+<p><b id='零拷贝技术'>零拷贝技术（Zero Copy）</b>：</p>
+<p>Kafka还使用了一种“零拷贝”的操作系统特性来提升消费性能。</p>
+<p>在Broker中，一条消息的消费的逻辑大概是这样的：</p>
+<ol>
+<li><p>首先从文件中把数据复制到PageCache中，如果PageCache中已经有数据了，这一步是可以省略的。</p>
+<blockquote>
+<p>在Kafka中，消息被写入到Broker中，通常很快就会被消费掉，像这种刚刚写入到PageCache中的数据，很快就会被消费者消费掉，PageCache命中率会非常高</p>
+</blockquote>
+</li>
+<li><p>然后从PageCache中把数据复制到内存中。</p>
+</li>
+<li><p>最后从内存中把数据复制到Socket缓冲区里面，最后发送给客户端。</p>
+</li>
+</ol>
+<p>Kafka使用“零拷贝”技术可以把这个复制次数减少一次，直接从PageCache里面把数据复制到Socket缓冲区里面，速度会很快。</p>
+<h2 id="⭐如何保证消息不丢失"><a href="#⭐如何保证消息不丢失" class="headerlink" title="⭐如何保证消息不丢失"></a>⭐如何保证消息不丢失</h2><p>判断是否有消息丢失，<strong>可以利用消息队列的有序性来验证是否有消息丢失</strong>，逻辑是这样的：</p>
+<ol>
+<li>在Producer端，给每个发出去的消息附加一个连续递增的序号。</li>
+<li>然后在Consumer端来检查这个序号的连续性</li>
+<li>如果没有消息丢失，那Consumer接收到的消息必然是连续递增的，如果检测到序号不连续，就说明丢消息了。还可以通过丢失的序号确定是哪条消息丢失了，方便排查原因。</li>
+</ol>
+<p><strong>大部分的消息队列一般都会有拦截器机制，可以利用拦截器，在Producer发送消息之前，在拦截器中将序号注入到消息里面</strong>。</p>
+<p>但是像Kafka和RocketMQ这样的消息队列，它并不保证Topic层面的顺序，只能保证partition上的消息是有序的，所以在发送消息的时候需要指定分区，并且每个分区都要单独校验序号的连续性。</p>
+<p>如果Producer是有多个实例的，也需要每个Producer分别生成各自的序号，并且还需要加上Producer的标识，在Consumer端按照每个Producer分别来检测序号的连续性。</p>
+<p>一条消息的传递主要分三个阶段：<a href="#Producer%E9%98%B6%E6%AE%B5">Producer阶段</a>、<a href="#Broker%E9%98%B6%E6%AE%B5">Broker阶段</a>、<a href="#Consumer%E9%98%B6%E6%AE%B5">Consumer阶段</a>。</p>
+<p><b id='Producer阶段'>Producer阶段</b>：</p>
+<p>在Producer端，消息队列通过<strong>请求-确认</strong>机制，来保证消息的可靠传递。</p>
+<p>具体来说就是，Producer向Broker发送一条消息时，Broker收到消息之后会给Producer返回一个确认响应，表示消息已经收到了。只要Producer收到了Broker的确认响应，就可以保证消息在Producer阶段不会丢失。</p>
+<p>但是有些消息队列在长时间没收到确认响应，会自动重试，如果重试失败就会以返回值或者抛异常的方式告诉用户消息发送失败。<strong>所以在写代码的时候，需要注意处理下返回值或者捕获异常，就可以保证这个发送阶段消息不会丢失</strong>。</p>
+<blockquote>
+<p>以Kafka为例，同步发送：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"> <span class="type">RecordMetadata</span> <span class="variable">metadata</span> <span class="operator">=</span> producer.send(record).get();</span><br><span class="line"> System.out.println(<span class="string">&quot; 消息发送成功。&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line"> System.out.println(<span class="string">&quot; 消息发送失败！&quot;</span>);</span><br><span class="line"> System.out.println(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>异步发送：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">producer.send(record, (metadata, exception) -&gt; &#123;</span><br><span class="line"> <span class="keyword">if</span> (metadata != <span class="literal">null</span>) &#123;</span><br><span class="line">     System.out.println(<span class="string">&quot; 消息发送成功。&quot;</span>);</span><br><span class="line"> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     System.out.println(<span class="string">&quot; 消息发送失败！&quot;</span>);</span><br><span class="line">     System.out.println(exception);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><b id='Broker阶段'>Broker阶段</b>：</p>
+<p>在Broker阶段，一般情况下，只要Broker正常运行，就不会出现丢消息的情况，但是如果Broker出现故障，比如进程死掉，或者服务器宕机，就可能会丢消息。</p>
+<p><strong>如果对消息的可靠性要求非常高，可以通过配置Broker参数来避免因为宕机导致丢消息</strong>。</p>
+<p>如果是单个节点的Broker，可以配置一下Broker的参数，<strong>比如RocketMQ可以把<code>flushDiskType</code>配置为SYNC_FLUSH同步刷盘</strong>。这样Broker在收到一条消息后，会先把消息写到磁盘后，再给Producer返回确认响应。这样就算发生了宕机，因为消息已经被写到了磁盘上，所以是不会丢消息的。</p>
+<p>如果Broker是由多个节点组成的集群，需要把Broker配置成：至少把消息发送到2个以上的节点，然后再给Producer发送确认响应，这样当某个Broker宕机后，其他的Broker可以替代宕机的Broker，也不会丢消息。</p>
+<p><b id='Consumer阶段'>Consumer阶段</b>：</p>
+<p>Consumer阶段也是通过<strong>请求-确认</strong>机制来保证消息的可靠传递。</p>
+<p>具体来说就是，Consumer从Broker拉取一条消息后，开始执行消费业务的逻辑，执行成功后，向Broker发送消费确认的响应，如果Broker没有收到消费确认的响应，下次拉取的消息还会是同一条，这样就可以保证消息不会在网络传输过程中丢失，也不会因为消费逻辑出错导致数据丢失。</p>
+<p><strong>所以在写代码的时候需要注意，不要在收到消息后立刻就发送消费确认，而是应该在执行完消费业务的逻辑之后，再发送消费确认的响应</strong>。</p>
+<p>比如应该先把消息保存到数据库之后，再发送消费确认的响应。这样就算保存消息失败了，因为没有执行消费确认的代码，下次拉取的还是这条消息。</p>
+<h2 id="⭐如何处理重复消息"><a href="#⭐如何处理重复消息" class="headerlink" title="⭐如何处理重复消息"></a>⭐如何处理重复消息</h2><blockquote>
+<p>在MQTT协议里面，有三种传递消息的标准：</p>
+<ul>
+<li><strong>At most once</strong>：在传递消息时<strong>，消息最多会被发送一次，换一个说法就是，没什么消息可靠性保证，允许丢消息</strong>，一般都是一些对消息可靠性要求不高，可以接收数据少量丢失的场景用。</li>
+<li><strong>At least once</strong>：在传递消息时，<strong>消息最少会被发送一次，也就是说，不允许丢消息，但是允许有少量的重复消息出现。</strong></li>
+<li><strong>Exactly once</strong>：在传递消息时，<strong>消息只会被发送一次，不允许丢失，也不允许重复</strong>，这个是最高的等级。</li>
+</ul>
+<p>这三种标准对所有的消息队列都是适用的，现在常用的大部分消息队列提供的标准都是<strong>At most once</strong>，比如RocketMQ、Kafka、RabbitMQ都是这样。也就是说这些消息队列都有重复消息的可能。</p>
+</blockquote>
+<p><strong>一般解决重复消息的办法是让消费消息的接口具备幂等性</strong>。</p>
+<p>幂等常见的实现方式主要有2种方案：<a href="#%E9%80%9A%E8%BF%87%E6%95%B0%E6%8D%AE%E5%BA%93%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F%E5%AE%9E%E7%8E%B0%E5%B9%82%E7%AD%89">通过数据库唯一约束实现幂等</a>、<a href="#%E9%80%9A%E8%BF%87%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6%E5%AE%9E%E7%8E%B0%E5%B9%82%E7%AD%89">通过前置条件实现幂等</a>。</p>
+<blockquote>
+<p><strong>幂等(Idempotence)：</strong>一个幂等的方法，使用相同的参数，对它进行多次调用和一次调用，对系统产生的影响是一样的，所以幂等的方法不用担心重复数据会对系统造成影响。</p>
+<p>比如：一个方法可以把张三的账户余额设置为100元，执行一次对系统产生的影响是，把张三的账户余额设置成了100元，只要提供的参数100元不变，就算执行多少次，张三的账户余额始终都是100元，这就是一个幂等操作。</p>
+</blockquote>
+<p>⭐<b id='通过数据库唯一约束实现幂等'>通过数据库唯一约束实现幂等</b>：</p>
+<p>可以在表中定义唯一约束来实现幂等，如果入库时发生了唯一键冲突，就表示这条记录已经消费过了，可以直接丢弃。</p>
+<p>⭐<b id='通过前置条件实现幂等'>通过前置条件实现幂等</b>：</p>
+<p>就是给修改数据设置一个前置条件，如果满足条件就更新数据，否则就拒绝更新。</p>
+<p>可以给数据增加一个版本号，每次更新数据前比较一下当前数据的版本号和消息中的版本号是否一致，如果不一致就拒绝更新。更新数据后同时把版本号+1，这样也可以实现幂等。</p>
+<h2 id="⭐消息积压如何处理"><a href="#⭐消息积压如何处理" class="headerlink" title="⭐消息积压如何处理"></a>⭐消息积压如何处理</h2><p><strong>一般出现消息积压的主要原因是，生产者发送消息的速度大于消费者处理消息的速度</strong>。</p>
+<p>如果只是短时间内有大量的请求发送到后端，这种情况消息积压是正常的现象，因为这些积压的消息会被逐渐消费掉。如果消息队列中一直积压了大量的数据，就需要排查问题了：</p>
+<ol>
+<li>首先可以排查日志，看是不是消费逻辑报错，导致同一条消息反复消费。</li>
+<li>排查消费端和Broker之间的网络状态是否正常</li>
+<li>扩容，增加partition和consumer节点，来提高消费端的处理能力。</li>
+<li>优化消费逻辑，如果代码执行到某一个步骤就可以确定消息可以被正确处理，就可以提前给Broker发送消费成功的响应，然后把后续流程交给其它线程进行异步处理。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Rainy 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Rainy 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/08/Redis/" rel="prev" title="Redis">
+      <i class="fa fa-chevron-left"></i> Redis
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/08/RocketMQ/" rel="next" title="RocketMQ">
+      RocketMQ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">⭐应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">如何选择消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">⭐消息模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90Kafka%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">⭐Kafka分布式事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90%E4%BA%8B%E5%8A%A1%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">⭐事务实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E4%B8%A2%E5%A4%B1"><span class="nav-number">6.</span> <span class="nav-text">⭐如何保证消息不丢失</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E9%87%8D%E5%A4%8D%E6%B6%88%E6%81%AF"><span class="nav-number">7.</span> <span class="nav-text">⭐如何处理重复消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90%E6%B6%88%E6%81%AF%E7%A7%AF%E5%8E%8B%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">⭐消息积压如何处理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rainy"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Rainy</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/rainy-zhang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;rainy-zhang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:rainy_zhang@foxmail.com" title="E-Mail → mailto:rainy_zhang@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainy</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'edb1b2802d6853e3cc24',
+      clientSecret: '77dfb2ff88a1839ad1f7d904cb216b5e8b1cbaf1',
+      repo        : 'rainy-zhang.github.io',
+      owner       : 'rainy-zhang',
+      admin       : ['rainy-zhang'],
+      id          : '713c03ccd46be75f78d84dc620a971a1',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

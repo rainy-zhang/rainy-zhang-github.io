@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta property="og:type" content="website">
@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/Java%E9%9B%86%E5%90%88/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/12/08/Java%E9%9B%86%E5%90%88/" class="post-title-link" itemprop="url">Java集合</a>
+            <a href="/2022/12/08/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">系统设计</a>
         </h2>
 
         <div class="post-meta">
@@ -185,7 +185,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-12-08 15:53:30 / 修改时间：15:55:57" itemprop="dateCreated datePublished" datetime="2022-12-08T15:53:30+08:00">2022-12-08</time>
+              <time title="创建时间：2022-12-08 17:08:51 / 修改时间：17:09:19" itemprop="dateCreated datePublished" datetime="2022-12-08T17:08:51+08:00">2022-12-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -193,7 +193,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">系统设计</span></a>
                 </span>
             </span>
 
@@ -208,85 +208,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-
-<h3 id="⭐ArrayList"><a href="#⭐ArrayList" class="headerlink" title="⭐ArrayList"></a>⭐ArrayList</h3><p>ArrayList底层是用数组实现的，数组长度可以在构造函数中指定，默认是0。</p>
-<ul>
-<li><p>调用<code>add()</code>方法时，如果长度不够，会触发扩容。所以在初始化时指定数量可以减少扩容次数。</p>
-<blockquote>
-<p>调用指定下标的<code>add(int index, E element)</code>方法时，也会拷贝数组。</p>
-<p>比如要在下标为5的位置插入一个元素，就会从下标为5这个位置到数组末尾复制出一个的数组，然后把新的数组放在5+1这个位置上，最后在5这个位置插入数据。</p>
-</blockquote>
-</li>
-<li><p>调用<code>remove()</code>方法时，会拷贝出一个新数组。</p>
-<blockquote>
-<p>比如要删除下标为5的元素，就会从5+1这个位置到数组末尾复制出一个新数组，然后放到下标为5这个位置。</p>
-</blockquote>
-</li>
-</ul>
-<p><strong>更适合读多写少的场景</strong>。</p>
-<p><strong>扩容</strong>：初始化时如果没有指定数组长度，第一次会扩容为10。否则扩容为原来的1.5倍。</p>
-<h3 id="⭐LinkedList"><a href="#⭐LinkedList" class="headerlink" title="⭐LinkedList"></a>⭐LinkedList</h3><p>LinkedList底层使用双向链表。</p>
-<p>LinkedList插入操作的时间复杂度是O(1)的前提是：已经有了那个要插入节点的指针，但是在实现的时候，LinkedList需要先通过循环获取到那个节点的Node，然后再执行插入操作。所以LinkedList插入数据的效率也不一定比ArrayList高。</p>
-<h3 id="⭐HashMap"><a href="#⭐HashMap" class="headerlink" title="⭐HashMap"></a>⭐HashMap</h3><p><strong>HashMap底层采用数组+链表组成</strong>。</p>
-<ul>
-<li>调用<code>put()</code>方法时，会根据key的哈希值，计算出要添加的数组下标，如果目标位置不为空，就会创建一个链表保存出现Hash冲突的数据。</li>
-<li>调用<code>get()</code>方法时，根据key的哈希值，计算出目标数据的下表，如果目标位置是一个链表，则通过<code>equals()</code>方法与链表中的每个元素作比较。</li>
-</ul>
-<p>数组的长度默认是16，插入的数据越多，就会导致Hash冲突越多，链表就越长，进而影响查询数据的效率，所以当链表长度达到8时会转换为红黑树，当删除数据后长度小于6时重新变为链表。</p>
-<p>并且当数组中元素数量大于数组长度 * 0.75时，就会进行扩容，扩容分为两步：</p>
-<ol>
-<li><p>创建一个空数组，长度是原来的2倍。</p>
-</li>
-<li><p>再遍历原来数组中的元素，重新经过Hash运算后保存到新数组中。</p>
-<blockquote>
-<p>因为数组长度变了，Hash规则也会变。（index = key.hashCode() &amp; array.length - 1）</p>
-</blockquote>
-</li>
-</ol>
-<blockquote>
-<p>线程A、B同时插入数据，线程A通过key的哈希值计算出数组的下标，并且目标位置为空，然后线程A挂起。</p>
-<p>线程B成功插入数据。</p>
-<p>线程A再次执行的时候会直接覆盖掉线程B写的数据。</p>
-</blockquote>
-<h3 id="⭐ConcurrentHashMap"><a href="#⭐ConcurrentHashMap" class="headerlink" title="⭐ConcurrentHashMap"></a>⭐ConcurrentHashMap</h3><p>ConcurrentHashMap底层是数组+链表组成的，不过在jdk 1.7和jdk 1.8中实现方式稍有不同：</p>
-<p>在jdk 1.7中，是基于分段锁实现的，ConcurrentHashMap会把内部的数据拆分成一个个Segment，Segment继承自<a href="#ReentrantLock">ReentrantLock</a>，并且内部维护了一个HashEntry数组，HashEntry是key-value结构的对象，内部使用<a href="#volatile">volatile</a>关键字来保证可见性。</p>
-<ul>
-<li><p>调用<code>put()</code>方法时，通过key的哈希值得到该元素要添加到的Segment，然后对Segment进行加锁，不会影响到其它Segment。</p>
-<blockquote>
-<p>默认情况下，Segment的数量是16个，也就是说最多可以支持16个线程同时读写。</p>
-</blockquote>
-</li>
-<li><p>调用<code>get()</code>方法时，只需要根据key的哈希值就可以定位到Segment，再通过key的哈希值就可以定位到具体的元素。</p>
-<blockquote>
-<p>第一次通过key的哈希值与Segment数组长度计算出key所在的Segment，第二次通过key的哈希值与HashEntry数组长度定位到具体的元素。</p>
-</blockquote>
-</li>
-</ul>
-<p>ConcurrentHashMap是通过链表解决Hash冲突的，会导致查询效率降低。</p>
-<p>在jdk 1.8中，抛弃了分段锁，采用了<a href="#CAS">CAS</a> + <a href="#synchronized">synchronized</a>来保证并发安全性，并且在解决Hash冲突时引入了红黑树，当链表长度大于8时会转为红黑树。</p>
-<ul>
-<li>调用<code>put()</code>方法时，根据key的哈希值定位到要添加的位置，如果不为空就用<a href="#synchronized">synchronized</a>对当前Node加锁并写入数据。如果目标位置为空就通过<a href="#CAS">CAS</a>写入，如果<a href="#CAS">CAS</a>写入失败则重新判断位置是否为空，直到成功将数据写入。</li>
-<li>调用<code>get()</code>方法时，根据key的哈希值定位到具体的数据。</li>
-</ul>
-<p><strong>抛弃分段锁的原因</strong>：</p>
-<ol>
-<li>分段锁会浪费更多的内存空间。</li>
-<li>jdk8只会对Node加锁，降低了锁粒度。</li>
-</ol>
-<h3 id="⭐HashSet"><a href="#⭐HashSet" class="headerlink" title="⭐HashSet"></a>⭐HashSet</h3><p>HashSet内部维护了一个HashMap，所有元素都存到map中的key上，所以HashSet天然就是不可重复的。</p>
-<blockquote>
-<p>map中的value是一个统一的值，是用static final修饰的Object对象</p>
-</blockquote>
-<ul>
-<li>调用<code>add()</code>方法时，底层调用的是HashMap的<code>put()</code>方法。</li>
-</ul>
-<p>HashSet没有提供<code>get()</code>方法，获取数据时需要通过迭代器遍历集合。</p>
-<h3 id="CopyOnWrite模式"><a href="#CopyOnWrite模式" class="headerlink" title="CopyOnWrite模式"></a>CopyOnWrite模式</h3><p>CopyOnWrite模式就是在执行写操作的时候，会把数据复制出来一份，这样做的好处是读数据不需要加锁。</p>
-<p>CopyOnWrite模式内部维护了一个数组，所有的读操作都是在这个数组上进行的。如果在遍历的过程中，其它线程执行写操作，会复制出一个新的数组，然后在新的数组上执行写操作，最后再把原来的数组替换掉。</p>
-<p><strong>只适合读多写少的场景</strong>。</p>
-<p>常用的实现类有：CopyOnWriteArrayList、CopyOnWriteArraySet。</p>
-
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -301,11 +231,21 @@
   
   
 
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> 系统设计</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
       
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/JVM%E7%9B%B8%E5%85%B3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -319,7 +259,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/12/08/JVM%E7%9B%B8%E5%85%B3/" class="post-title-link" itemprop="url">JVM相关</a>
+            <a href="/2022/12/08/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">网络协议</a>
         </h2>
 
         <div class="post-meta">
@@ -330,7 +270,687 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-12-08 15:48:02 / 修改时间：15:55:46" itemprop="dateCreated datePublished" datetime="2022-12-08T15:48:02+08:00">2022-12-08</time>
+              <time title="创建时间：2022-12-08 17:07:53 / 修改时间：17:08:29" itemprop="dateCreated datePublished" datetime="2022-12-08T17:07:53+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" itemprop="url" rel="index"><span itemprop="name">网络协议</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" rel="tag"><i class="fa fa-tag"></i> 网络协议</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E5%88%86%E5%B8%83%E5%BC%8F%E7%90%86%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/%E5%88%86%E5%B8%83%E5%BC%8F%E7%90%86%E8%AE%BA/" class="post-title-link" itemprop="url">分布式理论</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 17:07:04 / 修改时间：17:07:34" itemprop="dateCreated datePublished" datetime="2022-12-08T17:07:04+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/%E5%88%86%E5%B8%83%E5%BC%8F%E7%90%86%E8%AE%BA/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%90%86%E8%AE%BA/" rel="tag"><i class="fa fa-tag"></i> 分布式理论</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/RocketMQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/RocketMQ/" class="post-title-link" itemprop="url">RocketMQ</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 17:00:22 / 修改时间：17:05:51" itemprop="dateCreated datePublished" datetime="2022-12-08T17:00:22+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">消息队列</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/RocketMQ/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/RocketMQ/" rel="tag"><i class="fa fa-tag"></i> RocketMQ</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/Kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/Kafka/" class="post-title-link" itemprop="url">Kafka</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 17:00:15 / 修改时间：17:05:57" itemprop="dateCreated datePublished" datetime="2022-12-08T17:00:15+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">消息队列</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/Kafka/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/Kafka/" rel="tag"><i class="fa fa-tag"></i> Kafka</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/Redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/Redis/" class="post-title-link" itemprop="url">Redis</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 16:58:27 / 修改时间：16:59:08" itemprop="dateCreated datePublished" datetime="2022-12-08T16:58:27+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%93%E5%AD%98/" itemprop="url" rel="index"><span itemprop="name">缓存</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/Redis/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/MySQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/MySQL/" class="post-title-link" itemprop="url">MySQL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 16:57:30 / 修改时间：16:59:23" itemprop="dateCreated datePublished" datetime="2022-12-08T16:57:30+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/MySQL/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 16:55:00 / 修改时间：16:56:59" itemprop="dateCreated datePublished" datetime="2022-12-08T16:55:00+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">软件设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 设计模式</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">设计原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 16:54:56 / 修改时间：16:56:24" itemprop="dateCreated datePublished" datetime="2022-12-08T16:54:56+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">软件设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag"><i class="fa fa-tag"></i> 设计原则</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/Spring%E7%9B%B8%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/08/Spring%E7%9B%B8%E5%85%B3/" class="post-title-link" itemprop="url">Spring相关</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 16:52:48 / 修改时间：16:53:40" itemprop="dateCreated datePublished" datetime="2022-12-08T16:52:48+08:00">2022-12-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -353,503 +973,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-
-<h3 id="⭐Java代码运行原理"><a href="#⭐Java代码运行原理" class="headerlink" title="⭐Java代码运行原理"></a>⭐Java代码运行原理</h3><p>首先需要把java文件编译成class文件，然后把编译后的class文件加载到Java虚拟机中。</p>
-<blockquote>
-<p>加载后的Java类会被存放在<a href="#%E6%96%B9%E6%B3%95%E5%8C%BA">方法区</a>中</p>
-</blockquote>
-<p>但是Java字节码是无法直接执行的，所以需要Java虚拟机把字节码翻译成机器码。</p>
-<p>Java虚拟机有两种翻译模式：</p>
-<ol>
-<li>第一种是<strong>解释执行：就是翻译一条执行一条</strong>。</li>
-<li>第二种是<strong>即时编译：就是把一个方法中包含的所有字节码都翻译成机器码之后再执行</strong>。</li>
-</ol>
-<p>解释执行的优势在于不需要等待编译，程序的启动速度更快。</p>
-<p>即时编译的优势在于编译完成后实际运行速度更快。</p>
-<p>**HotSpot默认采用的是混合模式，它会先解释执行字节码，然后把其中反复执行的<a href="#%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81">热点代码</a>以方法为单位再进行<a href="#%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91">即时编译</a>**。</p>
-<p>⭐<strong>为什么不把Java代码全部编译成机器码</strong>？</p>
-<p>为了避免重复编译，即时编译后生成的机器码会保存在<a href="#CodeCache">CodeCache</a>中，会占用额外的内存空间。如果把很多调用次数很少的代码，也用即时编译生成机器码，就会导致编译时间变长，而且也需要更多内存空间保存这些机器码。</p>
-<p><b id='CodeCache'>CodeCache</b>：是一块堆外内存，经过即时编译后的机器码会存放在这里。</p>
-<p>CodeCache的大小是固定的，如果CodeCache满了，JVM就会判断每一个即时编译后的方法的方法调用计数器和循环回边计数器是否低于阈值，如果低于阈值就会清理掉这个方法的机器码。</p>
-<blockquote>
-<p>可以通过JVM参数<code>-XX:ReservedCodeCacheSize</code>控制CodeCache的大小。</p>
-</blockquote>
-<h3 id="⭐即时编译"><a href="#⭐即时编译" class="headerlink" title="⭐即时编译"></a>⭐<span id='即时编译'>即时编译</span></h3><p>Java虚拟机内置了多个即时编译器：<strong>C1</strong>、<strong>C2</strong>。</p>
-<ul>
-<li><p><b id='C1'>C1</b>：也叫做<strong>Client编译器，面向的是对启动速度有要求的客户端应用</strong>，优化手段比较简单，编译时间比较短。</p>
-<blockquote>
-<p>对应的JVM参数是<code>-client</code>。</p>
-</blockquote>
-</li>
-<li><p><b id='C2'>C2</b>：也叫做<strong>Server编译器，面对的是对执行效率有要求的服务端应用</strong>，优化手段相对复杂，编译时间比较长，但是生成的代码执行效率高（用C++实现的）。</p>
-<blockquote>
-<p>对应的JVM参数是<code>-server</code>。</p>
-</blockquote>
-</li>
-</ul>
-<p><strong>从JDK7版本开始，HotSpot默认采用分层编译模式</strong>：**<a href="#%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81">热点代码</a>首先会被C1编译，然后热点中的热点会进一步被C2编译**。</p>
-<p>即时编译的过程是在额外编译线程中进行的，HotSpot会根据CPU核心数来设置编译线程的数量，并按照1:2的比例分配给C1和C2。</p>
-<p>字节码的解释执行和即时编译可以同时进行，即时编译完成后的机器码会在下次调用该方法时替换原本的解释执行。</p>
-<p>分层编译会把Java虚拟机的执行状态分为五个层次：C1代码（C1生成的机器码），C2代码（C2生成的机器码）</p>
-<ol>
-<li>第一层是，解释执行。</li>
-<li>第二层是，执行不带<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第三层是，执行只带方法调用次数和循环回边次数<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第四层是，执行带所有<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第五层是，执行C2代码。</li>
-</ol>
-<p>其中第2层和第5层是终止状态，当一个方法被这两层编译后，如果编译后的机器码没有失效，Java虚拟机不会再对该方法发出编译请求。</p>
-<p>通常情况下，热点方法会被第4层的C1编译，然后再被第5层的C2编译，但是如果方法比较简单（比如getter/setter），Java虚拟机就会认为这个方法编译后的C1代码和C2代码执行效率相同。就会直接选择第2层的C1编译。</p>
-<p>Java8默认开启了分层编译。不管开启还是关闭分层编译，<code>-client</code>和<code>-server</code>都是无效的。关闭分层编译的情况下，默认使用的是C2。</p>
-<p>如果希望使用C1，可以在打开分层编译的情况下，使用<code>-XX:TieredStopAtLevel=1</code>，这样在解释执行之后会直接由2层的C1进行编译。</p>
-<p>⭐<b id='profiling'>profiling</b>：收集能够反映程序执行状态的数据的过程。这些数据被称为profile。</p>
-<p>比如方法调用次数、循环回边次数、分支跳转次数、类型强制转换指令，类型判断指令（instanceof）。</p>
-<p>⭐<b id='热点代码'>热点代码</b>：</p>
-<ol>
-<li>被多次调用的方法</li>
-<li>方法内部包含循环次数较多的循环体</li>
-</ol>
-<p>Java虚拟机为每个方法都准备了两个计数器：<strong>方法调用计数器</strong>和<strong>循环回边计数器</strong>。</p>
-<p><strong>方法调用计数器</strong>：</p>
-<p><strong>用来统计方法的调用次数，在C1中默认阈值是1500次，在C2中默认阈值是10000次</strong>。</p>
-<p>方法调用计数器统计的不是方法被调用的绝对次数，而是执行频率。也就是说在一段时间内，如果方法的调用次数未达到阈值，计数器就会减少为原来的一半，这个过程叫<strong>热度衰减</strong>，这段时间叫<strong>半衰周期</strong>。</p>
-<p>比如阈值是10000，半衰周期是1个小时，如果在1个小时内，某一个方法被调用了8000次，虚拟机就会认为它不是热点代码，就会把调用次数减少为4000。</p>
-<p>可以通过JVM参数调整计数器阈值、热度衰减以及半衰周期。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计数器阈值</span></span><br><span class="line">-XX:CompileThreshold</span><br><span class="line"><span class="comment">// 关闭热度衰减</span></span><br><span class="line">-XX:-UseCounterDecay</span><br><span class="line"><span class="comment">// 设置半衰周期时间（秒）</span></span><br><span class="line">-XX:CounterHalfLifeTime</span><br></pre></td></tr></table></figure>
-
-
-
-<p><b id='循环回边计数器'>循环回边计数器</b>：</p>
-<p><strong>用来统计方法中循环体的循环次数</strong>。在C1中默认阈值是13500次，在C2中默认阈值是10700次。</p>
-<p>之所以要维护两个计数器，是因为Java虚拟机还存在一种以循环为单位的即时编译，叫做OSR编译，循环回边计数器就是用来触发这种类型的编译的。</p>
-<p>⭐<b id='OSR编译'>OSR编译</b>：是一种可以在程序执行过程中，动态替换方法栈帧的技术，可以让程序在解释执行和即时编译后的代码之间切换。</p>
-<h3 id="⭐Java内存模型"><a href="#⭐Java内存模型" class="headerlink" title="⭐Java内存模型"></a>⭐Java内存模型</h3><h4 id="⭐Java内存区域"><a href="#⭐Java内存区域" class="headerlink" title="⭐Java内存区域"></a>⭐Java内存区域</h4><p>Java虚拟机会在内存中划分出<a href="#%E5%A0%86">堆</a>、<a href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88">Java虚拟机栈</a>、<a href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88">本地方法栈</a>、<a href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8">程序计数器</a>、<a href="#%E6%96%B9%E6%B3%95%E5%8C%BA">方法区</a>。</p>
-<p>⭐<b id='堆'>堆</b>：堆是虚拟机内存中最大的一块空间，是线程共享的，大部分对象都会被分配到堆中。</p>
-<p>堆是垃圾收集器管理的区域，Java虚拟机中的垃圾回收器又是基于分代回收的理论设计的，所以堆又被划分为<a href="#%E6%96%B0%E7%94%9F%E4%BB%A3">新生代</a>和<a href="#%E8%80%81%E5%B9%B4%E4%BB%A3">老年代</a>，新生代又被划分为<a href="#Eden%E5%8C%BA">Eden区</a>和两个<a href="#Survivor%E5%8C%BA">Survivor区</a>。</p>
-<p>⭐<b id='Java虚拟机栈'>Java虚拟机栈</b>：Java虚拟机栈是线程私有的。</p>
-<p>每当调用一个Java方法，Java虚拟机就会在当前线程的Java方法栈中生成一个<a href="#%E6%A0%88%E5%B8%A7">栈帧</a>，用来存放方法参数和方法内部定义的局部变量。不管方法是正常返回还是异常返回，Java虚拟机都会弹出当前栈帧。</p>
-<p>当创建一个线程时，会在Java虚拟机栈中申请一个线程栈，用来保存<a href="#%E6%A0%88%E5%B8%A7">栈帧</a>。</p>
-<blockquote>
-<p><a href="#%E6%A0%88%E5%B8%A7">栈帧</a>的大小是编译时就计算好的</p>
-</blockquote>
-<p>⭐<b id='本地方法栈'>本地方法栈</b>：本地方法栈也是线程私有的，作用跟Java虚拟机栈类似，主要用来管理本地（Native）方法（C++实现的方法）。</p>
-<p>⭐<b id='程序计数器'>程序计数器</b>：主要用来完成分支、循环、跳转、异常处理、线程恢复等功能。</p>
-<p>为了保证线程切换后能够恢复到正确的执行位置，每个线程都有一个独立的程序计数器，所以程序计数器是线程私有的。</p>
-<blockquote>
-<p>如果正在执行的是一个Java方法，程序计数器中保存的是字节码指令的地址。</p>
-<p>如果正在执行的是一个本地（Native）方法，程序计数器中的内容为空。</p>
-</blockquote>
-<p>⭐<b id='方法区'>方法区</b>：方法区是线程共享的，主要用来存放类信息（字段、方法、接口、父类）、常量，静态变量、<a href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0">运行时常量池</a>等。</p>
-<blockquote>
-<p>如果方法区无法满足新的内存分配需求时，会直接OOM。</p>
-</blockquote>
-<p><b id='运行时常量池'>运行时常量池</b>：class文件中会保存一份常量池表，用来保存编译器生成的各种字面量和<a href="#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8">符号引用</a>，这个常量池表最终会被放到运行时常量池中。</p>
-<h4 id="⭐happens-before规则"><a href="#⭐happens-before规则" class="headerlink" title="⭐happens-before规则"></a>⭐happens-before规则</h4><p>由于即时编译器的优化可能会把原本的代码执行顺序打乱，在多线程环境下就有可能导致程序运行结果无法预测。</p>
-<p>所以JDK 5定义了 Java 内存模型。其中最为重要的一个概念便是 happens-before 关系。</p>
-<p><b id='happens-before'>happens-before</b> 规则是用来描述两个操作的内存可见性的，如果操作A happens-before 操作B，那么A的结果对B可见。</p>
-<ol>
-<li><p><strong>在同一个线程中，前一行代码 happens-before 后一行代码</strong>（前一行代码的执行结果对后一行代码可见）。</p>
-<blockquote>
-<p>前一行代码并不一定在后一行代码之前执行。如果后一行代码不需要依赖于前一行代码，这两行代码就有可能被重排序。</p>
-</blockquote>
-</li>
-<li><p><strong>解锁操作 happens-before 之后对这把锁的加锁操作</strong></p>
-<blockquote>
-<p>前一个线程解锁之后，下一个加锁的线程可以看到前一个线程的执行结果，在解锁时，Java虚拟机会强制刷新CPU缓存，让当前线程对内存做的修改对其它线程可见。这就是为什么锁可以解决并发问题。</p>
-</blockquote>
-</li>
-<li><p><strong>对volatile字段的写操作 happens-before 之后对同一个字段的读操作</strong>。</p>
-<blockquote>
-<p>用<a href="#volatile">volatile</a>来修饰的变量，对这个变量的读写操作都不能使用CPU缓存，必须从内存中读写。</p>
-<p>happens-before还具有传递性，就是说对于<a href="#volatile">volatile</a>字段的写操作之前的写操作，也是可见的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">v</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">writer</span><span class="params">()</span> &#123;</span><br><span class="line">		x = <span class="number">10</span>;</span><br><span class="line">		v = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">reader</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (v == <span class="literal">true</span>) &#123;</span><br><span class="line">			System.out.print(x);	<span class="comment">// x的值对v是可见的，所以这里x的值是10</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>线程A执行<code>writer()</code>方法，线程B执行<code>reader()</code>方法。</p>
-</li>
-<li><p>如果线程B看到的v是true，那么线程A设置的x=10，对线程B就是可见的。</p>
-</li>
-<li><p>因为<code>x = 10</code> happens-before <code>v = true</code>，所以<code>x = 10</code> happens-before <code>v == true</code>。</p>
-</li>
-</ol>
-</blockquote>
-</li>
-<li><p><strong>父线程启动子线程之前的操作 happens-before 子线程的所有操作</strong>。</p>
-<blockquote>
-<p>如果线程A调用线程B的<code>start()</code>方法，那么线程B能看到线程A调用<code>start()</code>方法之前的所有操作。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">			<span class="comment">// 主线程启动子线程之前的所有操作，子线程都能看到。</span></span><br><span class="line">			System.out.print(x);	<span class="comment">// 这里x的值是11</span></span><br><span class="line">		&#125;);</span><br><span class="line">		x = <span class="number">11</span>;</span><br><span class="line">		<span class="comment">// 启动子线程</span></span><br><span class="line">		b.start();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></blockquote>
-</li>
-<li><p><strong>线程中的所有操作 happens-before <code>join()</code>方法的返回</strong>。</p>
-<blockquote>
-<p>如果线程A调用线程B的<code>join()</code>方法，那么线程A可以看到线程B中的所有操作。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">T</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">			x = <span class="number">11</span>;</span><br><span class="line">		&#125;);</span><br><span class="line">		t.start();</span><br><span class="line">	    <span class="comment">// 子线程的所有操作，在主线程调用join()方法之后可见</span></span><br><span class="line">		t.join();</span><br><span class="line">		System.out.print(x);	<span class="comment">// 这里x的值是11</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></blockquote>
-</li>
-<li><p>线程对其他线程的中断操作happens-before被中断线程收到的中断事件。</p>
-</li>
-<li><p>构造器中的最后一个操作happens-before第一个操作。</p>
-</li>
-</ol>
-<p>happens-before关系还具有传递性。如果操作A happens-before 操作B，而操作B happens-before 操作C，那么操作A happens-before 操作C。</p>
-<h4 id="⭐Java内存模型的底层实现"><a href="#⭐Java内存模型的底层实现" class="headerlink" title="⭐Java内存模型的底层实现"></a>⭐Java内存模型的底层实现</h4><p>Java 内存模型是通过内存屏障（memory barrier）来禁止重排序的。</p>
-<p>编译器会根据 happens-before 关系，向正在编译的目标方法中插入内存屏障（字节码指令）。</p>
-<p>即时编译器会把内存屏障翻译成CPU指令。关闭即时编译器的话，解释执行也会把内存屏障字节码指令翻译成CPU指令。</p>
-<ul>
-<li><p>对于编译器来说，这些内存屏障会限制即时编译器的重排序。</p>
-<ul>
-<li>对于volatile字段，编译器会在该字段的读写操作前后插入内存屏障，来禁止重排序。</li>
-</ul>
-</li>
-<li><p>对于处理器来说，这些内存屏障将会触发CPU缓存的刷新操作。</p>
-</li>
-</ul>
-<h3 id="⭐类加载机制"><a href="#⭐类加载机制" class="headerlink" title="⭐类加载机制"></a>⭐类加载机制</h3><p>从class文件到内存中的类，需要经过<a href="#%E5%8A%A0%E8%BD%BD">加载</a>、<a href="#%E9%AA%8C%E8%AF%81">验证</a>、<a href="#%E5%87%86%E5%A4%87">准备</a>、<a href="#%E8%A7%A3%E6%9E%90">解析</a>、<a href="#%E5%88%9D%E5%A7%8B%E5%8C%96">初始化</a>五个步骤。</p>
-<p>⭐<b id='加载'>加载</b>：</p>
-<p>加载是指查找字节流，并创建类的过程。</p>
-<p>基础类是Java虚拟机预先定义好的，数组类是由Java虚拟机直接生成的，对于其他类，Java虚拟机需要依赖类加载器完成加载过程。</p>
-<p>类加载器有三种：<strong>启动类加载器</strong>、<strong>拓展类加载器</strong>、<strong>应用类加载器</strong>。</p>
-<ul>
-<li><strong>启动类加载器</strong>：是虚拟机的一部分，是由C++实现的，没有对应的Java对象。主要负责加载JDK目录中lib文件夹中的jar包。以及<code>-Xbootclasspath</code>参数指定的路径中的jar包。</li>
-<li><strong>拓展类加载器</strong>：拓展类加载器的父加载器是启动类加载器，主要负责加载JDK目录中lib\ext文件夹中的jar包，以及系统变量<code>java.ext.dirs</code>指定的类。</li>
-<li><strong>应用类加载器</strong>：应用类加载器的父加载器是拓展类加载器，主要负责加载应用程序路径下的类。</li>
-</ul>
-<p>在Java虚拟机中，<strong>类的唯一性是由类加载器和类的全名确定的，就算是同一个class文件，由两个不同的类加载器加载，也会得到两个不同的类</strong>。为了避免同一个类被重复加载，Java虚拟机用双亲委派机制来解决这个问题。</p>
-<p>JDK9版本引入了模块系统，把拓展类加载器改为平台类加载器。只有少数的几个核心模块，比如java.base是由启动类加载器加载的，其它模块都是平台类加载器加载的。</p>
-<p><strong>⭐双亲委派机制</strong>：</p>
-<p>如果一个类加载器收到了加载类的请求，它会先将其委托给父加载器，父加载器继续向上委托，直到启动类加载器。只有父加载器无法加载该类的时候，子加载器才会自己去加载。</p>
-<p>类加载器之间并没有继承关系，是通过组合来实现委派的。</p>
-<p><strong>双亲委派机制是为了保证同一个类只被加载一次</strong>。</p>
-<p>假设没有双亲委派机制，如果在代码中创建了Object类的对象，那么应用类加载器加载这个类的时候就会去加载Object类（会在解析阶段触发Object类的加载），但是Object类已经被启动类加载器加载过了，因为类的唯一性是通过类加载器和全类名确定的，这就会导致应用中有两个Object类。</p>
-<p>⭐<b id='验证'>验证</b></p>
-<p>验证阶段的目的是，确保被加载进来的类满足Java虚拟机的约束条件。</p>
-<blockquote>
-<p>通常Java编译器生成的class文件必然满足Java虚拟机的约束条件，</p>
-</blockquote>
-<p>⭐<b id='准备'>准备</b>：</p>
-<p>准备阶段的目的是，为静态变量分配内存并设置初始值，以及创建当前类的<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>。</p>
-<p>⭐<b id='解析'>解析</b>：</p>
-<p>解析阶段的目的，是把<a href="#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8">符号引用</a>解析成实际引用。</p>
-<p>如果符号引用指向一个未被加载的类，那么将会触发这个类的<strong>加载</strong>（不会触发这个类的验证、准备、解析、初始化）。</p>
-<p>对于一个方法的符号引用可以分为接口符号引用和非接口符号引用：</p>
-<ul>
-<li><p>对于接口符号引用，Java虚拟机首先会在目标接口中查找方法名和<a href="#%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0%E7%AC%A6">方法描述符</a>都相同的方法。</p>
-<ul>
-<li><p>如果没有找到，就在Object类中找。</p>
-</li>
-<li><p>如果还是没有找到，就在目标接口的父接口中寻找。</p>
-</li>
-</ul>
-</li>
-<li><p>对于非接口符号引用，Java虚拟机首先会在目标类中查找方法名和<a href="#%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0%E7%AC%A6">方法描述符</a>都相同的方法。</p>
-<ul>
-<li><p>如果没有找到，就在父类中寻找，直到Object类。</p>
-</li>
-<li><p>如果还是没有找到，就在实现的接口中找。</p>
-</li>
-</ul>
-</li>
-</ul>
-<p><b id='符号引用'>符号引用</b>：</p>
-<p>在编译阶段，一个类被加载到Java虚拟机之前，这个类无法知道其他类、方法、字段对应的具体地址。所以需要引用这些对象的时候，Java编译器会生成一个符号引用。符号引用存储在class文件常量池中。</p>
-<p>一个方法的符号引用包含：<strong>目标方法所在类的名字、目标方法的名字、接收参数类型、返回值类型</strong>。</p>
-<p>⭐<b id='初始化'>初始化</b>：</p>
-<p>初始化阶段会执行<code>&lt;clinit&gt;</code>方法。</p>
-<p>编译器会在编译阶段，把赋值操作、静态代码块中的代码，收集在一起组成<code>&lt;clinit&gt;</code>方法。</p>
-<blockquote>
-<p>子类初始化时会首先调用父类的 <code>&lt;clinit&gt;</code>方法，然后再执行子类的 <code>&lt;clinit&gt;</code> 方法。</p>
-<p>JVM会通过加锁的方式保证<code>&lt;clinit&gt;</code>方法只会执行一次。</p>
-</blockquote>
-<h3 id="方法调用原理"><a href="#方法调用原理" class="headerlink" title="方法调用原理"></a>方法调用原理</h3><p>Java虚拟机会根据类名、方法名、<a href="#%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0%E7%AC%A6">方法描述符</a>来识别方法。</p>
-<p>Java虚拟机中有5个调用方法的指令：</p>
-<ol>
-<li>invokestatic：用于调用静态方法。</li>
-<li>invokespecial：用于调用私有方法、构造器、使用super关键字调用父类实例方法或构造器、所实现接口的默认方法。</li>
-<li>invokevirtual：用于调用非私有方法。</li>
-<li>invokeinterface：用于调用接口方法。</li>
-<li>invokedynamic：用于调用动态方法。</li>
-</ol>
-<p>对于静态方法和私有方法，Java虚拟机可以直接识别具体的目标方法。</p>
-<p>对于非私有方法和接口方法，因为方法有可能被重写，所以Java虚拟机需要在执行过程中，根据调用者的动态类型，来确定具体的目标方法。 如果方法被标记为final，就可以直接确定目标方法。</p>
-<p>在编译过程中，Java虚拟机并不知道目标方法的内存地址，所以Java编译器会用<a href="#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8">符号引用</a>来表示目标方法。</p>
-<p>经过<a href="#%E8%A7%A3%E6%9E%90">解析阶段</a>之后，这些符号引用会被解析成实际引用。</p>
-<ul>
-<li>对于可以静态绑定的方法来说，实际引用指向的是一个指向目标方法的指针。</li>
-<li>对于需要动态绑定的方法来说，实际引用指向的是一个<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>的索引。在执行过程中，Java虚拟机会获取调用者的实际类型，并获取该类型中的<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>，然后根据引用指向的索引值获得目标方法。</li>
-</ul>
-<p>所以动态绑定会更加耗时。不过为了减少动态绑定额外开销，即时编译有两种优化手段：<a href="#%E5%86%85%E8%81%94%E7%BC%93%E5%AD%98">内联缓存</a>和<a href="#%E6%96%B9%E6%B3%95%E5%86%85%E8%81%94">方法内联</a>。</p>
-<p><b id='方法描述符'>方法描述符</b>：由方法的参数类型和返回类型组成。</p>
-<p><b id='静态绑定'>静态绑定</b>：Java虚拟机在<a href="#%E8%A7%A3%E6%9E%90">解析</a>阶段就能识别目标方法。</p>
-<p><b id='动态绑定'>动态绑定</b>：Java虚拟机需要在运行过程中根据调用者的动态类型来识别目标方法。</p>
-<p>⭐<b id='方法表'>方法表</b>：</p>
-<p>方法表本质上是一个数组，每个元素指向当前类或者父类中非私有的方法。这些方法可能是具体的、可执行的方法，也可能是抽象方法。</p>
-<p>方法表有两个特性：</p>
-<ol>
-<li>第一，子类方法表包含父类方法表中所有方法。</li>
-<li>第二，子类重写的方法，在方法表中的索引值，与父类方法表中的索引值相同。</li>
-</ol>
-<p><b id='内联缓存'>内联缓存</b>：</p>
-<p>内联缓存是一种加快动态绑定的技术，它可以缓存调用虚方法的调用者的动态类型，以及该类型对应的目标方法。</p>
-<p>之后在调用方法时，如果发现类型已缓存，就可以直接调用目标方法。如果没有缓存，就使用<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>来动态绑定目标方法。</p>
-<h3 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h3><p>在编译过程中，Java编译器会对Lambda表达式进行解语法糖，生成一个方法来保存Lambda表达式的内容。这个方法的参数列表包含：Lambda表达式的参数和捕获的外部变量。</p>
-<p>第一次执行时，Java虚拟机会生成一个适配器类，这个适配器实现了对应的函数式接口。</p>
-<ul>
-<li><p>对于没有捕获外部变量的Lambda表达式，可以认为它与上下文是无关的，只需要创建一次适配器类的实例。</p>
-</li>
-<li><p>对于捕获了外部变量的Lambda表达式，为了避免变量发生变化，每次执行Lambda表达式时都会创建一个新的适配器实例。</p>
-</li>
-</ul>
-<p>对于没有捕获外部变量的Lambda表达式，第一次调用时会有额外创建适配器类的开销，之后的调用会复用同一个适配器实例，跟普通方法的调用的效率一样。</p>
-<p>对于捕获了外部变量的Lambda表达式，如果Lambda表达式中的内容可以被<a href="#%E6%96%B9%E6%B3%95%E5%86%85%E8%81%94">内联</a>，会借助<a href="#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90">逃逸分析</a>将新建适配器实例这个操作优化为空操作。</p>
-<p>所以使用Lambda表达式的时候，尽量不要捕获外部变量。</p>
-<h3 id="⭐方法内联"><a href="#⭐方法内联" class="headerlink" title="⭐方法内联"></a>⭐<b id='方法内联'>方法内联</b></h3><p>方法内联是指，在编译过程中遇到方法调用时，将目标方法纳入到当前方法体的编译范围中，可以消除方法调用的额外开销。</p>
-<p>比如调用get/set方法时，需要保存当前方法的执行位置、创建get/set方法的栈帧、访问字段，弹出栈桢、最后再恢复到原来方法的执行位置。如果内联了get/set方法之后，就只需要访问字段就好了。</p>
-<p>在<a href="#C2">C2</a>编译器中，方法内联是在解析字节码的过程中完成的，每当碰到方法调用字节码时，编译器会判断是否需要内联目标方法，如果需要内联就会开始解析目标方法的字节码，并复制到当前方法中。</p>
-<p>通常情况下，方法内联越多，字节码的执行效率就越高，但是对于编译器来说，内联越多，编译时间就越长，生成的机器码就越长。在Java虚拟机中，即时编译后生成的机器码会存在CodeCache中，但是这个区域的大小是有限制的。也就是说，生成的机器码越长，越容易填满CodeCache，如果CodeCache满了就会暂时关闭即时编译。</p>
-<blockquote>
-<p>可以通过JVM参数<code>-XX:ReservedCodeCacheSize</code>控制CodeCache的大小。</p>
-</blockquote>
-<p>所以方法内联是有条件的：</p>
-<ol>
-<li><p>JDK内部方法中，带有<code>@ForceInline</code>注解的方法会被强制内联，带有<code>@DontInline</code>注解的方法不会被内联。</p>
-</li>
-<li><p>如果目标方法编译后生成的机器码大小超过2000，则无法内联。</p>
-<blockquote>
-<p>可以通过<code>-XX:InlineSmallCode</code>调整</p>
-</blockquote>
-</li>
-<li><p>递归方法不会被内联。</p>
-</li>
-<li><p>调用层级超过9层的的方法调用。</p>
-<blockquote>
-<p>如果方法a调用方法b，方法b调用方法c，那么方法b就是方法a的1层调用，方法c就是方法a的2层调用。</p>
-<p>可以通过<code>-XX:MaxInlineLevel</code>调整。</p>
-</blockquote>
-</li>
-<li><p>如果目标方法的调用次数小于250次，不会被内联。</p>
-<blockquote>
-<p>可以通过JVM参数<code>-XX:MinInliningThreshold</code>调整</p>
-</blockquote>
-</li>
-<li><p>如果目标方法的字节码小于6，就直接内联。</p>
-<blockquote>
-<p>可以通过JVM参数<code>-XX:MaxTrivialSize</code>调整</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="异常处理原理"><a href="#异常处理原理" class="headerlink" title="异常处理原理"></a>异常处理原理</h3><p>在编译生成字节码的时候，编译器会为每个方法添加一个异常表。异常表中的一个元素代表一个异常处理器，异常处理器由from指针、to指针、target指针和捕获的异常类型组成。</p>
-<p>其中from指针和to指针代表异常处理器的监控范围，就是try代码块覆盖的范围。target指针指向的是异常处理器的起始位置，就是catch代码块的起始位置。</p>
-<p>当程序触发异常时，Java虚拟机会从上到下遍历异常表中所有元素，当触发异常的字节码索引值在某个异常处理器的from指针和to指针范围内，Java虚拟机就会判断抛出的异常与该异常处理器要捕获的异常类型是否匹配。如果匹配，Java虚拟机就会执行target指针指向的字节码。</p>
-<p>如果异常表中没有匹配的异常处理器，就会弹出当前方法对应的Java栈帧。然后遍历调用者的异常表，最坏的情况下，Java虚拟机需要遍历当前线程Java栈上所有方法的异常表。</p>
-<p>finally代码块的实现原理就是，复制finally代码块的内容分别放在try-catch代码块的出口处。</p>
-<h3 id="⭐反射实现原理"><a href="#⭐反射实现原理" class="headerlink" title="⭐反射实现原理"></a>⭐反射实现原理</h3><h4 id="Method-invoke"><a href="#Method-invoke" class="headerlink" title="Method#invoke"></a><span id='反射调用原理'>Method#invoke</span></h4><p><code>invoke()</code>方法实际上会委派给<code>MethodAccessor</code>接口来处理，这个接口有两个实现类<code>DelegatingMethodAccessorImpl</code>（委派实现）和<code>NativeMethodAccessorImpl</code>（本地实现）。</p>
-<p>我们调用method对象的<code>invoke()</code>方法时，会先调用委派实现（DelegatingMethodAccessorImpl）的<code>invoke()</code>方法，然后通过委派实现再调用本地实现（NativeMethodAccessorImpl）的<code>invoke()</code>方法，最终抵达目标方法。</p>
-<p>之所以要采用委派实现作为中间层，是因为还有一种动态生成字节码的实现方式（动态实现）。</p>
-<p>动态实现是用Java实现的，性能会比较好，但是初始化时需要比较多的时间。</p>
-<p>本地实现是C++实现的，调用时需要经过JNI，所以性能比较差，但是启动速度会比较快。</p>
-<p>所以Java虚拟机设置了一个阈值，默认是15，当某个反射调用的调用次数超过15次时，就会开始动态生成字节码（MethodAccessorGenerator），并且把委派实现类中的委派对象切换到动态实现（调用DelegatingMethodAccessorImpl中的<code>setDelegate(MethodAccessorImpl methodAccessor)</code>方法）。</p>
-<p>可以通过<code>-Dsun.reflect.inflationThreshold</code>参数来调整触发动态实现的次数。</p>
-<p>也可以通过<code>-Dsun.reflect.noInflation=true</code>关闭本地实现，这样一开始就会直接采用动态实现。</p>
-<h4 id="反射的开销"><a href="#反射的开销" class="headerlink" title="反射的开销"></a>反射的开销</h4><p>Class.forName 需要调用本地方法，Class.getMethod 会遍历该类的公有方法，如果没有匹配到，它还将遍历父类的公有方法。</p>
-<p>所以这些方法都会比较耗时，可以通过缓存Class.forName和Class.getMethod的结果来避免反复调用的开销。</p>
-<h3 id="⭐垃圾回收"><a href="#⭐垃圾回收" class="headerlink" title="⭐垃圾回收"></a>⭐垃圾回收</h3><h4 id="⭐如何判断一个对象是否死亡"><a href="#⭐如何判断一个对象是否死亡" class="headerlink" title="⭐如何判断一个对象是否死亡"></a>⭐如何判断一个对象是否死亡</h4><p>Java虚拟机使用的是<strong>可达性分析算法</strong>，这个算法是将一系列的[GC Roots](#GC Roots)作为初始的存活对象集合（live set），然后从这个集合开始，探索能够被这些对象引用到的对象，并将其加入到该集合。最终没有被探索到的对象就是已经死亡的，是可以回收的。</p>
-<p>可达性分析算法可以解决<a href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%B3%95">引用计数法</a>的循环引用问题。因为就算A和B相互引用，只要从[GC Roots](#GC Roots)出发无法探索到A和B，可达性分析算法就不会把它们加入到存活的对象集合中（live set）。</p>
-<blockquote>
-<p><b id='引用计数法'>引用计数法</b>：是为每个对象添加一个引用计数器，用来统计指向该对象的引用数量。</p>
-<p>具体逻辑是这样的：如果一个引用被赋值为某一个对象，那么该对象的引用计数器就会+1，如果这个引用又被赋值为其它对象，那么这个对象的引用计数器就会-1。</p>
-<p>引用计数法需要拦截所有引用更新的操作，并且增减目标对象的引用计数器，还需要额外的空间存储计数器。</p>
-<p>引用计数器还有一个严重的BUG，就是无法处理循环引用的对象。</p>
-<p>假设对象A和B相互引用，除此之外没有其他引用指向A和B，这种情况下A和B实际已经死亡了，但是因为它们的引用计数器都不为0，就会导致这两个对象占据的内存空间不可回收，从而造成内存泄露。</p>
-</blockquote>
-<p>不过可达性分析算法也是有问题的，在多线程环境下，假设对象A没有被赋值给任何引用，所以没有被加入到存活的对象集合（live set）中，然后有一个线程把对象A赋值给某一个引用，这就会导致垃圾回收器会回收仍然被引用的对象。Java虚拟机是通过<a href="#Stop-the-world">Stop-the-world</a>来解决这个问题的。</p>
-<p>⭐<b id='GC Roots'>GC Roots</b>：可以理解为堆中对象的引用。</p>
-<ol>
-<li>栈帧中的方法参数和局部变量</li>
-<li>引用类型的静态变量</li>
-<li>运行中的Java线程</li>
-</ol>
-<p>⭐<b id='Stop-the-world'>Stop-the-world</b>：就是阻塞其它非垃圾回收线程，直到完成垃圾回收。</p>
-<p>Java虚拟机中的Stop-the-world是通过是通过<a href="#%E5%AE%89%E5%85%A8%E7%82%B9">安全点</a>（safepoint）机制来实现的，当Java虚拟机收到Stop-the-world请求，它就会等待所有线程都到达安全点之后，再让GC线程工作。</p>
-<p>⭐<b id='安全点'>安全点（safepoint）</b>：</p>
-<p>安全点实际上是一个稳定的状态，在这个状态下，Java虚拟机的堆栈内存不会发生变化，这样GC线程就可以安全地回收垃圾了。</p>
-<p>具体的逻辑是这样的：Java虚拟机收到安全点请求的时候会设置一个标志位，Java线程在进入安全点时需要检查这个标志位，如果标志位被设置，当前线程需要停止，如果没有被设置，就继续执行。这样抵达安全点检测的线程就会进入停止状态。</p>
-<p>安全点检测有三种情况：</p>
-<ul>
-<li><p>阻塞状态下的线程处于安全点。</p>
-</li>
-<li><p>对于解释执行来说，每条字节码的结尾都是安全点。所以Java虚拟机收到安全点请求时，每执行一条字节码就会进行一次安全点检测。</p>
-</li>
-<li><p>对于即时编译来说，即时编译后的机器码直接运行在底层硬件上，所以在生成机器码的时候，即时编译器需要插入安全点检测的指令。Java虚拟机的做法是在<strong>方法出口</strong>（return指令之前）和<strong>循环回边</strong>处（执行下一次循环之前）插入安全点检测。</p>
-</li>
-</ul>
-<p>⭐<strong>为什么不在每个机器码都插入安全点检测</strong>？</p>
-<p>执行安全点检测相当于一次内存访问的操作，所以它本身也是有开销的。</p>
-<p>如果安全点的数量太少就会导致垃圾回收时间变长，因为Java虚拟机需要等所有线程都进入安全点之后才能进行垃圾回收。</p>
-<h4 id="⭐垃圾回收算法"><a href="#⭐垃圾回收算法" class="headerlink" title="⭐垃圾回收算法"></a>⭐垃圾回收算法</h4><p><b id='标记-清除'>⭐标记-清除</b>：就是把死亡对象占据的内存空间标记为空闲内存，并记录在一个空闲列表中，当需要新建对象时，就把空闲列表中标记的空闲内存分配给新的对象。</p>
-<p>这种方式有两个缺点：</p>
-<p>一是会造成内存碎片，Java虚拟机堆中的对象必须是连续分布的，就有可能出现总空闲内存足够，但是无法分配的情况。</p>
-<p>二是分配效率很低，Java虚拟机需要挨个访问空闲列表中的每一项，找到能够放下新对象的空闲内存。</p>
-<p><b id='标记-压缩'>⭐标记-压缩</b>：就是把存活的对象聚集到内存的起始区域，可以留下一段连续的内存空间，这种做法可以解决内存碎片化的问题，代价是压缩算法的性能开销。</p>
-<p><b id='标记-复制'>⭐标记-复制</b>：就是把内存分为两份，分别用两个指针from和to来维护，并且只用from指针指向的区域来分配内存，当发生垃圾回收时，就把from区域中存活的对象复制到to指针指向的区域，并且交换from和to指针的内容。</p>
-<p>这种回收方式也可以解决内存碎片化的问题，它的缺点是堆空间使用效率非常低，只有一半的内存是可用的。</p>
-<h4 id="⭐Java虚拟机的堆划分"><a href="#⭐Java虚拟机的堆划分" class="headerlink" title="⭐Java虚拟机的堆划分"></a>⭐Java虚拟机的堆划分</h4><p>Java虚拟机将堆划分为<strong>新生代</strong>和<strong>老年代</strong>，其中，新生代又被划分为Eden区和两个大小相同的Survivor区。</p>
-<p>新生代用来存储新建的对象，当对象存活时间比较长时，就将其移动到老年代。</p>
-<p>Java虚拟机会给新生代和老年代使用不同的回收算法：</p>
-<ul>
-<li><p>对于新生代，大部分的Java对象只存活一小段时间，虚拟机就会采用耗时较短的垃圾回收算法。</p>
-</li>
-<li><p>对于老年代，大部分垃圾已经在新生代中被回收了，处于老年代中的对象大概率会继续存活，真正触发老年代回收，通常是堆空间已经耗尽了，这时候Java虚拟机就会做一次全堆扫描（[Full GC](#Full GC)）。</p>
-</li>
-</ul>
-<p>默认情况下，Java虚拟机会根据生成对象的速率，以及Survivor区的使用情况动态调整Eden区和Survivor区的比例。</p>
-<p>也可以通过JVM参数<code>-XX:SurvivorRatio</code>来固定Eden区和Survivor的比例。需要注意的是，其中一个Survivor区是空的，Survivor分配的空间越大堆空间使用率就越低。</p>
-<p>通常来说，当我们调用new指令时，虚拟机就会在Eden区分配一块储存新对象的空间。由于堆空间是线程共享的，所以划分空间是需要进行线程同步的，不然就有可能出现两个对象占用同一块内存的问题。</p>
-<blockquote>
-<p>如果创建的对象超过了年轻代最大对象阈值，会被直接创建在老年代。</p>
-</blockquote>
-<p>Java虚拟机的解决方案是<a href="#TLAB">TLAB</a>。如果新建的对象超过了TLAB剩余的内存空间，当前线程就会向虚拟机申请新的TLAB，如果新的TLAB还是放不下新建的对象，则在Eden区直接创建对象。</p>
-<p>如果Eden区的空间耗尽了，Java虚拟机就会触发一次[Minor GC](#Minor GC)，来回收新生代中的垃圾。存活下来的对象会被移动到Survivor区。</p>
-<p>新生代中的两个Survivor区，分别用from和to指针指向，from指向的区域是空的。发生[Minor GC](#Minor GC)时，Eden区和from指向的Survivor区中存活的对象会被复制到to指针指向的Survivor区，然后交换from和to指针，保证下次[Minor GC](#Minor GC)时，to指向的Survivor还是空的。</p>
-<p>Java虚拟机会记录Survivor区中的对象被复制了多少次，如果一个对象被复制的次数超过15次，这个对象就会被移动到<strong>老年代</strong>。可以通过JVM参数<code>-XX:MaxTenuringThreshould</code>来调整。</p>
-<p>如果单个Survivor区被占用超过50%，其中复制次数较多的对象也会被移动到<strong>老年代</strong>。</p>
-<p>⭐<b id='TLAB'>TLAB（Thread Local Allocation Buffer）</b>：实际上就是在Eden区中为每个线程分配一块独立的内存空间，这样可以减少线程同步，提高内存分配的效率。每个线程需要维护两个指针，第一个指针指向内存开始位置，第二个指向末尾位置。然后通过<a href="#%E6%8C%87%E9%92%88%E5%8A%A0%E6%B3%95">指针加法</a>判断是否分配成功。</p>
-<p>可以通过JVM参数<code>-XX:UseTLAB</code>禁用。</p>
-<p>⭐<b id='指针加法'>指针加法</b>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((起始指针 + 请求的字节数) &lt;= 末尾指针) &#123;</span><br><span class="line">	起始指针 = 起始指针 + 请求的字节数;	<span class="comment">// 分配成功</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// 分配失败</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>⭐<b id='Minor GC'>Minor GC</b>：是新生代GC，只有Eden区耗尽时才会触发，采用的是<a href="#%E6%A0%87%E8%AE%B0-%E5%A4%8D%E5%88%B6">标记-复制</a>算法。正常情况下，Eden区中的对象大部分都是已经死亡的对象，需要复制的数据很少，所以这种算法的效率很高。</p>
-<p>Minor GC有一个问题，就是老年代的对象可能会引用新生代的对象。也就是说，在标记存活对象的时候，需要扫描老年代中的对象，如果老年代中的对象持有新生代对象的引用，这个引用就会作为[GC Roots](#GC Roots)。</p>
-<p>这样一来Minor GC和[Full GC](#Full GC)就没有区别了。Java虚拟机的解决方案是<a href="#%E5%8D%A1%E8%A1%A8">卡表</a>（Card Table）。</p>
-<p>⭐<b id='Full GC'>Full GC</b>：是老年代GC，调用System.gc()方法时可能会触发、老年代空间不足、<a href="#%E6%96%B9%E6%B3%95%E5%8C%BA">方法区</a>空间不足都会触发。</p>
-<p>⭐<b id='卡表'>卡表</b>：就是把整个堆划分为一张张卡，每张卡的大小是512字节。然后再维护一张卡表，来保存每个卡的标志位。这个标志位代表对应的卡是否可能存在指向新生代对象的引用。如果可能存在引用，就认为这张卡是脏的。</p>
-<p>这样在进行[Minor GC](#Minor GC)时，就不用扫描整个老年代，只需要在卡表中寻找脏卡就可以了，然后把脏卡中的对象作为[Minor GC](#Minor GC)的[GC Roots](#GC Roots)进行垃圾回收。扫描完脏卡之后，虚拟机就会将所有脏卡的标志位清零。</p>
-<p>Java虚拟机是通过写屏障来维护卡表状态的，虚拟机会拦截所有引用类型变量的写操作，然后更新对应卡表的标志位。这个操作在解释执行中比较容易实现，但是在即时编译生成机器码的时候，需要插入写屏障。</p>
-<p>出于性能考虑，写屏障不会判断更新后的引用是否指向新生代中的对象，而是一律当成新生代对象的引用。虽然写屏障会带来一些额外开销，但是可以提高[Minor GC](#Minor GC)的效率，还是值得的。</p>
-<p>这里的写屏障实际上就是一条更新卡表标志位的指令。</p>
-<h4 id="⭐垃圾回收器"><a href="#⭐垃圾回收器" class="headerlink" title="⭐垃圾回收器"></a>⭐垃圾回收器</h4><p>针对新生代的垃圾回收器有三个：<strong>Serial</strong>、<strong>Parallel Scavenge</strong>和<strong>Paralel New</strong>。</p>
-<p>这三个采用的都是<a href="#%E6%A0%87%E8%AE%B0-%E5%A4%8D%E5%88%B6"><strong>标记-复制</strong></a>算法。</p>
-<p>Serial是单线程的，Parallel New是Serial的多线程版本，Parallel Scavenge和Parallel New类似，但是吞吐率更好，不能和CMS一起用。</p>
-<p>针对老年代的垃圾回收器也有三个：<strong>Serial Old</strong>、<strong>Parallel Old</strong>和<strong>CMS</strong>。</p>
-<p>Serial Old和Parallel Old采用的是<a href="#%E6%A0%87%E8%AE%B0-%E5%8E%8B%E7%BC%A9"><strong>标记-压缩</strong></a>算法。Parallel Old是Serial Old的多线程版本。</p>
-<p>CMS采用的是<a href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4"><strong>标记-清除</strong></a>算法，它可以在程序运行期间进行垃圾回收。只有少数的几个操作需要<a href="#Stop-the-world"><strong>Stop-the-world</strong></a>。JDK9版本Java虚拟机使用<strong>G1</strong>来替代CMS。</p>
-<p><strong>G1（Grabage First）</strong>：是一个横跨新生代和老年代的垃圾回收器，在G1中，直接把堆分成多个区域，每个区域都可以作为Eden区、Survivor区或者老年代。它采用的是<a href="#%E6%A0%87%E8%AE%B0-%E5%8E%8B%E7%BC%A9">标记-压缩</a>算法，而且可以在程序运行期间进行垃圾回收。G1可以单独对某一个区进行垃圾回收，所以它会优先回收死亡对象较多的区域。</p>
-<h3 id="⭐synchronized实现原理"><a href="#⭐synchronized实现原理" class="headerlink" title="⭐synchronized实现原理"></a>⭐<b id='synchronized'>synchronized实现原理</b></h3><p>synchronized可以用来声明一个代码块，也可以直接标记整个方法。</p>
-<p>如果用synchronized声明代码块，编译器会在代码块的开头和结尾加上monitorenter和monitorexit指令。</p>
-<p>如果用synchronized标记方法，编译器会在方法的入口和出口加上monitorenter和monitorexit指令。</p>
-<p>执行monitorenter指令的时候，如果锁对象的计数器为0，就说明当前锁对象没有被其他线程持有，Java虚拟机就会把锁对象的持有线程设置为当前线程，并把计数器+1。如果目标锁对象的计数器不为0，Java虚拟机还会判断锁对象的持有线程是否是当前线程，如果是，就再把计数器+1，否则就进入阻塞状态。所以synchronized是<a href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81">可重入锁</a>。</p>
-<p>执行monitorexit指令的时候，Java虚拟机就会把锁对象的计数器减一，计数器为0就表示锁被释放掉了。编译器还会在异常执行路径（catch代码块）上插入monitorexit指令，确保发生异常时，锁也会被释放。</p>
-<p>JDK6对synchronized做了优化，增加了从<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>到<a href="#synchronized-%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81">轻量级锁</a>再到<a href="#synchronized-%E9%87%8D%E9%87%8F%E7%BA%A7%E9%94%81">重量级锁</a>的过度（这个过程是不可逆的）。</p>
-<p>⭐<b id='synchronized-偏向锁'>偏向锁</b>：从始至终只有一个线程请求某一把锁。</p>
-<p>加锁时，如果锁对象支持<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>，Java虚拟机会通过<a href="#CAS">CAS</a>操作，把当前线程的地址保存在锁对象的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>中，并且把<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>后三位设置成101。</p>
-<p>解锁时，Java虚拟机会判断锁对象的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>中：**<a href="#epoch">epoch</a>值是否和锁对象中的<a href="#epoch">epoch</a>值相同<strong>、</strong>后三位是否为101<strong>、</strong>是否包含当前线程的地址**。</p>
-<ul>
-<li><p>如果这三个条件都满足，说明当前线程持有该偏向锁。</p>
-</li>
-<li><p>如果有条件不满足，就需要撤销偏向锁并升级为<a href="#synchronized-%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81">轻量级锁</a>。</p>
-<blockquote>
-<p>如果某一个类中的锁对象撤销次数达到阈值，默认是20次，Java虚拟机就会让这个类的<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>失效。</p>
-<p>可以通过<code>-XX:BiasedLockingBulkRebiasThreshold</code>参数调整。</p>
-</blockquote>
-</li>
-</ul>
-<p>⭐<b id='synchronized-轻量级锁'>轻量级锁</b>：当<a href="#'synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>被多个线程访问时，就会升级为轻量级锁。</p>
-<p>加锁时，JVM会在当前线程的栈帧中分配一块空间，用来保存锁记录（Lock Record），并且把锁对象的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>复制到锁记录中。</p>
-<p>然后通过<a href="#CAS">CAS</a>操作，把锁对象的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>替换为刚才分配的锁记录的地址。（相当于判断加锁期间是否有其它线程获取锁）</p>
-<ul>
-<li>如果更新成功，就说明加锁成功。</li>
-<li>如果更新失败，就说明有其它线程获取当前锁，Java虚拟机就会把这把锁升级为<a href="#synchronized-%E9%87%8D%E9%87%8F%E7%BA%A7%E9%94%81">重量级锁</a>，并阻塞当前线程。</li>
-</ul>
-<p>解锁时，会通过<a href="#CAS">CAS</a>操作，比较锁对象的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>是否是锁记录的地址。</p>
-<ul>
-<li>如果是，就把<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>替换为锁记录中的值，也就是锁对象原本的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>。这样就成功释放锁了。</li>
-<li>如果不是，说明锁已经升级为<a href="#synchronized-%E9%87%8D%E9%87%8F%E7%BA%A7%E9%94%81">重量级锁</a>了。会进入<a href="#%E9%87%8D%E9%87%8F%E7%BA%A7%E9%94%81">重量级锁</a>的解锁过程。</li>
-</ul>
-<p>⭐<b id='synchronized-重量级锁'>重量级锁</b>：是最基础的锁，这种锁会阻塞所有加锁失败的线程，并在释放锁的时候再唤醒这些线程。线程的阻塞和唤醒需要操作系统来完成，开销会非常大。</p>
-<p>为了避免线程的阻塞和唤醒操作，Java虚拟机会在线程进入阻塞状态之前和被唤醒后竞争不到锁的时候，进入自旋状态。在自旋过程中，如果锁被释放了，那么线程就无需进入阻塞状态，可以直接获取锁。</p>
-<p>自旋状态的线程仍然处于运行状态，只不过运行的是没有意义的指令。如果自旋的时间很长，就会浪费大量的CPU资源。</p>
-<p>Java虚拟机的解决方案是适应性自旋，会根据以前自旋等待时是否能够获得锁，来动态调整自旋时间。如果以前只有很小的概率能通过自旋等待获得锁，那么虚拟机可能直接让线程进入阻塞状态。</p>
-<p>自旋机制还会导致不公平的锁机制，处于阻塞状态的线程没办法立刻竞争锁，处于自旋状态的线程就有很大概率优先获得锁。</p>
-<p><b id='epoch'>epoch</b>：</p>
-<p>Java虚拟机会在每个类中都维护一个epoch值，这个epoch值可以理解为是<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>的版本号。</p>
-<blockquote>
-<p>在设置<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>的时候，Java虚拟机会把epoch值复制到锁对象的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>中。</p>
-</blockquote>
-<p>当某个类的<a href="#%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>失效时，Java虚拟机就会把这个类的epoch值加1，表示之前的<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>已经失效了，新设置的<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>需要复制新的epoch值。</p>
-<p>为了保证已经持有<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>的线程不会丢锁，虚拟机还需要通过<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>中保存的线程地址，找到持有这个<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>的线程，并把这些锁对象的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>中的epoch值加1。</p>
-<p>如果某一个类中的<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>失效次数超过另一个阈值，默认是40次，Java虚拟机就会认为这个类不适合<a href="#synchronized-%E5%81%8F%E5%90%91%E9%94%81">偏向锁</a>了。之后的加锁过程直接为该类的锁对象设置成<a href="#synchronized-%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81">轻量级锁</a>。</p>
-<p>可以通过<code>-XX:BiasedLockingBulkRevokeThreshold</code>参数调整。</p>
-<p><b id=''>如何区分锁等级</b>？</p>
-<p>Java虚拟机会根据锁对象的对象头中的<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>的后两位，来判断对象的锁状态：00代表轻量级锁，01代表无锁或偏向锁，10代表重量级锁。</p>
-<h3 id="对象内存布局"><a href="#对象内存布局" class="headerlink" title="对象内存布局"></a>对象内存布局</h3><p>在Java虚拟机中，每个对象都有一个对象头（object header），对象头由<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>（mark word）和类型指针（class pointer）组成。<a href="#%E6%A0%87%E8%AE%B0%E5%AD%97%E6%AE%B5">标记字段</a>和类型指针各占64位（8字节），也就是说，每个Java对象在内存中都有16字节的额外开销。</p>
-<p>以Integer为例，它内部维护了一个int类型的成员变量，占4个字节，再加上对象头的16个字节，就是20个字节，相当于int类型的5倍，这也是Java引入基本类型的原因之一。</p>
-<p><b id='标记字段'>标记字段（Mark Word）</b>：用来存储对象的运行时数据，比如HashCode、GC信息、锁信息。类型指针是指向该对象的类信息。</p>
-<blockquote>
-<p>标记字段中的最后两位用来表示该对象的锁状态。</p>
-<p>00 代表轻量级锁，01 代表无锁（或偏向锁），10 代表重量级锁，11 则跟垃圾回收算法的标记有关。</p>
-</blockquote>
-<h4 id="压缩指针"><a href="#压缩指针" class="headerlink" title="压缩指针"></a>压缩指针</h4><p>为了减少对象的内存使用量，Java虚拟机引入了压缩指针的概念（JVM参数 <code>-XX:+UseCompressedOops</code>，默认开启），将对象头的大小从16字节降低至12字节。</p>
-<h3 id="⭐逃逸分析"><a href="#⭐逃逸分析" class="headerlink" title="⭐逃逸分析"></a>⭐逃逸分析</h3><p>逃逸分析是一种可以减少内存分配和回收压力的技术。Java虚拟机可以通过逃逸分析，判断对象是否发生逃逸。</p>
-<blockquote>
-<p>如果对象被存入堆中，或者对象被多处代码引用，就说明对象是逃逸的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">test</span><span class="params">()</span> &#123;	</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Object</span>();	<span class="comment">// 将对象return出去，会发生逃逸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object obj;</span><br><span class="line"><span class="keyword">public</span> Object <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">	obj = <span class="keyword">new</span> <span class="title class_">Object</span>();	<span class="comment">// 将对象赋值为成员属性，会发生逃逸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">	test2(obj);	<span class="comment">// 将对象作为参数传递给其它方法，会发生逃逸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>即时编译可以根据逃逸分析的结果进行<a href="#%E9%94%81%E6%B6%88%E9%99%A4">锁消除</a>、<a href="#%E9%94%81%E7%B2%97%E5%8C%96">锁粗化</a>、<a href="#%E6%A0%87%E9%87%8F%E6%9B%BF%E6%8D%A2">标量替换</a>的优化。</p>
-<p>⭐<b id='锁消除'>锁消除</b>：</p>
-<p>如果锁对象不逃逸，那么对于该对象的加锁和解锁是没有意义的，因为其它线程并不能获取该锁对象，也不可能对其进行加锁和解锁操作。这种情况下，即时编译就会消除对该对象的加锁和解锁操作。</p>
-<blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (<span class="keyword">new</span> <span class="title class_">Object</span>()) &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样的代码会被完全优化掉，因为其它线程无法获取到该锁对象。</p>
-</blockquote>
-<p>⭐<b id='锁粗化'>锁粗化</b>：</p>
-<p>如果虚拟机检测到有一系列连串的对同一个对象加锁和解锁操作，就会将其合并成一次范围更大的加锁和解锁操作。</p>
-<blockquote>
-<p>比如对于一段连续调用<code>StringBuffer.append()</code>方法的代码，只需要在第一次append方法时加锁，最后一次append方法结束后解锁：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringBufferTest</span> &#123;</span><br><span class="line"> <span class="type">StringBuffer</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">append</span><span class="params">()</span>&#123;</span><br><span class="line">     sb.append(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">     sb.append(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">     sb.append(<span class="string">&quot;c&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>⭐<b id='标量替换'>标量替换</b>：</p>
-<p>标量替换可以理解为把原本对对象字段的访问，替换为一个个局部变量的访问。</p>
-<p>实际上就是把要访问的目标对象内部的字段提取到当前方法的局部变量中，这样就可以减少对象的分配次数，从而提高垃圾回收的效率。</p>
-<blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">repeat</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();	<span class="comment">// 经过标量替换后该分配无意义，可以被优化掉</span></span><br><span class="line">	user.username = <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">	user.password = <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">repeat</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;	<span class="comment">// 标量替换</span></span><br><span class="line">	<span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;	<span class="comment">// 标量替换</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p><b id='栈上分配'>栈上分配</b>：</p>
-<p>Java虚拟机中的对象是在堆上分配的，但是堆空间是线程共享的，Java虚拟机需要定期对堆空间进行垃圾回收。</p>
-<p>其实对于不会发生逃逸的对象，Java虚拟机可以直接分配到栈上，这样就可以通过弹出当前方法栈帧时自动回收该对象占据的空间，就可以减少垃圾回收器需要回收的对象数量，可以提高垃圾回收的效率。</p>
-<h3 id="泛型擦除"><a href="#泛型擦除" class="headerlink" title="泛型擦除"></a>泛型擦除</h3><p>Java程序中的泛型在虚拟机中会被擦除。</p>
-<p>没有限定继承类的泛型参数，经过泛型擦除后会变成Object类。</p>
-<p>限定了继承类的泛型参数，经过泛型擦除后，泛型参数会变成限定的继承类。</p>
-<blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GenericTest</span>&lt;T <span class="keyword">extends</span> <span class="title class_">Number</span>&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> T <span class="title function_">foo</span><span class="params">(T t)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>经过泛型擦除后：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">T <span class="title function_">foo</span><span class="params">(T)</span>;</span><br><span class="line">descriptor: (Ljava/lang/Number;)Ljava/lang/Number;</span><br><span class="line">flags: (<span class="number">0x0000</span>)</span><br><span class="line">Code:</span><br><span class="line"> stack=<span class="number">1</span>, locals=<span class="number">2</span>, args_size=<span class="number">2</span></span><br><span class="line">    <span class="number">0</span>: aload_1</span><br><span class="line">    <span class="number">1</span>: areturn</span><br><span class="line">Signature: (TT;)TT;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h3 id="循环优化"><a href="#循环优化" class="headerlink" title="循环优化"></a>循环优化</h3><p><b id='循环无关代码外提'>循环无关代码外提</b>：</p>
-<p>在循环中，对于一些值不变的表达式，在能够不改变程序语义的情况下，把这些代码提出循环外，就可以避免重复执行这些代码，从而达到性能提升的效果。</p>
-<p>比如我们在遍历一个集合的时候，通常会把<code>size()</code>方法放到循环体里面，但实际上<code>size()</code>方法是不会变化的，经过循环外提后，<code>size()</code>方法会作为局部变量保存起来。</p>
-<blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span>[] array)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; array.length; i++) &#123;</span><br><span class="line">		sum += x + y + array[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面这段代码中，循环体中的<code>x + y</code>以及array.length属于恒定不变的代码。经过循环无关代码外提后，会变成这样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span>[] array)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> x + y;</span><br><span class="line">	<span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> array.length;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">		sum += n + array[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p><b id='循环展开'>循环展开</b>：</p>
-<p>循环展开可以减少循环执行次数。</p>
-<blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">200</span>, i++) &#123;</span><br><span class="line">		delete(i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的代码需要循环200次，通过循环展开可以得到下面这段代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">200</span>, i+=<span class="number">5</span>) &#123;</span><br><span class="line">		delete(i);</span><br><span class="line">		delete(i+<span class="number">1</span>);</span><br><span class="line">		delete(i+<span class="number">2</span>);</span><br><span class="line">		delete(i+<span class="number">3</span>);</span><br><span class="line">		delete(i+<span class="number">4</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</blockquote>
-
+          <p> </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/08/Spring%E7%9B%B8%E5%85%B3/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -864,8 +996,21 @@
   
   
 
+	
+		<!-- 首页显示标签  
+		    
+		      <div class="post-tags">
+		        
+		            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+		        
+		      </div>
+		    
+		 首页显示标签 end -->
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -932,20 +1077,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -986,7 +1131,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Rainy</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
 
         
@@ -1012,7 +1157,7 @@
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/pisces.js"></script>
+<script src="/js/schemes/muse.js"></script>
 
 
 <script src="/js/next-boot.js"></script>

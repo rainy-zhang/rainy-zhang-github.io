@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="网络协议">
+<meta property="og:url" content="http://example.com/2022/12/08/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Rainy Blogs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-08T09:07:53.000Z">
+<meta property="article:modified_time" content="2022-12-08T09:08:29.027Z">
+<meta property="article:author" content="Rainy">
+<meta property="article:tag" content="网络协议">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/12/08/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>网络协议 | Rainy Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rainy Blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网络协议
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 17:07:53 / 修改时间：17:08:29" itemprop="dateCreated datePublished" datetime="2022-12-08T17:07:53+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" itemprop="url" rel="index"><span itemprop="name">网络协议</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description"> </div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="⭐HTTP"><a href="#⭐HTTP" class="headerlink" title="⭐HTTP"></a>⭐HTTP</h2><p><strong>HTTP是一种计算机之间通信的协议，是客户端与服务端之间传输文字、图片、音频、视频等超文本数据的约定和规范</strong>。</p>
+<p><strong>HTTP通常跑在TCP/IP协议上，依靠IP协议实现寻址和路由，通过TCP协议实现数据传输，通过DNS协议实现域名查找，通过SSL/TLS协议实现安全通信</strong>。</p>
+<p>HTTP和HTML的区别：</p>
+<p>HTML是超文本的载体，是一种标记语言，使用各种标签来描述文字、图片、超链接等资源，而且还可以嵌入CSS、JavaScript来实现复杂的动态效果，最终通过浏览器来渲染出可视化的页面。</p>
+<h3 id="⭐HTTP调用过程"><a href="#⭐HTTP调用过程" class="headerlink" title="⭐HTTP调用过程"></a>⭐HTTP调用过程</h3><ol>
+<li>首先浏览器首先要从URI中提取协议名称和域名，再用DNS解析域名，得到目标IP地址。</li>
+<li>然后通过 ”三次握手“ 与目标服务器建立TCP连接。</li>
+<li>建立连接后，浏览器会按照HTTP协议规定的格式，通过TCP发送一个 <code>GET / HTTP/1.1</code> 这样的请求报文。</li>
+<li>服务器收到请求报文后，会在TCP协议层面回复一个确认消息，表示请求报文已经收到了。然后根据HTTP协议开始解析报文内容。并把请求的资源拼接成HTTP格式的响应报文 <code>HTTP/1.1 200 OK</code>，发送回去。</li>
+<li>浏览器收到返回的响应报文之后，也会给服务器发送一个确认消息，表示响应报文已经收到了。</li>
+</ol>
+<h3 id="HTTP报文结构"><a href="#HTTP报文结构" class="headerlink" title="HTTP报文结构"></a>HTTP报文结构</h3><p>HTTP协议的请求报文和响应报文的结构基本差不多，由三部分组成：</p>
+<ol>
+<li>起始行（Start Line）</li>
+<li>报文头（Header）</li>
+<li>报文体（Body）</li>
+</ol>
+<p>报文必须有header，但是可以没有body。</p>
+<h4 id="起始行"><a href="#起始行" class="headerlink" title="起始行"></a>起始行</h4><p>请求报文中起始行也叫<strong>请求行</strong>，主要包含三部分：</p>
+<ol>
+<li>请求方式：GET、POST、DELETE、PUT等，表示对资源的操作类型。</li>
+<li>请求目标：通常是一个资源路径，表示具体要请求的资源。</li>
+<li>版本号：表示使用的HTTP协议版本。</li>
+</ol>
+<p><code>GET / HTTP/1.1</code>：这个请求行里，”GET” 是请求方式，”/“ 是请求目标，”HTTP/1.1” 是版本号。</p>
+<p>响应报文中的起始行叫<strong>状态行</strong>，主要包含三部分：</p>
+<ol>
+<li>版本号：表示使用的HTTP协议版本。</li>
+<li>状态码：表示请求处理的结果，比如200是成功，404是资源未找到，500是服务器错误。</li>
+<li>原因：是状态码的补充，是更详细的文字描述。</li>
+</ol>
+<p><code>HTTP/1.1 200 OK</code>：这个状态行中，”HTTP/1.1” 是版本号、”200” 是状态码、”OK” 是具体的描述。</p>
+<h4 id="报文头"><a href="#报文头" class="headerlink" title="报文头"></a>报文头</h4><p>请求报文和响应报文中头部结构基本是一样的，头部字段是key-value的形式，用 “:” 分隔，用换行符表示字段结束。</p>
+<p>报文头中可以添加任意自定义的字段，拓展性很强。</p>
+<p>需要注意的是：</p>
+<ol>
+<li>字段名不区分大小写，Host也可以写成host。</li>
+<li>字段名不可用包含空格，可以用横杠 “-“ ，不能用下划线 “_”。</li>
+<li>字段名后面必须紧跟着冒号 “:”，不能有空格。</li>
+</ol>
+<h3 id="常用的头字段"><a href="#常用的头字段" class="headerlink" title="常用的头字段"></a>常用的头字段</h3><ul>
+<li><p>通用字段：在请求报文和响应报文都可以出现。</p>
+<ul>
+<li><strong>Date</strong>：表示HTTP报文的创建时间，客户端可以根据这个字段做一些缓存策略。</li>
+<li><strong>Via</strong>：用来表示代理服务器身份。每经过一个代理节点，代理服务器就会把自身的信息追加到字段的末尾：<code>Via: proxy1,proxy2...</code>。</li>
+</ul>
+</li>
+<li><p>请求字段：只能出现在请求头中，一般是用来说明请求信息。</p>
+<ul>
+<li><p><strong>Host</strong>：是唯一一个HTTP协议规定的必须出现的字段，主要是告诉服务器这个请求应该由哪个主机来处理。</p>
+</li>
+<li><p><strong>User-Agent</strong>：用来描述发起这个HTTP请求的客户端的信息，服务器可以根据这个字段来返回最适合这个浏览器的页面。</p>
+<blockquote>
+<p>但是实际上User-Agent特别混乱，有很多外壳浏览器都自称是 “Chrome”、”FireFox”、”Safari”，企图通过这个字段来伪装，就导致User-Agent变得毫无意义。</p>
+<p>也有一些比较友好的爬虫会在User-Agent里用 “spider” 表明自己是爬虫，可以利用这个字段做简单的反爬虫策略。</p>
+</blockquote>
+</li>
+<li><p><strong>Accept</strong>：表示客户端希望接收到什么样的数据。</p>
+</li>
+</ul>
+</li>
+<li><p>响应字段：只能出现在响应头中，用来补充响应报文信息。</p>
+<ul>
+<li><strong>Server</strong>：用来表示当前正在提供服务的软件名称和版本号。因为这会把服务器的一部分信息暴露给外界，如果这个版本正好有一些bug，那黑客就可能会利用这个bug去攻击服务器。所以一般网站的响应头中要么没有这个字段，要么就给一个不相关的信息。</li>
+<li><strong>Content-Type</strong>：告诉客户端实际返回了什么类型的数据。</li>
+<li><strong>Connection: keep-alive</strong>：表示支持长连接。</li>
+</ul>
+</li>
+<li><p>实体字段：专门用来描述body的额外信息。</p>
+<ul>
+<li><strong>Content-Length</strong>：表示报文中body的长度，如果没有这个字段，就说明body是不定长的，需要用<strong>chunked</strong>方式分段传输。</li>
+</ul>
+</li>
+</ul>
+<h3 id="⭐连接管理"><a href="#⭐连接管理" class="headerlink" title="⭐连接管理"></a>⭐连接管理</h3><p>HTTP/1.1版本之前，采用的是短链接，收到报文后会立刻关闭连接。</p>
+<p>短链接的短板很严重，因为在TCP协议中，建立连接需要 “3次握手”，会发送3个数据包，关闭连接是 “4次握手”，会发送4个数据包。而一次请求和响应只需要发送4个数据包（请求、收到请求、响应、收到响应）。</p>
+<p>创建和销毁连接的代价比实际传输数据的代价还要高。</p>
+<p>在HTTP/1.1版本采用了长连接，客户端向服务器发送一次请求，之后的请求会复用第一次创建的连接。</p>
+<blockquote>
+<p>服务器一般都会在响应头中添加<strong>Connection: keep-alive</strong>表示支持长连接。</p>
+</blockquote>
+<p>长连接也是有缺点的，因为服务器必须在内存中保存连接的状态，这就占用了服务器的资源，如果有大量空连接存在，就会浪费很多服务器的资源。</p>
+<p>客户端可以在请求头中，添加<strong>Connection: close</strong>字段，通知服务器关闭连接，服务器就会在响应头中也加上这个字段，发送之后就会关闭连接。</p>
+<p>服务端一般不会主动关闭连接，也可以使用一些策略：</p>
+<p>比如Nginx可以使用 <code>keepalive_timeout</code>指令，设置长连接的超时时间，如果一段时间内没有任何数据收发就会主动断开连接。</p>
+<p><b id='队头阻塞'>队头阻塞</b>：</p>
+<p>因为HTTP规定了报文必须是 “一发一收”，这就形成了一个先进先出的队列，如果前面的请求处理的很慢，就会阻塞后面的请求。</p>
+<p>因为 “请求-应答” 模型不能改，所以队头阻塞无法彻底解决，HTTP通过<a href="#%E5%B9%B6%E5%8F%91%E8%BF%9E%E6%8E%A5">并发连接</a>来缓解队头阻塞的问题。</p>
+<p>但是<a href="#%E5%B9%B6%E5%8F%91%E8%BF%9E%E6%8E%A5">并发连接</a>压榨出的性能还是跟不上需求，有些公司就开始用<a href="#%E5%9F%9F%E5%90%8D%E5%88%86%E7%89%87">域名分片</a>来提升长连接的数量。</p>
+<p><b id='并发连接'>并发连接</b>：就是同时对一个域名发起多个长连接，这种方式也有缺点，如果每个客户端都建立很多连接，并发量就会很高，服务器根本扛不住。HTTP协议建议每个客户端最多并发2个连接。</p>
+<p><b id='域名分片'>域名分片</b>：域名分片就是用多个域名指向同一台服务器，这样实际长连接的数量就上去了。</p>
+<h3 id="HTTP的特点"><a href="#HTTP的特点" class="headerlink" title="HTTP的特点"></a>HTTP的特点</h3><ul>
+<li><p>拓展性：</p>
+<ul>
+<li>HTTP协议最开始的时候比较简单，只是规定了报文的基本格式，比如用空格分隔单词，用换行分隔字段，报文内容没有严格的语法限制，可以由开发者随意定制。</li>
+<li>后来HTTP协议逐渐增加了请求方法、版本号、状态码、头字段等特性，而body也不只是文本或HTML，而是可以传输图片、视频等任意数据。这些都依赖HTTP的灵活可扩展的特性。</li>
+</ul>
+</li>
+<li><p>可靠性：</p>
+<ul>
+<li>因为HTTP协议是基于TCP/IP协议的，TCP/IP本身就是一个可靠的传输协议。</li>
+</ul>
+</li>
+<li><p>通用性：</p>
+<ul>
+<li>HTTP几乎可以传输任何数据，通用性很强。相比于其它协议，比如FTP只能传文件、SMTP只能发邮件、SSH只能远程登录。</li>
+</ul>
+</li>
+<li><p><b id='无状态'>无状态</b>：</p>
+<ul>
+<li>在HTTP协议中，每次收发报文都是独立的操作，没有任何联系。</li>
+</ul>
+<blockquote>
+<p>状态其实就是客户端或者服务器保存的一些数据或标志位，记录了通信过程中的一些变化信息。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Cookie机制"><a href="#Cookie机制" class="headerlink" title="Cookie机制"></a>Cookie机制</h3><p>HTTP是<a href="#%E6%97%A0%E7%8A%B6%E6%80%81">无状态</a>的，但是现在很多的应用程序都需要用户登录之后才能执行某些操作，在HTTP协议中每次请求都是独立的操作，服务器就不知道有哪些客户端是已经登陆过的。</p>
+<p>Cookie机制就相当于把 “登录状态” 给缓存起来，发送请求的时候再把这些信息发送给服务器，这样服务器就知道这个请求是谁发的了。</p>
+<p>Cookie可以理解为就是服务器委托浏览器存储在客户端里的一些数据，这些数据可以用来表示用户的身份信息。</p>
+<p><strong>Cookie的工作流程</strong>：</p>
+<ol>
+<li>浏览器第一次访问服务器的时候，服务器肯定不知道他是谁。服务器就需要创建一个key-value格式的标识，然后放到响应头中的 <strong>Set-Coolie</strong> 这个字段里面，然后发送给浏览器。</li>
+<li>浏览器收到响应报文之后，看到响应头中有 <strong>Set-Cookie</strong> 字段，就知道这是服务器给的身份标识，就会把这个标识保存起来，下次再请求的时候就会自动把这个值放到请求头中的 <strong>Cookie</strong> 字段里面，发送给服务器。</li>
+<li>第二次请求里面有了 <strong>Cookie</strong> 字段，服务器就可以通过 <strong>Cookie</strong> 字段中的值，识别出用户的身份。</li>
+</ol>
+<p><strong>Cookie的作用域</strong>：</p>
+<p>可以通过 <strong>Domain</strong>和 <strong>Path</strong> 这两个属性指定Cookie所属的域名和路径，让浏览器只发送给特定的URI。</p>
+<p>浏览器在发送Cookie前会从URI中提取出host和path部分，然后跟Cookie中的属性对比，如果不相等，就不会在请求头中发送Cookie。</p>
+<p>可以用这两个属性为不同的URI分别设置Cookie。Path用一个 “/“ 表示域名下的任意路径都可以用Cookie。</p>
+<p><strong>Cookie的安全性</strong>：</p>
+<p>在JS脚本中可以用<code>document.cookie</code>来读写Cookie中的数据，这就有可能导致跨站脚本(XSS)攻击。</p>
+<p>解决办法有三种：</p>
+<ol>
+<li><p><strong>HttpOnly</strong>： 告诉浏览器，这个Cookie只能通过HTTP协议传输，这样浏览器就会禁用<code>document.cookie</code>这些脚本。</p>
+</li>
+<li><p><strong>SameSite</strong>：可以防止”跨站请求伪造”(XSRF)攻击。</p>
+<blockquote>
+<p>“SameSite=Strict” 可以严格限定Cookie不能跨站发送，</p>
+<p>“SameSite=Lax”允许 GET/HEAD安全方法，但是禁止POST跨站发送。</p>
+</blockquote>
+</li>
+<li><p><strong>Secure</strong>：表示这个Cookie只能用HTTPS协议加密传输，明文的HTTP协议会禁止发送，但Cookie本身不是加密的，浏览器中还是以明文的形式存在。</p>
+</li>
+</ol>
+<p><strong>Cookie的应用场景</strong>：</p>
+<ol>
+<li><p>身份识别：Cookie最常见的应用场景就是识别客户端身份，保存用户登录的信息。</p>
+</li>
+<li><p>广告跟踪：我们在上网的时候，网页上一般都会有很多广告图片，这些图片点击之后都会跳转到广告商的网站，这些广告就会在Cookie上添加一些信息，这样在上其它网站的时候，别的广告就能用Cookie读出这些信息，分析之后，再推广告。</p>
+</li>
+</ol>
+<p>为了防止滥用Cookie搜集用户信息，互联网组织相继提出了 DNT(Do Not Track) 和 P3P(Platform for Privacy Preference Project)。但实际上作用不大。</p>
+<h3 id="缓存控制"><a href="#缓存控制" class="headerlink" title="缓存控制"></a>缓存控制</h3><p>浏览器使用HTTP获取资源的成本比较高，就会把一些数据缓存起来，下次请求的时候尽可能的复用，可以节约带宽，加快响应速度。</p>
+<p><strong>缓存验证</strong>：</p>
+<p>浏览器做缓存使用前还需要去服务器验证是否是最新的，这样的请求成本太高了，所以HTTP协议就定义了一些条件请求字段，专门来检查资源是否过期。</p>
+<ol>
+<li>服务器第一次在响应头中需要提供 <strong>Last-modified</strong> 和 <strong>ETag</strong> 字段</li>
+<li>客户端第二次请求的时候，通过 <strong>if-Modified-Since</strong> 字段带上缓存里的原值，验证资源是否是最新的。</li>
+<li>如果资源没有变，服务器会回应“<strong>304 Not Modified</strong>” 表示缓存依然有效，浏览器就可以更新一下有效期，继续使用缓存了。</li>
+</ol>
+<blockquote>
+<p><strong>Last-Modified</strong>：文件最后的修改时间。</p>
+<p><strong>ETag</strong>：实体标签(Entity Tag)，是资源的唯一标识。</p>
+</blockquote>
+<p><strong>服务器对客户端的缓存控制</strong>：</p>
+<p>服务器会在响应头中添加 <strong>Cache-Control: max-age=value</strong> 字段，用来标记数据的有效期，max-age的单位是秒，相当于告诉浏览器，这个页面只能缓存这么久。</p>
+<ul>
+<li><strong>Cache-Control: no_store</strong>：不允许缓存，一般用在一些变化特别频繁的数据。比如秒杀页面。</li>
+<li><strong>Cache-Control: no_cache</strong>：可以缓存，但是使用之前需要去服务器验证是否有新的版本。</li>
+<li><strong>Cache-Control: must_revalidate</strong>：如果缓存不过期就可以继续使用，如果过期了就需要去服务器验证一下，如果没有新的版本就可以继续使用。</li>
+</ul>
+<p><strong>服务器对代理服务器的缓存控制</strong>：</p>
+<p>客户端和代理服务器是不一样的，客户端的缓存只是用户自己使用，代理的缓存可能会给很多客户端提供服务，所以就需要对它的缓存加一些限制条件。</p>
+<p><strong>private</strong>：表示缓存只能在客户端保存，是用户私有的，不能和别人共享。<code>private,max-age=5</code></p>
+<p><strong>public</strong>：表示缓存是完全开放的，谁都可以用。<code>public,max-age=5,s-maxage=10</code></p>
+<p><strong>proxy-revalidate</strong>：表示客户端可以到存储在代理服务器上的缓存做验证，但如果是私有缓存也需要回源服务器验证。</p>
+<p><strong>s-maxage</strong>：用来限定数据可以在代理服务器中生存多久。</p>
+<p><strong>no-transform</strong>：表示禁止对数据做一些额外的处理，比如把图片生成png、webp之类的格式。</p>
+<p><strong>客户端对源服务器的缓存控制</strong>：</p>
+<p>浏览器也可以在请求头中添加 <strong>Cache-Control</strong> 字段。</p>
+<p>其实在浏览器中点刷新按钮的时候，浏览器就会在请求头上加一个 “<strong>Cahce-Control: max-age=0</strong>“，服务器看到max-age=0，就会返回最新的数据给浏览器。</p>
+<p>浏览器中 “Ctrl+F5” 的强制刷新，就是发了一个 “<strong>Cache-Control: no-cache</strong>“，和 max-age=0含义一样。</p>
+<p>浏览器中点击 “前进” 和 “后退” 按钮，通常可以在状态栏中看到 <code>from disk cache</code> 的描述，意思是从磁盘上读取的缓存。</p>
+<p><strong>客户端对代理服务器的缓存控制</strong>：</p>
+<p><strong>max-stale</strong>：表示如果代理服务器上的缓存过期了也可以接受，但是不能过期太多，必须在指定的时间内。</p>
+<p><strong>min-fresh</strong>：表示缓存必须有效，而且必须在指定的时间内依然有效。</p>
+<p><strong>only-if-cached</strong>：表示只接受代理缓存的数据，不接受源服务器的响应。</p>
+<h3 id="代理服务"><a href="#代理服务" class="headerlink" title="代理服务"></a>代理服务</h3><p>代理服务就是指，服务本身不生产数据，而是转发上下游的请求和响应。</p>
+<p>代理服务器需要用 <strong>Via</strong> 字段表明身份。每经过一个代理节点，代理服务器就会把自身的信息追加到字段的末尾：<code>Via: proxy1,proxy2...</code>。</p>
+<p>可以通过 <strong>X-Forwarded-For</strong> 和 <strong>X-Real-IP</strong> 来获取客户端的地址：</p>
+<p><strong>X-Forwarded-For</strong> 每经过一个代理节点就会在字段里追加代理服务器的IP地址，所以第一个IP地址就是客户端的地址。</p>
+<p><strong>X-Real-IP</strong> 就是记录客户端的IP地址，没有中间代理服务器的信息。</p>
+<p>有了 <strong>X-Forwarded-For</strong> 等字段，源服务器就可以拿到客户端的信息了，但是对于代理服务器来说并不是最佳方案。因为通过 <strong>X-Forwarded-For</strong> 操作代理信息必须要解析修改HTTP报文，会降低代理的转发性能。并且如果使用HTTPS通信，是无法修改原始报文的，所以就出现了专门的<a href="#%E4%BB%A3%E7%90%86%E5%8D%8F%E8%AE%AE">代理协议</a>。</p>
+<p><b id='代理协议'>代理协议</b>：</p>
+<p>它其实是在HTTP报文前增加了一行ASCII码文本，相当于又多了一个头。</p>
+<p>这行文本的开头必须是 “PROXY” 五个大写字母，然后是 “TCP4” 或者 “TCP6”，表示客户端的IP地址类型，再后面是请求方地址、应答方地址、请求方端口、应答方端口、最后用一个换行符结束。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PROXY TCP4 192.168.0.1 192.168.0.2 5555 80</span><br></pre></td></tr></table></figure>
+
+<p>这样服务器只需要解析第一行就可以拿到客户端的地址。</p>
+<p><strong>代理的作用</strong>：</p>
+<ul>
+<li><p><strong>负载均衡</strong>：代理最基本的一个功能就是 <strong>负载均衡</strong>，由代理服务器来控制由哪台服务器来响应请求。</p>
+</li>
+<li><p><strong>健康检查</strong>：使用 “心跳” 机制监控后端服务器，发现有故障就踢出集群，保证服务的可用性。</p>
+</li>
+<li><p><strong>加密卸载</strong>：对外网使用SSL/TLS加密通信认证，对内网不加密，消除加密成本。</p>
+</li>
+<li><p><strong>内容缓存</strong>：暂存、复用服务器响应。</p>
+</li>
+</ul>
+<h2 id="⭐HTTPS"><a href="#⭐HTTPS" class="headerlink" title="⭐HTTPS"></a>⭐HTTPS</h2><p>HTTPS为HTTP增加了一些安全特性，默认端口号从80改成443。</p>
+<p>之所以会有HTTPS，是因为HTTP的传输过程是透明的，任何人都能在链路中获取并修改报文结构。</p>
+<p>比如代理服务器可以作为HTTP通信的中间人，可以修改报文的结构，浏览器和服务器没办法辨别报文的真假。</p>
+<p>HTTPS把底层的传输协议换成了<a href="#%E2%AD%90SSL/TLS">SSL/TLS</a>，传输报文调用的都是安全接口。</p>
+<h3 id="⭐调用过程"><a href="#⭐调用过程" class="headerlink" title="⭐调用过程"></a>⭐调用过程</h3><ol>
+<li>浏览器首先会从URI中提取出协议名称和域名，然后通过DNS解析域名，得到目标的IP地址。</li>
+<li>然后通过 “三次握手” 与服务器建立TCP链接。</li>
+<li>然后执行TLS握手，建立安全链接。</li>
+<li>之后就是和<a href="#%E2%AD%90HTTP%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B">HTTP</a>一样的报文收发过程了。</li>
+</ol>
+<h3 id="HTTPS的性能优化"><a href="#HTTPS的性能优化" class="headerlink" title="HTTPS的性能优化"></a>HTTPS的性能优化</h3><p>HTTPS的连接主要分为两部分，第一个是建立连接时的非对称加密握手，第二个是握手之后的对称加密报文传输。</p>
+<p>目前主流的加密算法的性能都很好，所以通常HTTPS比HTTP慢，主要是慢在建立安全连接。</p>
+<p>TCP建立连接之后，HTTPS比HTTP多了一个<a href="#TLS%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B">TLS握手</a>的环节，不做任何优化的情况下，HTTPS建立连接可能比HTTP慢几百毫秒到几秒。</p>
+<p>现在的优化方案也有很多：<a href="#%E7%A1%AC%E4%BB%B6%E4%BC%98%E5%8C%96">硬件优化</a>、<a href="#%E8%BD%AF%E4%BB%B6%E4%BC%98%E5%8C%96">软件优化</a>、<a href="#%E8%AF%81%E4%B9%A6%E4%BC%98%E5%8C%96">证书优化</a>、<a href="#%E4%BC%9A%E8%AF%9D%E5%A4%8D%E7%94%A8">会话复用</a></p>
+<p><b id='硬件优化'>硬件优化</b>：</p>
+<p>可以选择<strong>SSL加速服务器</strong>，加解密的时候调用它的API，让专门的硬件来做加密和解密，这样可以分摊CPU的运算压力。</p>
+<p><b id='软件优化'>软件优化</b>：</p>
+<p>把正在使用的软件尽量升级到新的版本，比如把Linux内核从2.x升级到4.x，把nginx从1.6升级到1.1.6。</p>
+<p><b id='证书优化'>证书优化</b>：</p>
+<p>握手过程中，证书的验证也是一个比较耗时的操作，服务器需要把自己的证书链全发给客户端，客户端接收后再验证。</p>
+<p>客户端验证证书其实是个很复杂的过程，首先要根据公钥解密验证证书的签名，还要再去访问证书认证机构，确保证书没有被撤销，这又会产生网络通信。</p>
+<p>可以通过OCSP补丁让服务器预先访问证书认证机构获取响应，然后在建立连接的时候和证书一起发送给客户端，这样就可以避免客户端再去连接证书认证机构了。</p>
+<p><b id='会话复用'>会话复用</b>：</p>
+<p>会话复用分两种：</p>
+<p>第一种叫 “Session ID”，就是客户端和服务器建立连接之后，会各自保存一个会话的ID号存在内存里，里面主要存储一些密钥之类的信息，当客户端发送第二次请求的时候，把”Session ID”一起发过去，服务器就在内存中找这个”Session ID”，找到了就直接恢复会话状态，跳过证书验证和密钥交换，可以直接建立通信。</p>
+<p>因为服务器必须保存每一个客户端的会话ID，如果用户量很大的话，就会加重服务器的负担，所以又出现了第二种 <strong>会话票证</strong> 的方案。</p>
+<p>会话票证（Session Ticket），它有点类似Cookie。服务器加密会话信息之后，发送给客户端，由客户端来存储会话信息。重新连接的时候，客户端再把会话信息发送给服务器，服务器验证有效期之后就可以恢复会话了。</p>
+<p>“Session Ticket” 需要使用一个固定的密钥文件来加密，为了防止密钥被破解，密钥文件需要定期更换。</p>
+<h3 id="什么是安全"><a href="#什么是安全" class="headerlink" title="什么是安全"></a>什么是安全</h3><p>一般来说，如果通信过程具备了四个特性就可以认为是安全的：</p>
+<ol>
+<li><a href="#%E6%9C%BA%E5%AF%86%E6%80%A7">机密性</a>：对数据进行加密。</li>
+<li><a href="#%E5%AE%8C%E6%95%B4%E6%80%A7">完整性</a>：是指数据在传输过程中不会被修改。</li>
+<li><a href="#%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81">身份认证</a>：确认对方的真实身份。</li>
+<li><a href="#%E4%B8%8D%E5%8F%AF%E5%90%A6%E8%AE%A4">不可否认</a>：已经发生过的行为不能诋毁。</li>
+</ol>
+<p><b id='机密性'>机密性</b>：</p>
+<p>加密主要分为两大类：<strong>对称加密</strong>和<strong>非对称加密</strong>。</p>
+<ul>
+<li><p><strong>对称加密</strong>：</p>
+<ul>
+<li>对称加密就是，加密和解密用的都是同一个密钥，只要保证密钥的安全，就是安全的。</li>
+<li>对称加密有一个很大的问题，就是如何把密钥安全的传递给对方，也叫<strong>密钥交换</strong>。所以就出现了<strong>非对称加密</strong>。</li>
+</ul>
+</li>
+<li><p><strong>非对称加密</strong>：</p>
+<ul>
+<li>非对称加密有两个密钥，一个叫 <strong>公钥</strong>，一个叫 <strong>私钥</strong>。这两个密钥是不一样的，公钥可以公开给任何人，但是私钥必须严格保密。</li>
+<li>非对称加密可以解决 <strong>密钥交换</strong>的问题，网站来管理私钥，然后在网上发布公钥，用公钥就可以登录网站，但是密码必须要通过私钥才能破解，黑客没有私钥，所以就没办法破解密码。</li>
+<li>非对称加密的问题是，算法的运算速度很慢，于是又有通过<strong>混合加密</strong>的方式解决运算速度的问题。</li>
+</ul>
+</li>
+<li><p><strong>混合加密</strong>：</p>
+<ul>
+<li><strong>TLS协议中使用的就是混合加密</strong>。</li>
+<li>混合加密其实就是<strong>对称加密</strong>和<strong>非对称加密</strong>的混合版本，通过非对称加密解决密钥交换的问题，之后的通信全部使用对称加密。</li>
+<li>加密流程：<ol>
+<li>服务端生成一对公钥和私钥，并且把公钥发送给客户端。</li>
+<li>客户端随机生成一个会话密钥，并且用会话密钥加密需要发送的数据。</li>
+<li>客户端再用公钥加密会话密钥，然后把前两步的加密结果发送给服务端</li>
+<li>服务端收到数据后，利用自己的私钥解密，可以得到会话密钥。</li>
+<li>最后利用会话密钥解密客户端发送的数据。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p><b id='完整性'>完整性</b>：</p>
+<p>实现完整性的手段主要是摘要算法，比如哈希函数。摘要算法可以把任意长度的数据压缩成一个固定长度的字符串。</p>
+<p><strong>只要在原始数据后面附上它的摘要，如果黑客在中间改动了任何内容，摘要就会完全不同，这样就可以保证数据的完整性</strong>。</p>
+<p><b id='身份认证'>身份认证</b>和<b id='不可否认'>不可否认</b>：</p>
+<p>非对称加密中的私钥，再加上摘要算法，就能实现数字签名。数字签名可以保证身份认证和不可否认。</p>
+<p>数字签名的原理其实很简单，就是把公钥私钥的用法反过来，之前是公钥加密、私钥解密，现在是私钥加密、公钥解密。</p>
+<p>数字签名是完全公开的，但是这个签名只有用私钥对应的公钥才能解开，拿到摘要后，再对比源数据的完整性，就像签字盖章一样。</p>
+<p>只要客户端和服务器互相交换公钥，就可以用“签名”和“验签”来确认消息的真实性，因为私钥保密，黑客不能伪造签名，就能够保证通信双方的身份。</p>
+<p><strong>数字证书和CA</strong>：</p>
+<p>这里还有一个问题就是，谁都可以发布公钥，怎么来判断这个公钥是百度的还是黑客的呢？</p>
+<p>CA是证书认证机构，由它来给各个公钥签名，确保公钥是可信的。</p>
+<p>CA 对公钥的签名认证也是有格式的，会把序列号、用途、颁发者、有效时间等等，把这些打成一个包再签名，完整地证明公钥关联的各种信息，形成“<strong>数字证书</strong>”（Certificate）。</p>
+<h2 id="⭐SSL-TLS"><a href="#⭐SSL-TLS" class="headerlink" title="⭐SSL/TLS"></a>⭐SSL/TLS</h2><p><strong>SSL协议是一个负责加密通信的安全协议，运行在在TCP/IP协议上</strong>。</p>
+<p>SSL协议是由网景公司发明的，发展到3.0版本时改名为TLS。</p>
+<p><strong>OpenSSL</strong>：是一个开源密码学工具包，支持很多加密算法和协议，很多软件都用它来实现TLS功能，比如Apache、Nginx。</p>
+<h3 id="TLS协议的组成"><a href="#TLS协议的组成" class="headerlink" title="TLS协议的组成"></a>TLS协议的组成</h3><p>TLS协议包含几个子协议，可以理解成是负责不同功能的模块：</p>
+<ul>
+<li><b id='记录协议'>记录协议</b>：规定了TLS收发数据的基本单位：记录，其它子协议都需要通过记录协议发送数据，多个记录可以在一个TCP包中一次发出去，不需要像<a href="#TCP/IP">TCP</a>那样返回确认消息。</li>
+<li><b id='报警协议'>报警协议</b>：用来向对方发出警报信息，有点像HTTP协议中的状态码，收到警报后可以选择继续或者终止连接。</li>
+<li><b id='握手协议'>握手协议</b>：浏览器和服务器会在握手过程中协商TLS版本号、随机数、密码套件等信息，然后交换证书和密钥，最终双方得到会话密钥。</li>
+<li><b id='变更密码协议'>变更密码协议</b>：通知对方，后续的数据会被加密。</li>
+</ul>
+<h3 id="TLS握手过程"><a href="#TLS握手过程" class="headerlink" title="TLS握手过程"></a>TLS握手过程</h3><ol>
+<li>在建立了TCP连接之后，浏览器首先会发一个 “Client Hello” 消息，里面包含协议的版本信息、支持的密码组件、随机数(用于后续生成会话密钥)。</li>
+<li>服务器收到消息之后，会返回一个 “Server Hello” 消息，包含协议的版本号、根据客户端发来的消息选择一个密码组件和服务器生成的随机数。</li>
+<li>之后服务器会把证书以及公钥和私钥的签名认证发送给客户端。</li>
+<li>客户端拿到服务器的证书后就开始验证证书是否有效，再验证公钥和签名，就可以确认服务器的身份。</li>
+<li>客户端再把公钥发送给服务器。</li>
+<li>服务器和客户端都拿到两个随机数之后，就用ECDHE算法算出一个新的随机数，然后用这三个随机数生成会话密钥。</li>
+<li>最后客户端和服务器把之前发送的数据做个摘要，再加密一下，发送给服务器做验证， 双方都验证加密解密没问题，握手就结束了。</li>
+</ol>
+<h2 id="⭐TCP-IP"><a href="#⭐TCP-IP" class="headerlink" title="⭐TCP/IP"></a>⭐TCP/IP</h2><p>TCP/IP协议实际上是一系列网络通信协议的统称，其中最核心的两个协议是TCP和IP。其它的还有UDP、ICMP、ARP等。</p>
+<p>TCP/IP协议一共有四层：应用层，传输层，网络层，连接层。</p>
+<p>TCP和IP分别属于传输层和网络层。</p>
+<h3 id="IP协议"><a href="#IP协议" class="headerlink" title="IP协议"></a>IP协议</h3><p>IP协议主要是用来解决寻址和路由的问题，以及如何在两个节点之间传送数据包。</p>
+<p>IP协议需要通过IP地址来定位互联网上的每一台计算机。</p>
+<h3 id="TCP协议"><a href="#TCP协议" class="headerlink" title="TCP协议"></a>TCP协议</h3><p>TCP协议位于IP协议之上，基于IP协议提供可靠的字节流形式的通信。</p>
+<p>TCP协议是一个有状态的协议，需要先与对方建立连接才能发送数据，并且保证数据不丢失，不重复。数据是连续的。</p>
+<blockquote>
+<p>UDP协议是无状态的，不用先建立连接就可以发送数据，但不保证数据一定会发送到对方。数据是分散的小数据包，顺序发，乱序收。</p>
+</blockquote>
+<h3 id="网络分层模型"><a href="#网络分层模型" class="headerlink" title="网络分层模型"></a>网络分层模型</h3><ul>
+<li><p><strong>第一层叫 ”链接层“ ，负责在底层网络上发送原始数据包，在网卡层面工作，使用mac地址来标记网络中的设备</strong>。</p>
+</li>
+<li><p><strong>第二层叫 ”网络层“，IP协议就在这一层，因为IP协议规定了IP地址的概念，所以就可以在 ”链接层“的基础上，用IP地址取代mac地址，把许多局域网、广联网连接成一个大的网络，在这个网络查找设备时，只要把IP地址再翻译成mac地址就可以了</strong>。</p>
+</li>
+<li><p><strong>第三层叫 ”传输层“，TCP协议就在这一层，用来保证数据可靠的传输</strong>。</p>
+</li>
+<li><p><strong>第四层叫 ”应用层“，应用层是面向具体应用的协议。比如FTP、SMTP、HTTP</strong>。</p>
+</li>
+</ul>
+<blockquote>
+<p>层次的顺序是<strong>从下往上</strong>的，第一层也就是最下面的一层。</p>
+</blockquote>
+<h3 id="OSI网络分层模型"><a href="#OSI网络分层模型" class="headerlink" title="OSI网络分层模型"></a>OSI网络分层模型</h3><p>OSI全称是<strong>开放式系统互联通信参考模型</strong>。</p>
+<ul>
+<li>第一层是 ”<strong>物理层</strong>“，是网络的物理形式，比如电缆、光纤、网卡之类的设备。</li>
+<li>第二层是 ”<strong>数据链路层</strong>“，它基本相当于TCP/IP的链路层。</li>
+<li>第三层是 ”<strong>网络层</strong>“，相当于TCP/IP协议中的网际层。</li>
+<li>第四层是 ”<strong>传输层</strong>“，相当于TCP/IP协议中的传输层。</li>
+<li>第五层是 ”<strong>会话层</strong>“，用来维护网络中的连接状态，保持会话和同步。</li>
+<li>第六层是 ”<strong>表示层</strong>“，把数据转换为合适，可理解的语法和语义。</li>
+<li>第七层是 ”<strong>应用层</strong>“，面向具体的应用传输数据。</li>
+</ul>
+<blockquote>
+<p><strong>两个分层模型的映射关系</strong>：</p>
+<p>第一层：物理层，TCP/IP中无对应</p>
+<p>第二层：数据链路层，对应TCP/IP的连接层。</p>
+<p>第三层：网络层，对应TCP/IP的网际层。</p>
+<p>第四层：传输层，对应TCP/IP的传输层。</p>
+<p>第五层、第六层、第七层：对应TCP/IP的应用层。</p>
+</blockquote>
+<h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>RPC就是把网络通信封装成函数调用的形式，本质上还是网络通信。</p>
+<h2 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h2><p>CDN（Content Delivery Network），<strong>主要应用在HTTP协议中的缓存和代理技术，用来代替原网站响应客户端的请求</strong>。</p>
+<p><strong>CDN可以缓存网站上的数据，让浏览器的请求在半路上就可以得到响应</strong>。</p>
+<h2 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h2><p>浏览器的正式名字叫 ”<strong>Web Browser</strong>“，就是<strong>用来查看互联网上的网页资源</strong>。</p>
+<p>浏览器的本质是一个HTTP协议中的<strong>请求方</strong>，使用HTTP协议获取网络上的各种资源。</p>
+<p>在HTTP协议中，浏览器的角色被称为 ”User Agent“（用户代理），意思是作为访问者的”代理“来发起HTTP请求，一般都简单的称为”客户端“。</p>
+<h2 id="Web服务器"><a href="#Web服务器" class="headerlink" title="Web服务器"></a>Web服务器</h2><p>服务器就是HTTP协议中的应答方。</p>
+<p>Web服务器包含两个含义：软件和硬件</p>
+<p><strong>软件</strong>：就是提供Web服务的应用程序，运行在硬件服务器上，利用硬件能力来处理客户端发来的HTTP请求。</p>
+<p><strong>硬件</strong>：就是<strong>物理形式</strong>或者<strong>云形式</strong>的机器，通常是利用反向代理、负载均衡技术组成的集群。</p>
+<p>常见的Web服务器有：Apache、Nginx、Jetty、Tomcat等</p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p><strong>代理是HTTP协议中，请求方和应答方中间的一个环节，可以转发客户端的请求，也可以转发服务器的应答</strong>。</p>
+<p>代理的种类有很多：</p>
+<ol>
+<li>匿名代理：完全隐匿了被代理的机器，外界只能看到被代理的服务器。</li>
+<li>透明代理：在传输过程中是透明的，外界知道代理，也知道客户端。</li>
+<li>正向代理：代表客户端向服务端发送请求。</li>
+<li>反向代理：代表服务器响应客户端的请求。</li>
+</ol>
+<p>CDN实际上也是一种代理，它代替服务器响应客户端的请求，通常扮演者透明代理和反向代理的角色。</p>
+<p>因为在传输过程中，插入了中间环节，所以在这个环节可以做很多事情：</p>
+<ol>
+<li>负载均衡：把请求均匀分发到多台机器。</li>
+<li>内容缓存：暂存上下行的数据，减轻后端的压力。</li>
+<li>安全防护：隐藏IP，使用WAF抵御网络攻击，保护被代理的机器。</li>
+<li>数据处理：可以提供压缩、加密等额外功能。</li>
+</ol>
+<h2 id="HTML-WebService-WAF"><a href="#HTML-WebService-WAF" class="headerlink" title="HTML / WebService / WAF"></a>HTML / WebService / WAF</h2><p><strong>HTML</strong>：</p>
+<p><strong>HTML是HTTP协议传输的主要内容之一，它主要用来描述超文本页面，通过各种标签，来定义文字、图片等资源的排版和布局，最终由浏览器渲染出可视化的页面</strong>。</p>
+<p>HTML目前主要有两个标准，HTML4和HTML5。</p>
+<p><strong>WebService</strong>：</p>
+<p><strong>WebService是一种应用服务开发规范，采用的是CS架构，用HTTP协议传输XML或JSON消息，它是一个基于HTTP的服务架构技术</strong>。</p>
+<p>因为采用了HTTP协议传输数据，所以在WebService中，服务端和客户端可以采用不同的操作系统和编程语言开发。</p>
+<p><strong>WAF</strong>：</p>
+<p>WAF是”网络应用防火墙“，用来检测HTTP流量，是防护Web应用安全的技术。</p>
+<p><strong>WAF通常在Web服务器之前，可以防止SQL注入、跨站脚本攻击等</strong>。目前应用比较多的一个开源项目是ModSecurity，可以集成进Apache或者Nginx。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Rainy 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Rainy 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" rel="tag"># 网络协议</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/08/%E5%88%86%E5%B8%83%E5%BC%8F%E7%90%86%E8%AE%BA/" rel="prev" title="分布式理论">
+      <i class="fa fa-chevron-left"></i> 分布式理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/08/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" rel="next" title="系统设计">
+      系统设计 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90HTTP"><span class="nav-number">1.</span> <span class="nav-text">⭐HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90HTTP%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">⭐HTTP调用过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">HTTP报文结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%B7%E5%A7%8B%E8%A1%8C"><span class="nav-number">1.2.1.</span> <span class="nav-text">起始行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A5%E6%96%87%E5%A4%B4"><span class="nav-number">1.2.2.</span> <span class="nav-text">报文头</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%A4%B4%E5%AD%97%E6%AE%B5"><span class="nav-number">1.3.</span> <span class="nav-text">常用的头字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">⭐连接管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">1.5.</span> <span class="nav-text">HTTP的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E6%9C%BA%E5%88%B6"><span class="nav-number">1.6.</span> <span class="nav-text">Cookie机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E6%8E%A7%E5%88%B6"><span class="nav-number">1.7.</span> <span class="nav-text">缓存控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.8.</span> <span class="nav-text">代理服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90HTTPS"><span class="nav-number">2.</span> <span class="nav-text">⭐HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">⭐调用过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">2.2.</span> <span class="nav-text">HTTPS的性能优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AE%89%E5%85%A8"><span class="nav-number">2.3.</span> <span class="nav-text">什么是安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90SSL-TLS"><span class="nav-number">3.</span> <span class="nav-text">⭐SSL&#x2F;TLS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TLS%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">3.1.</span> <span class="nav-text">TLS协议的组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TLS%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">TLS握手过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90TCP-IP"><span class="nav-number">4.</span> <span class="nav-text">⭐TCP&#x2F;IP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IP%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.1.</span> <span class="nav-text">IP协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.2.</span> <span class="nav-text">TCP协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.3.</span> <span class="nav-text">网络分层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.4.</span> <span class="nav-text">OSI网络分层模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC"><span class="nav-number">5.</span> <span class="nav-text">RPC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CDN"><span class="nav-number">6.</span> <span class="nav-text">CDN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="nav-number">7.</span> <span class="nav-text">浏览器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">8.</span> <span class="nav-text">Web服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86"><span class="nav-number">9.</span> <span class="nav-text">代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML-WebService-WAF"><span class="nav-number">10.</span> <span class="nav-text">HTML &#x2F; WebService &#x2F; WAF</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rainy"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Rainy</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/rainy-zhang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;rainy-zhang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:rainy_zhang@foxmail.com" title="E-Mail → mailto:rainy_zhang@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainy</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'edb1b2802d6853e3cc24',
+      clientSecret: '77dfb2ff88a1839ad1f7d904cb216b5e8b1cbaf1',
+      repo        : 'rainy-zhang.github.io',
+      owner       : 'rainy-zhang',
+      admin       : ['rainy-zhang'],
+      id          : '2652c8befcff677e78c7b98244c9b408',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

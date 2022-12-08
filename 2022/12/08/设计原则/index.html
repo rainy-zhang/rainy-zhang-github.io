@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="设计原则">
+<meta property="og:url" content="http://example.com/2022/12/08/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/index.html">
+<meta property="og:site_name" content="Rainy Blogs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-08T08:54:56.000Z">
+<meta property="article:modified_time" content="2022-12-08T08:56:24.095Z">
+<meta property="article:author" content="Rainy">
+<meta property="article:tag" content="设计原则">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/12/08/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>设计原则 | Rainy Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rainy Blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rainy Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          设计原则
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-12-08 16:54:56 / 修改时间：16:56:24" itemprop="dateCreated datePublished" datetime="2022-12-08T16:54:56+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">软件设计</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description"> </div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="贫血模型"><a href="#贫血模型" class="headerlink" title="贫血模型"></a>贫血模型</h2><p><strong>贫血模式主要就是把数据和行为分隔开，会破坏面向对象中的封装特性，是一种面向过程的编程风格</strong>。</p>
+<p>比如现在的Web项目一般都是基于MVC三层架构来设计的，项目分为Repository层、Service层、Controller层。</p>
+<p>Entity和Repository负责数据访问层、BO和Service负责业务逻辑层、VO和Controller负责接口层。</p>
+<p>但是实际上，BO通常是一个纯粹的数据结构，只包含数据，不包含任何业务逻辑，逻辑主要集中在Service层，然后通过Service来操作BO，这种被称为 <strong>贫血模型</strong>。还有Entity和VO也都是基于贫血模型设计的。</p>
+<h2 id="充血模型"><a href="#充血模型" class="headerlink" title="充血模型"></a>充血模型</h2><p><strong>充血模型是一种基于的DDD开发模式，贫血模型是把数据和业务逻辑分割到不同的类中，充血模型是相反的，是把数据和业务逻辑封装到同一个类中，这种模型可以满足面向对象的封装特性</strong>。</p>
+<p><strong>实际上，基于充血模型的DDD设计模式，也还是按照MVC三层架构设计的。Controller负责暴露接口，Service负责业务逻辑，Repository负责数据存取。只不过在充血模型中，Service层包含Service和Domain两个部分，Domain相当于实体类，只不过它既包含数据，也包含业务逻辑。Service作为Repository层和Domain之间的连接层，用来获取数据库中的数据，然后再转换成Domain，用Domain来完成业务逻辑，然后调用Repository将数据写入到数据库</strong>。</p>
+<p>Entity被设计成贫血模型，虽然违背了面向对象的封装特性，但Entity的生命周期是有限的，一般被传递到Service层就会转换成BO或者Domain来完成后面的逻辑，所以Entity通常不会被任意修改。</p>
+<p>VO主要是作为接口传输数据的载体，从功能上来讲，它不应该包含业务逻辑，只包含数据，所以设计成贫血模型也是比较合理的。</p>
+<p>贫血模型的开发模式，比较适合业务简单的系统，充血模型更适合业务复杂的场景。</p>
+<h2 id="单一职责原则（SRP）"><a href="#单一职责原则（SRP）" class="headerlink" title="单一职责原则（SRP）"></a>单一职责原则（SRP）</h2><p>单一职责的意思是：<strong>一个类或者一个模块只负责完成一个功能</strong>。</p>
+<p>也就是说，要设计粒度小、功能单一的类，如果一个类包含了多个完全不相干的功能，这种类的职责就不够单一，应该把他拆分成多个简单的类。</p>
+<h2 id="开闭原则（OCP）"><a href="#开闭原则（OCP）" class="headerlink" title="开闭原则（OCP）"></a>开闭原则（OCP）</h2><p>开闭原则的意思是：<strong>添加一个新的功能，应该是在已有代码的基础上拓展代码，而不是修改已有代码</strong>。</p>
+<p>开闭原则的关键是预留拓展点，需要针对业务尽量识别出所有拓展点，不过也没有必要为一些遥远的、不一定发生的需求提前买单，做过度设计。合理的做法是，对一些短期内、比较确定的需求做一些拓展性的设计。</p>
+<p>通常拓展性和可读性是相互冲突的，拓展性高的代码可能会复杂很多，有时候就需要在可读性和拓展性之间做权衡。</p>
+<h2 id="里氏替换原则（LSP）"><a href="#里氏替换原则（LSP）" class="headerlink" title="里氏替换原则（LSP）"></a>里氏替换原则（LSP）</h2><p>里氏替换原则的意思是：<strong>在继承关系中子类要保证替换父类的时候，不改变原来的程序逻辑和正确性</strong>。</p>
+<p>比如在父类中运行出错的时候返回null，数据为空返回空集合。子类重写函数之后，变成了运行出错返回空集合，数据为空返回null。这种设计就违背了里氏替换原则。</p>
+<p>再比如父类中只会抛出IOException异常，如果子类再抛出其它异常，也会违背里氏替换原则。</p>
+<h2 id="接口隔离原则（ISP）"><a href="#接口隔离原则（ISP）" class="headerlink" title="接口隔离原则（ISP）"></a>接口隔离原则（ISP）</h2><p>接口隔离原则的意思是：<strong>不应该强迫调用者依赖它不需要的接口</strong>。<strong>如果部分接口只被一部分调用者使用，那就可以把这部分接口拆分出来，单独给对应的调用者使用，而不是强迫其它调用者也依赖这部分不会被调用的接口</strong>。</p>
+<p>比如有一个管理用户的UserService，现在需要提供一个删除用户的方法，如果直接在UserService中添加删除用户的方法，那所有依赖UserService的类都可以调用这个接口，就有可能导致误删用户。</p>
+<p>通过接口隔离原则，可以把删除相关的操作单独放到另外一个DeleteUserService中，然后让某些特定的类来依赖这个Service。</p>
+<h2 id="依赖反转原则（DIP）"><a href="#依赖反转原则（DIP）" class="headerlink" title="依赖反转原则（DIP）"></a>依赖反转原则（DIP）</h2><p>依赖反转原则的意思是：<strong>外层模块不要直接依赖底层模块，应该通过抽象层来实现底层模块的依赖</strong>。这样就可以通过抽象层动态切换底层模块的实现细节。</p>
+<p>比如<a href="#%E5%8F%8D%E5%B0%84%E8%B0%83%E7%94%A8%E5%8E%9F%E7%90%86">Java中的反射调用</a>，就是通过委派层动态切换<a href="#%E6%9C%AC%E5%9C%B0%E5%AE%9E%E7%8E%B0">本地实现</a>和<a href="#%E5%8A%A8%E6%80%81%E5%AE%9E%E7%8E%B0">动态实现</a>。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Rainy 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Rainy 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" rel="tag"># 设计原则</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/08/Spring%E7%9B%B8%E5%85%B3/" rel="prev" title="Spring相关">
+      <i class="fa fa-chevron-left"></i> Spring相关
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式">
+      设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AB%E8%A1%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">贫血模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%85%E8%A1%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">充血模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99%EF%BC%88SRP%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">单一职责原则（SRP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99%EF%BC%88OCP%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">开闭原则（OCP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99%EF%BC%88LSP%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">里氏替换原则（LSP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99%EF%BC%88ISP%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">接口隔离原则（ISP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%8F%8D%E8%BD%AC%E5%8E%9F%E5%88%99%EF%BC%88DIP%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">依赖反转原则（DIP）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rainy"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Rainy</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/rainy-zhang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;rainy-zhang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:rainy_zhang@foxmail.com" title="E-Mail → mailto:rainy_zhang@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainy</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'edb1b2802d6853e3cc24',
+      clientSecret: '77dfb2ff88a1839ad1f7d904cb216b5e8b1cbaf1',
+      repo        : 'rainy-zhang.github.io',
+      owner       : 'rainy-zhang',
+      admin       : ['rainy-zhang'],
+      id          : 'd124360207ecd1ea8451e978d1d83977',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
