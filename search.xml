@@ -558,53 +558,6 @@
       </tags>
   </entry>
   <entry>
-    <title>性能调优</title>
-    <url>/2022/12/08/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</url>
-    <content><![CDATA[<h2 id="字符串性能优化"><a href="#字符串性能优化" class="headerlink" title="字符串性能优化"></a>字符串性能优化</h2><p>String对象的实现原理在不同的JDK版本是不同的：</p>
-<ul>
-<li><p>在JDK 6以及之前的版本中，String对象主要有四个成员变量：char[] 数组、偏移量 offset、字符数量 count、哈希值 hash。</p>
-<blockquote>
-<p>String对象是通过offset和count属性通过char[]数组获取字符串，这种方式效率很高，但是有可能会导致内存泄漏。</p>
-<p>因为<code>substring()</code>方法返回的子字符串对象会使用原字符串中的char[]数组，这就会导致原字符串始终无法被回收掉。</p>
-</blockquote>
-</li>
-<li><p>JDK 7版本对String类做了修改，移除了offset和count这两个属性，<code>substring()</code>方法也不再共享char[]数组，解决了内存泄漏的问题。</p>
-</li>
-<li><p>JDK 9版本将String类中的char[]数组改为了 byte[]数组，新增编码格式属性coder。</p>
-<blockquote>
-<p>这样做的好处是可以节约内存，因为一个char字符占2个字节，一个byte字符占1个字节。</p>
-<p>coder属性的作用是，在计算字符串长度或者使用<code>indexOf()</code>方法时，需要根据这个字段，判断如何计算字符串长度。</p>
-</blockquote>
-</li>
-</ul>
-<p><strong>通过 String.intern方法节省内存</strong>：</p>
-<p>调用<code>intern()</code>方法时，会判断字符串常量池中是否有相同的对象，如果没有，就在常量池中新增该对象，如果有，就返回常量池中的对象。</p>
-<p>如果对空间要求很高，并且存在大量重复字符串时，可以考虑调用<code>intern()</code>方法。</p>
-<h2 id="⭐GC调优"><a href="#⭐GC调优" class="headerlink" title="⭐GC调优"></a>⭐GC调优</h2><p>⭐<strong>降低<a href="#">Minor GC</a>Minor GC频率</strong>：</p>
-<p>[Minor GC](#Minor GC)只有Eden区耗尽才会触发，如果新生代空间比较小，就会导致[Minor GC](#Minor GC)很频繁，可以通过增大新生代空间降低[Minor GC](#Minor GC)的频率。</p>
-<p>扩容Eden区虽然可以减少[Minor GC](#Minor GC)的次数，但是会导致新生代中堆积更多对象，有可能会增加单次[Minor GC](#Minor GC)的时间？</p>
-<p>[Minor GC](#Minor GC)主要分为两部分：扫描新生代、将存活对象复制到Survivor区</p>
-<p>通常复制对象的成本要远高于扫描成本。</p>
-<ul>
-<li>如果内存中大部分对象存活时间都比较长，这种情况增加新生代空间，会导致新生代中堆积更多还活着的对象，[Minor GC](#Minor GC)要复制更多对象，反而会增加[Minor GC](#Minor GC)时长。</li>
-<li>如果内存中的对象存活时间都比较短，这种情况扩容新生代，并不会增加单次[Minor GC](#Minor GC)的时间，因为[Minor GC](#Minor GC)时长主要取决于，扫描后存活对象的数量。如果Eden区空间比较大，[Minor GC](#Minor GC)的时间间隔就会变长，大部分对象在[Minor GC](#Minor GC)开始之前就已经死掉了，这样就可以减少复制对象的数量。</li>
-</ul>
-<p>⭐<strong>降低[Full GC](#Full GC)频率</strong>：</p>
-<p>堆空间不足、老年代空间不足，会触发[Full GC](#Full GC)。</p>
-<p>[Full GC](#Full GC)会导致上下文切换，降低系统性能，降低Full GC的频率：</p>
-<ol>
-<li>避免创建大对象，如果对象的大小超过了新生代最大对象阈值，会被直接创建在老年代，</li>
-<li>增大堆空间。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>调优</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>系统设计</title>
     <url>/2022/12/08/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</url>
     <content><![CDATA[<h2 id="秒杀系统"><a href="#秒杀系统" class="headerlink" title="秒杀系统"></a>秒杀系统</h2><p><strong>巨大的瞬时流量</strong>：</p>
@@ -680,6 +633,53 @@
       </categories>
       <tags>
         <tag>设计原则</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>性能调优</title>
+    <url>/2022/12/08/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</url>
+    <content><![CDATA[<h2 id="字符串性能优化"><a href="#字符串性能优化" class="headerlink" title="字符串性能优化"></a>字符串性能优化</h2><p>String对象的实现原理在不同的JDK版本是不同的：</p>
+<ul>
+<li><p>在JDK 6以及之前的版本中，String对象主要有四个成员变量：char[] 数组、偏移量 offset、字符数量 count、哈希值 hash。</p>
+<blockquote>
+<p>String对象是通过offset和count属性通过char[]数组获取字符串，这种方式效率很高，但是有可能会导致内存泄漏。</p>
+<p>因为<code>substring()</code>方法返回的子字符串对象会使用原字符串中的char[]数组，这就会导致原字符串始终无法被回收掉。</p>
+</blockquote>
+</li>
+<li><p>JDK 7版本对String类做了修改，移除了offset和count这两个属性，<code>substring()</code>方法也不再共享char[]数组，解决了内存泄漏的问题。</p>
+</li>
+<li><p>JDK 9版本将String类中的char[]数组改为了 byte[]数组，新增编码格式属性coder。</p>
+<blockquote>
+<p>这样做的好处是可以节约内存，因为一个char字符占2个字节，一个byte字符占1个字节。</p>
+<p>coder属性的作用是，在计算字符串长度或者使用<code>indexOf()</code>方法时，需要根据这个字段，判断如何计算字符串长度。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>通过 String.intern方法节省内存</strong>：</p>
+<p>调用<code>intern()</code>方法时，会判断字符串常量池中是否有相同的对象，如果没有，就在常量池中新增该对象，如果有，就返回常量池中的对象。</p>
+<p>如果对空间要求很高，并且存在大量重复字符串时，可以考虑调用<code>intern()</code>方法。</p>
+<h2 id="⭐GC调优"><a href="#⭐GC调优" class="headerlink" title="⭐GC调优"></a>⭐GC调优</h2><p>⭐<strong>降低<a href="#">Minor GC</a>Minor GC频率</strong>：</p>
+<p>[Minor GC](#Minor GC)只有Eden区耗尽才会触发，如果新生代空间比较小，就会导致[Minor GC](#Minor GC)很频繁，可以通过增大新生代空间降低[Minor GC](#Minor GC)的频率。</p>
+<p>扩容Eden区虽然可以减少[Minor GC](#Minor GC)的次数，但是会导致新生代中堆积更多对象，有可能会增加单次[Minor GC](#Minor GC)的时间？</p>
+<p>[Minor GC](#Minor GC)主要分为两部分：扫描新生代、将存活对象复制到Survivor区</p>
+<p>通常复制对象的成本要远高于扫描成本。</p>
+<ul>
+<li>如果内存中大部分对象存活时间都比较长，这种情况增加新生代空间，会导致新生代中堆积更多还活着的对象，[Minor GC](#Minor GC)要复制更多对象，反而会增加[Minor GC](#Minor GC)时长。</li>
+<li>如果内存中的对象存活时间都比较短，这种情况扩容新生代，并不会增加单次[Minor GC](#Minor GC)的时间，因为[Minor GC](#Minor GC)时长主要取决于，扫描后存活对象的数量。如果Eden区空间比较大，[Minor GC](#Minor GC)的时间间隔就会变长，大部分对象在[Minor GC](#Minor GC)开始之前就已经死掉了，这样就可以减少复制对象的数量。</li>
+</ul>
+<p>⭐<strong>降低[Full GC](#Full GC)频率</strong>：</p>
+<p>堆空间不足、老年代空间不足，会触发[Full GC](#Full GC)。</p>
+<p>[Full GC](#Full GC)会导致上下文切换，降低系统性能，降低Full GC的频率：</p>
+<ol>
+<li>避免创建大对象，如果对象的大小超过了新生代最大对象阈值，会被直接创建在老年代，</li>
+<li>增大堆空间。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>调优</tag>
       </tags>
   </entry>
   <entry>
