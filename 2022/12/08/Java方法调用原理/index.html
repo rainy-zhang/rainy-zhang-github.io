@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Java代码运行原理、即时编译相关理论">
+  <meta name="description" content="Java方法调用原理、Lambda表达式执行原理、方法内联">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM">
-<meta property="og:url" content="http://example.com/2022/12/07/JVM/index.html">
+<meta property="og:title" content="Java方法调用原理">
+<meta property="og:url" content="http://example.com/2022/12/08/Java%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Java代码运行原理、即时编译相关理论">
+<meta property="og:description" content="Java方法调用原理、Lambda表达式执行原理、方法内联">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-07T09:26:03.000Z">
-<meta property="article:modified_time" content="2022-12-08T02:20:28.465Z">
+<meta property="article:published_time" content="2022-12-08T01:56:22.000Z">
+<meta property="article:modified_time" content="2022-12-08T02:32:08.767Z">
 <meta property="article:author" content="Rainy">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/12/07/JVM/">
+<link rel="canonical" href="http://example.com/2022/12/08/Java%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E5%8E%9F%E7%90%86/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>JVM | Hexo</title>
+  <title>Java方法调用原理 | Hexo</title>
   
 
 
@@ -166,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/07/JVM/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/Java%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -179,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          JVM
+          Java方法调用原理
         </h1>
 
         <div class="post-meta">
@@ -188,16 +188,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-12-07 17:26:03" itemprop="dateCreated datePublished" datetime="2022-12-07T17:26:03+08:00">2022-12-07</time>
+              <time title="创建时间：2022-12-08 09:56:22 / 修改时间：10:32:08" itemprop="dateCreated datePublished" datetime="2022-12-08T09:56:22+08:00">2022-12-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-08 10:20:28" itemprop="dateModified" datetime="2022-12-08T10:20:28+08:00">2022-12-08</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -209,7 +203,7 @@
             </span>
 
           
-            <div class="post-description">Java代码运行原理、即时编译相关理论</div>
+            <div class="post-description">Java方法调用原理、Lambda表达式执行原理、方法内联</div>
 
         </div>
       </header>
@@ -220,75 +214,83 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="⭐Java代码运行原理"><a href="#⭐Java代码运行原理" class="headerlink" title="⭐Java代码运行原理"></a>⭐Java代码运行原理</h3><p>首先需要把java文件编译成class文件，然后把编译后的class文件加载到Java虚拟机中。</p>
-<blockquote>
-<p>加载后的Java类会被存放在<a href="#%E6%96%B9%E6%B3%95%E5%8C%BA">方法区</a>中</p>
-</blockquote>
-<p>但是Java字节码是无法直接执行的，所以需要Java虚拟机把字节码翻译成机器码。</p>
-<p>Java虚拟机有两种翻译模式：</p>
+        <h3 id="方法调用原理"><a href="#方法调用原理" class="headerlink" title="方法调用原理"></a>方法调用原理</h3><p>Java虚拟机会根据类名、方法名、<a href="#%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0%E7%AC%A6">方法描述符</a>来识别方法。</p>
+<p>Java虚拟机中有5个调用方法的指令：</p>
 <ol>
-<li>第一种是<strong>解释执行：就是翻译一条执行一条</strong>。</li>
-<li>第二种是<strong>即时编译：就是把一个方法中包含的所有字节码都翻译成机器码之后再执行</strong>。</li>
+<li>invokestatic：用于调用静态方法。</li>
+<li>invokespecial：用于调用私有方法、构造器、使用super关键字调用父类实例方法或构造器、所实现接口的默认方法。</li>
+<li>invokevirtual：用于调用非私有方法。</li>
+<li>invokeinterface：用于调用接口方法。</li>
+<li>invokedynamic：用于调用动态方法。</li>
 </ol>
-<p>解释执行的优势在于不需要等待编译，程序的启动速度更快。</p>
-<p>即时编译的优势在于编译完成后实际运行速度更快。</p>
-<p>**HotSpot默认采用的是混合模式，它会先解释执行字节码，然后把其中反复执行的<a href="#%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81">热点代码</a>以方法为单位再进行<a href="#%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91">即时编译</a>**。</p>
-<p>⭐<strong>为什么不把Java代码全部编译成机器码</strong>？</p>
-<p>为了避免重复编译，即时编译后生成的机器码会保存在<a href="#CodeCache">CodeCache</a>中，会占用额外的内存空间。如果把很多调用次数很少的代码，也用即时编译生成机器码，就会导致编译时间变长，而且也需要更多内存空间保存这些机器码。</p>
-<p><b id='CodeCache'>CodeCache</b>：是一块堆外内存，经过即时编译后的机器码会存放在这里。</p>
-<p>CodeCache的大小是固定的，如果CodeCache满了，JVM就会判断每一个即时编译后的方法的方法调用计数器和循环回边计数器是否低于阈值，如果低于阈值就会清理掉这个方法的机器码。</p>
+<p>对于静态方法和私有方法，Java虚拟机可以直接识别具体的目标方法。</p>
+<p>对于非私有方法和接口方法，因为方法有可能被重写，所以Java虚拟机需要在执行过程中，根据调用者的动态类型，来确定具体的目标方法。 如果方法被标记为final，就可以直接确定目标方法。</p>
+<p>在编译过程中，Java虚拟机并不知道目标方法的内存地址，所以Java编译器会用<a href="#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8">符号引用</a>来表示目标方法。</p>
+<p>经过<a href="#%E8%A7%A3%E6%9E%90">解析阶段</a>之后，这些符号引用会被解析成实际引用。</p>
+<ul>
+<li>对于可以静态绑定的方法来说，实际引用指向的是一个指向目标方法的指针。</li>
+<li>对于需要动态绑定的方法来说，实际引用指向的是一个<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>的索引。在执行过程中，Java虚拟机会获取调用者的实际类型，并获取该类型中的<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>，然后根据引用指向的索引值获得目标方法。</li>
+</ul>
+<p>所以动态绑定会更加耗时。不过为了减少动态绑定额外开销，即时编译有两种优化手段：<a href="#%E5%86%85%E8%81%94%E7%BC%93%E5%AD%98">内联缓存</a>和<a href="#%E6%96%B9%E6%B3%95%E5%86%85%E8%81%94">方法内联</a>。</p>
+<p><b id='方法描述符'>方法描述符</b>：由方法的参数类型和返回类型组成。</p>
+<p><b id='静态绑定'>静态绑定</b>：Java虚拟机在<a href="#%E8%A7%A3%E6%9E%90">解析</a>阶段就能识别目标方法。</p>
+<p><b id='动态绑定'>动态绑定</b>：Java虚拟机需要在运行过程中根据调用者的动态类型来识别目标方法。</p>
+<p>⭐<b id='方法表'>方法表</b>：</p>
+<p>方法表本质上是一个数组，每个元素指向当前类或者父类中非私有的方法。这些方法可能是具体的、可执行的方法，也可能是抽象方法。</p>
+<p>方法表有两个特性：</p>
+<ol>
+<li>第一，子类方法表包含父类方法表中所有方法。</li>
+<li>第二，子类重写的方法，在方法表中的索引值，与父类方法表中的索引值相同。</li>
+</ol>
+<p><b id='内联缓存'>内联缓存</b>：</p>
+<p>内联缓存是一种加快动态绑定的技术，它可以缓存调用虚方法的调用者的动态类型，以及该类型对应的目标方法。</p>
+<p>之后在调用方法时，如果发现类型已缓存，就可以直接调用目标方法。如果没有缓存，就使用<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>来动态绑定目标方法。</p>
+<h3 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h3><p>在编译过程中，Java编译器会对Lambda表达式进行解语法糖，生成一个方法来保存Lambda表达式的内容。这个方法的参数列表包含：Lambda表达式的参数和捕获的外部变量。</p>
+<p>第一次执行时，Java虚拟机会生成一个适配器类，这个适配器实现了对应的函数式接口。</p>
+<ul>
+<li><p>对于没有捕获外部变量的Lambda表达式，可以认为它与上下文是无关的，只需要创建一次适配器类的实例。</p>
+</li>
+<li><p>对于捕获了外部变量的Lambda表达式，为了避免变量发生变化，每次执行Lambda表达式时都会创建一个新的适配器实例。</p>
+</li>
+</ul>
+<p>对于没有捕获外部变量的Lambda表达式，第一次调用时会有额外创建适配器类的开销，之后的调用会复用同一个适配器实例，跟普通方法的调用的效率一样。</p>
+<p>对于捕获了外部变量的Lambda表达式，如果Lambda表达式中的内容可以被<a href="#%E6%96%B9%E6%B3%95%E5%86%85%E8%81%94">内联</a>，会借助<a href="#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90">逃逸分析</a>将新建适配器实例这个操作优化为空操作。</p>
+<p>所以使用Lambda表达式的时候，尽量不要捕获外部变量。</p>
+<h3 id="⭐方法内联"><a href="#⭐方法内联" class="headerlink" title="⭐方法内联"></a>⭐<b id='方法内联'>方法内联</b></h3><p>方法内联是指，在编译过程中遇到方法调用时，将目标方法纳入到当前方法体的编译范围中，可以消除方法调用的额外开销。</p>
+<p>比如调用get/set方法时，需要保存当前方法的执行位置、创建get/set方法的栈帧、访问字段，弹出栈桢、最后再恢复到原来方法的执行位置。如果内联了get/set方法之后，就只需要访问字段就好了。</p>
+<p>在<a href="#C2">C2</a>编译器中，方法内联是在解析字节码的过程中完成的，每当碰到方法调用字节码时，编译器会判断是否需要内联目标方法，如果需要内联就会开始解析目标方法的字节码，并复制到当前方法中。</p>
+<p>通常情况下，方法内联越多，字节码的执行效率就越高，但是对于编译器来说，内联越多，编译时间就越长，生成的机器码就越长。在Java虚拟机中，即时编译后生成的机器码会存在CodeCache中，但是这个区域的大小是有限制的。也就是说，生成的机器码越长，越容易填满CodeCache，如果CodeCache满了就会暂时关闭即时编译。</p>
 <blockquote>
 <p>可以通过JVM参数<code>-XX:ReservedCodeCacheSize</code>控制CodeCache的大小。</p>
 </blockquote>
-<h3 id="⭐即时编译"><a href="#⭐即时编译" class="headerlink" title="⭐即时编译"></a>⭐<span id='即时编译'>即时编译</span></h3><p>Java虚拟机内置了多个即时编译器：<strong>C1</strong>、<strong>C2</strong>。</p>
-<ul>
-<li><p><b id='C1'>C1</b>：也叫做<strong>Client编译器，面向的是对启动速度有要求的客户端应用</strong>，优化手段比较简单，编译时间比较短。</p>
+<p>所以方法内联是有条件的：</p>
+<ol>
+<li><p>JDK内部方法中，带有<code>@ForceInline</code>注解的方法会被强制内联，带有<code>@DontInline</code>注解的方法不会被内联。</p>
+</li>
+<li><p>如果目标方法编译后生成的机器码大小超过2000，则无法内联。</p>
 <blockquote>
-<p>对应的JVM参数是<code>-client</code>。</p>
+<p>可以通过<code>-XX:InlineSmallCode</code>调整</p>
 </blockquote>
 </li>
-<li><p><b id='C2'>C2</b>：也叫做<strong>Server编译器，面对的是对执行效率有要求的服务端应用</strong>，优化手段相对复杂，编译时间比较长，但是生成的代码执行效率高（用C++实现的）。</p>
+<li><p>递归方法不会被内联。</p>
+</li>
+<li><p>调用层级超过9层的的方法调用。</p>
 <blockquote>
-<p>对应的JVM参数是<code>-server</code>。</p>
+<p>如果方法a调用方法b，方法b调用方法c，那么方法b就是方法a的1层调用，方法c就是方法a的2层调用。</p>
+<p>可以通过<code>-XX:MaxInlineLevel</code>调整。</p>
 </blockquote>
 </li>
-</ul>
-<p><strong>从JDK7版本开始，HotSpot默认采用分层编译模式</strong>：**<a href="#%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81">热点代码</a>首先会被C1编译，然后热点中的热点会进一步被C2编译**。</p>
-<p>即时编译的过程是在额外编译线程中进行的，HotSpot会根据CPU核心数来设置编译线程的数量，并按照1:2的比例分配给C1和C2。</p>
-<p>字节码的解释执行和即时编译可以同时进行，即时编译完成后的机器码会在下次调用该方法时替换原本的解释执行。</p>
-<p>分层编译会把Java虚拟机的执行状态分为五个层次：C1代码（C1生成的机器码），C2代码（C2生成的机器码）</p>
-<ol>
-<li>第一层是，解释执行。</li>
-<li>第二层是，执行不带<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第三层是，执行只带方法调用次数和循环回边次数<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第四层是，执行带所有<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第五层是，执行C2代码。</li>
+<li><p>如果目标方法的调用次数小于250次，不会被内联。</p>
+<blockquote>
+<p>可以通过JVM参数<code>-XX:MinInliningThreshold</code>调整</p>
+</blockquote>
+</li>
+<li><p>如果目标方法的字节码小于6，就直接内联。</p>
+<blockquote>
+<p>可以通过JVM参数<code>-XX:MaxTrivialSize</code>调整</p>
+</blockquote>
+</li>
 </ol>
-<p>其中第2层和第5层是终止状态，当一个方法被这两层编译后，如果编译后的机器码没有失效，Java虚拟机不会再对该方法发出编译请求。</p>
-<p>通常情况下，热点方法会被第4层的C1编译，然后再被第5层的C2编译，但是如果方法比较简单（比如getter/setter），Java虚拟机就会认为这个方法编译后的C1代码和C2代码执行效率相同。就会直接选择第2层的C1编译。</p>
-<p>Java8默认开启了分层编译。不管开启还是关闭分层编译，<code>-client</code>和<code>-server</code>都是无效的。关闭分层编译的情况下，默认使用的是C2。</p>
-<p>如果希望使用C1，可以在打开分层编译的情况下，使用<code>-XX:TieredStopAtLevel=1</code>，这样在解释执行之后会直接由2层的C1进行编译。</p>
-<p>⭐<b id='profiling'>profiling</b>：收集能够反映程序执行状态的数据的过程。这些数据被称为profile。</p>
-<p>比如方法调用次数、循环回边次数、分支跳转次数、类型强制转换指令，类型判断指令（instanceof）。</p>
-<p>⭐<b id='热点代码'>热点代码</b>：</p>
-<ol>
-<li>被多次调用的方法</li>
-<li>方法内部包含循环次数较多的循环体</li>
-</ol>
-<p>Java虚拟机为每个方法都准备了两个计数器：<strong>方法调用计数器</strong>和<strong>循环回边计数器</strong>。</p>
-<p><strong>方法调用计数器</strong>：</p>
-<p><strong>用来统计方法的调用次数，在C1中默认阈值是1500次，在C2中默认阈值是10000次</strong>。</p>
-<p>方法调用计数器统计的不是方法被调用的绝对次数，而是执行频率。也就是说在一段时间内，如果方法的调用次数未达到阈值，计数器就会减少为原来的一半，这个过程叫<strong>热度衰减</strong>，这段时间叫<strong>半衰周期</strong>。</p>
-<p>比如阈值是10000，半衰周期是1个小时，如果在1个小时内，某一个方法被调用了8000次，虚拟机就会认为它不是热点代码，就会把调用次数减少为4000。</p>
-<p>可以通过JVM参数调整计数器阈值、热度衰减以及半衰周期。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计数器阈值</span></span><br><span class="line">-XX:CompileThreshold</span><br><span class="line"><span class="comment">// 关闭热度衰减</span></span><br><span class="line">-XX:-UseCounterDecay</span><br><span class="line"><span class="comment">// 设置半衰周期时间（秒）</span></span><br><span class="line">-XX:CounterHalfLifeTime</span><br></pre></td></tr></table></figure>
-
-
-
-<p><b id='循环回边计数器'>循环回边计数器</b>：</p>
-<p><strong>用来统计方法中循环体的循环次数</strong>。在C1中默认阈值是13500次，在C2中默认阈值是10700次。</p>
-<p>之所以要维护两个计数器，是因为Java虚拟机还存在一种以循环为单位的即时编译，叫做OSR编译，循环回边计数器就是用来触发这种类型的编译的。</p>
-<p>⭐<b id='OSR编译'>OSR编译</b>：是一种可以在程序执行过程中，动态替换方法栈帧的技术，可以让程序在解释执行和即时编译后的代码之间切换。</p>
 
     </div>
 
@@ -306,10 +308,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2022/12/08/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" rel="next" title="Java内存模型">
-      Java内存模型 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/12/08/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" rel="prev" title="Java类加载机制">
+      <i class="fa fa-chevron-left"></i> Java类加载机制
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/08/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" rel="next" title="垃圾回收">
+      垃圾回收 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -370,7 +375,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90Java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">⭐Java代码运行原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">⭐即时编译</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">方法调用原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">Lambda表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E6%96%B9%E6%B3%95%E5%86%85%E8%81%94"><span class="nav-number">3.</span> <span class="nav-text">⭐方法内联</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -505,7 +510,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'rainy-zhang.github.io',
       owner       : 'rainy-zhang',
       admin       : ['rainy-zhang'],
-      id          : '219fd07a5bb480b89c2f9538a6fc0bb4',
+      id          : '17aab4eafd39033e680695ff284607c0',
         language: 'zh-CN',
       distractionFreeMode: true
     });

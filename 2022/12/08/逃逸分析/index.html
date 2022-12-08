@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Java代码运行原理、即时编译相关理论">
+  <meta name="description" content="逃逸分析中锁消除、锁粗化、标量替换优化机制的概述">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM">
-<meta property="og:url" content="http://example.com/2022/12/07/JVM/index.html">
+<meta property="og:title" content="逃逸分析">
+<meta property="og:url" content="http://example.com/2022/12/08/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Java代码运行原理、即时编译相关理论">
+<meta property="og:description" content="逃逸分析中锁消除、锁粗化、标量替换优化机制的概述">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-07T09:26:03.000Z">
-<meta property="article:modified_time" content="2022-12-08T02:20:28.465Z">
+<meta property="article:published_time" content="2022-12-08T02:00:04.000Z">
+<meta property="article:modified_time" content="2022-12-08T02:02:58.081Z">
 <meta property="article:author" content="Rainy">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/12/07/JVM/">
+<link rel="canonical" href="http://example.com/2022/12/08/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>JVM | Hexo</title>
+  <title>逃逸分析 | Hexo</title>
   
 
 
@@ -166,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/07/JVM/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -179,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          JVM
+          逃逸分析
         </h1>
 
         <div class="post-meta">
@@ -188,16 +188,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-12-07 17:26:03" itemprop="dateCreated datePublished" datetime="2022-12-07T17:26:03+08:00">2022-12-07</time>
+              <time title="创建时间：2022-12-08 10:00:04 / 修改时间：10:02:58" itemprop="dateCreated datePublished" datetime="2022-12-08T10:00:04+08:00">2022-12-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-08 10:20:28" itemprop="dateModified" datetime="2022-12-08T10:20:28+08:00">2022-12-08</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -209,7 +203,7 @@
             </span>
 
           
-            <div class="post-description">Java代码运行原理、即时编译相关理论</div>
+            <div class="post-description">逃逸分析中锁消除、锁粗化、标量替换优化机制的概述</div>
 
         </div>
       </header>
@@ -220,75 +214,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="⭐Java代码运行原理"><a href="#⭐Java代码运行原理" class="headerlink" title="⭐Java代码运行原理"></a>⭐Java代码运行原理</h3><p>首先需要把java文件编译成class文件，然后把编译后的class文件加载到Java虚拟机中。</p>
+        <h3 id="⭐逃逸分析"><a href="#⭐逃逸分析" class="headerlink" title="⭐逃逸分析"></a>⭐逃逸分析</h3><p>逃逸分析是一种可以减少内存分配和回收压力的技术。Java虚拟机可以通过逃逸分析，判断对象是否发生逃逸。</p>
 <blockquote>
-<p>加载后的Java类会被存放在<a href="#%E6%96%B9%E6%B3%95%E5%8C%BA">方法区</a>中</p>
-</blockquote>
-<p>但是Java字节码是无法直接执行的，所以需要Java虚拟机把字节码翻译成机器码。</p>
-<p>Java虚拟机有两种翻译模式：</p>
-<ol>
-<li>第一种是<strong>解释执行：就是翻译一条执行一条</strong>。</li>
-<li>第二种是<strong>即时编译：就是把一个方法中包含的所有字节码都翻译成机器码之后再执行</strong>。</li>
-</ol>
-<p>解释执行的优势在于不需要等待编译，程序的启动速度更快。</p>
-<p>即时编译的优势在于编译完成后实际运行速度更快。</p>
-<p>**HotSpot默认采用的是混合模式，它会先解释执行字节码，然后把其中反复执行的<a href="#%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81">热点代码</a>以方法为单位再进行<a href="#%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91">即时编译</a>**。</p>
-<p>⭐<strong>为什么不把Java代码全部编译成机器码</strong>？</p>
-<p>为了避免重复编译，即时编译后生成的机器码会保存在<a href="#CodeCache">CodeCache</a>中，会占用额外的内存空间。如果把很多调用次数很少的代码，也用即时编译生成机器码，就会导致编译时间变长，而且也需要更多内存空间保存这些机器码。</p>
-<p><b id='CodeCache'>CodeCache</b>：是一块堆外内存，经过即时编译后的机器码会存放在这里。</p>
-<p>CodeCache的大小是固定的，如果CodeCache满了，JVM就会判断每一个即时编译后的方法的方法调用计数器和循环回边计数器是否低于阈值，如果低于阈值就会清理掉这个方法的机器码。</p>
-<blockquote>
-<p>可以通过JVM参数<code>-XX:ReservedCodeCacheSize</code>控制CodeCache的大小。</p>
-</blockquote>
-<h3 id="⭐即时编译"><a href="#⭐即时编译" class="headerlink" title="⭐即时编译"></a>⭐<span id='即时编译'>即时编译</span></h3><p>Java虚拟机内置了多个即时编译器：<strong>C1</strong>、<strong>C2</strong>。</p>
-<ul>
-<li><p><b id='C1'>C1</b>：也叫做<strong>Client编译器，面向的是对启动速度有要求的客户端应用</strong>，优化手段比较简单，编译时间比较短。</p>
-<blockquote>
-<p>对应的JVM参数是<code>-client</code>。</p>
-</blockquote>
-</li>
-<li><p><b id='C2'>C2</b>：也叫做<strong>Server编译器，面对的是对执行效率有要求的服务端应用</strong>，优化手段相对复杂，编译时间比较长，但是生成的代码执行效率高（用C++实现的）。</p>
-<blockquote>
-<p>对应的JVM参数是<code>-server</code>。</p>
-</blockquote>
-</li>
-</ul>
-<p><strong>从JDK7版本开始，HotSpot默认采用分层编译模式</strong>：**<a href="#%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81">热点代码</a>首先会被C1编译，然后热点中的热点会进一步被C2编译**。</p>
-<p>即时编译的过程是在额外编译线程中进行的，HotSpot会根据CPU核心数来设置编译线程的数量，并按照1:2的比例分配给C1和C2。</p>
-<p>字节码的解释执行和即时编译可以同时进行，即时编译完成后的机器码会在下次调用该方法时替换原本的解释执行。</p>
-<p>分层编译会把Java虚拟机的执行状态分为五个层次：C1代码（C1生成的机器码），C2代码（C2生成的机器码）</p>
-<ol>
-<li>第一层是，解释执行。</li>
-<li>第二层是，执行不带<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第三层是，执行只带方法调用次数和循环回边次数<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第四层是，执行带所有<a href="#profiling">profiling</a>的C1代码。</li>
-<li>第五层是，执行C2代码。</li>
-</ol>
-<p>其中第2层和第5层是终止状态，当一个方法被这两层编译后，如果编译后的机器码没有失效，Java虚拟机不会再对该方法发出编译请求。</p>
-<p>通常情况下，热点方法会被第4层的C1编译，然后再被第5层的C2编译，但是如果方法比较简单（比如getter/setter），Java虚拟机就会认为这个方法编译后的C1代码和C2代码执行效率相同。就会直接选择第2层的C1编译。</p>
-<p>Java8默认开启了分层编译。不管开启还是关闭分层编译，<code>-client</code>和<code>-server</code>都是无效的。关闭分层编译的情况下，默认使用的是C2。</p>
-<p>如果希望使用C1，可以在打开分层编译的情况下，使用<code>-XX:TieredStopAtLevel=1</code>，这样在解释执行之后会直接由2层的C1进行编译。</p>
-<p>⭐<b id='profiling'>profiling</b>：收集能够反映程序执行状态的数据的过程。这些数据被称为profile。</p>
-<p>比如方法调用次数、循环回边次数、分支跳转次数、类型强制转换指令，类型判断指令（instanceof）。</p>
-<p>⭐<b id='热点代码'>热点代码</b>：</p>
-<ol>
-<li>被多次调用的方法</li>
-<li>方法内部包含循环次数较多的循环体</li>
-</ol>
-<p>Java虚拟机为每个方法都准备了两个计数器：<strong>方法调用计数器</strong>和<strong>循环回边计数器</strong>。</p>
-<p><strong>方法调用计数器</strong>：</p>
-<p><strong>用来统计方法的调用次数，在C1中默认阈值是1500次，在C2中默认阈值是10000次</strong>。</p>
-<p>方法调用计数器统计的不是方法被调用的绝对次数，而是执行频率。也就是说在一段时间内，如果方法的调用次数未达到阈值，计数器就会减少为原来的一半，这个过程叫<strong>热度衰减</strong>，这段时间叫<strong>半衰周期</strong>。</p>
-<p>比如阈值是10000，半衰周期是1个小时，如果在1个小时内，某一个方法被调用了8000次，虚拟机就会认为它不是热点代码，就会把调用次数减少为4000。</p>
-<p>可以通过JVM参数调整计数器阈值、热度衰减以及半衰周期。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计数器阈值</span></span><br><span class="line">-XX:CompileThreshold</span><br><span class="line"><span class="comment">// 关闭热度衰减</span></span><br><span class="line">-XX:-UseCounterDecay</span><br><span class="line"><span class="comment">// 设置半衰周期时间（秒）</span></span><br><span class="line">-XX:CounterHalfLifeTime</span><br></pre></td></tr></table></figure>
+<p>如果对象被存入堆中，或者对象被多处代码引用，就说明对象是逃逸的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">test</span><span class="params">()</span> &#123;	</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Object</span>();	<span class="comment">// 将对象return出去，会发生逃逸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object obj;</span><br><span class="line"><span class="keyword">public</span> Object <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">	obj = <span class="keyword">new</span> <span class="title class_">Object</span>();	<span class="comment">// 将对象赋值为成员属性，会发生逃逸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">	test2(obj);	<span class="comment">// 将对象作为参数传递给其它方法，会发生逃逸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>即时编译可以根据逃逸分析的结果进行<a href="#%E9%94%81%E6%B6%88%E9%99%A4">锁消除</a>、<a href="#%E9%94%81%E7%B2%97%E5%8C%96">锁粗化</a>、<a href="#%E6%A0%87%E9%87%8F%E6%9B%BF%E6%8D%A2">标量替换</a>的优化。</p>
+<p>⭐<b id='锁消除'>锁消除</b>：</p>
+<p>如果锁对象不逃逸，那么对于该对象的加锁和解锁是没有意义的，因为其它线程并不能获取该锁对象，也不可能对其进行加锁和解锁操作。这种情况下，即时编译就会消除对该对象的加锁和解锁操作。</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (<span class="keyword">new</span> <span class="title class_">Object</span>()) &#123;&#125;</span><br></pre></td></tr></table></figure>
 
-<p><b id='循环回边计数器'>循环回边计数器</b>：</p>
-<p><strong>用来统计方法中循环体的循环次数</strong>。在C1中默认阈值是13500次，在C2中默认阈值是10700次。</p>
-<p>之所以要维护两个计数器，是因为Java虚拟机还存在一种以循环为单位的即时编译，叫做OSR编译，循环回边计数器就是用来触发这种类型的编译的。</p>
-<p>⭐<b id='OSR编译'>OSR编译</b>：是一种可以在程序执行过程中，动态替换方法栈帧的技术，可以让程序在解释执行和即时编译后的代码之间切换。</p>
+<p>这样的代码会被完全优化掉，因为其它线程无法获取到该锁对象。</p>
+</blockquote>
+<h4 id="⭐锁粗化："><a href="#⭐锁粗化：" class="headerlink" title="⭐锁粗化："></a>⭐<b id='锁粗化'>锁粗化</b>：</h4><p>如果虚拟机检测到有一系列连串的对同一个对象加锁和解锁操作，就会将其合并成一次范围更大的加锁和解锁操作。</p>
+<blockquote>
+<p>比如对于一段连续调用<code>StringBuffer.append()</code>方法的代码，只需要在第一次append方法时加锁，最后一次append方法结束后解锁：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringBufferTest</span> &#123;</span><br><span class="line"><span class="type">StringBuffer</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">append</span><span class="params">()</span>&#123;</span><br><span class="line">  sb.append(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">  sb.append(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">  sb.append(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="⭐标量替换："><a href="#⭐标量替换：" class="headerlink" title="⭐标量替换："></a>⭐<b id='标量替换'>标量替换</b>：</h4><p>标量替换可以理解为把原本对对象字段的访问，替换为一个个局部变量的访问。</p>
+<p>实际上就是把要访问的目标对象内部的字段提取到当前方法的局部变量中，这样就可以减少对象的分配次数，从而提高垃圾回收的效率。</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">repeat</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();	<span class="comment">// 经过标量替换后该分配无意义，可以被优化掉</span></span><br><span class="line">	user.username = <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">	user.password = <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">repeat</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;	<span class="comment">// 标量替换</span></span><br><span class="line">	<span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;	<span class="comment">// 标量替换</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="栈上分配："><a href="#栈上分配：" class="headerlink" title="栈上分配："></a><b id='栈上分配'>栈上分配</b>：</h4><p>Java虚拟机中的对象是在堆上分配的，但是堆空间是线程共享的，Java虚拟机需要定期对堆空间进行垃圾回收。</p>
+<p>其实对于不会发生逃逸的对象，Java虚拟机可以直接分配到栈上，这样就可以通过弹出当前方法栈帧时自动回收该对象占据的空间，就可以减少垃圾回收器需要回收的对象数量，可以提高垃圾回收的效率。</p>
 
     </div>
 
@@ -306,10 +262,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2022/12/08/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" rel="next" title="Java内存模型">
-      Java内存模型 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/12/08/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" rel="prev" title="垃圾回收">
+      <i class="fa fa-chevron-left"></i> 垃圾回收
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/08/synchronized%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" rel="next" title="synchronized实现原理">
+      synchronized实现原理 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -370,7 +329,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90Java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">⭐Java代码运行原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">⭐即时编译</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">⭐逃逸分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%AD%90%E9%94%81%E7%B2%97%E5%8C%96%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">⭐锁粗化：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%AD%90%E6%A0%87%E9%87%8F%E6%9B%BF%E6%8D%A2%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">⭐标量替换：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%88%E4%B8%8A%E5%88%86%E9%85%8D%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">栈上分配：</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -505,7 +464,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'rainy-zhang.github.io',
       owner       : 'rainy-zhang',
       admin       : ['rainy-zhang'],
-      id          : '219fd07a5bb480b89c2f9538a6fc0bb4',
+      id          : '122d1dbf2944e554c5d38ffdbe316848',
         language: 'zh-CN',
       distractionFreeMode: true
     });

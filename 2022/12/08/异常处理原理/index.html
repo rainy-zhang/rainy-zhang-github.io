@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://example.com/categories/index.html">
+  <meta name="description" content="Java异常处理原理概述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异常处理原理">
+<meta property="og:url" content="http://example.com/2022/12/08/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Java异常处理原理概述">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-07T08:20:17.000Z">
-<meta property="article:modified_time" content="2022-12-08T01:45:46.388Z">
+<meta property="article:published_time" content="2022-12-08T02:06:23.000Z">
+<meta property="article:modified_time" content="2022-12-08T02:07:06.720Z">
 <meta property="article:author" content="Rainy">
+<meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/categories/">
+<link rel="canonical" href="http://example.com/2022/12/08/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%8E%9F%E7%90%86/">
 
 
 <script id="page-configurations">
@@ -38,13 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>categories | Hexo
-</title>
+  <title>异常处理原理 | Hexo</title>
   
 
 
@@ -156,51 +158,100 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          异常处理原理
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2022-12-08 10:06:23 / 修改时间：10:07:06" itemprop="dateCreated datePublished" datetime="2022-12-08T10:06:23+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Java异常处理原理概述</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="异常处理原理"><a href="#异常处理原理" class="headerlink" title="异常处理原理"></a>异常处理原理</h3><p>在编译生成字节码的时候，编译器会为每个方法添加一个异常表。异常表中的一个元素代表一个异常处理器，异常处理器由from指针、to指针、target指针和捕获的异常类型组成。</p>
+<p>其中from指针和to指针代表异常处理器的监控范围，就是try代码块覆盖的范围。target指针指向的是异常处理器的起始位置，就是catch代码块的起始位置。</p>
+<p>当程序触发异常时，Java虚拟机会从上到下遍历异常表中所有元素，当触发异常的字节码索引值在某个异常处理器的from指针和to指针范围内，Java虚拟机就会判断抛出的异常与该异常处理器要捕获的异常类型是否匹配。如果匹配，Java虚拟机就会执行target指针指向的字节码。</p>
+<p>如果异常表中没有匹配的异常处理器，就会弹出当前方法对应的Java栈帧。然后遍历调用者的异常表，最坏的情况下，Java虚拟机需要遍历当前线程Java栈上所有方法的异常表。</p>
+<p>finally代码块的实现原理就是，复制finally代码块的内容分别放在try-catch代码块的出口处。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/08/synchronized%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" rel="prev" title="synchronized实现原理">
+      <i class="fa fa-chevron-left"></i> synchronized实现原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/08/%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" rel="next" title="反射实现原理">
+      反射实现原理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              目前共计 1 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">12</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -252,6 +303,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">异常处理原理</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -386,7 +438,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'rainy-zhang.github.io',
       owner       : 'rainy-zhang',
       admin       : ['rainy-zhang'],
-      id          : 'a676607444a8bc8b150c9a3aff884e61',
+      id          : '3bb924777e6c594c1f0b715b34b920e8',
         language: 'zh-CN',
       distractionFreeMode: true
     });

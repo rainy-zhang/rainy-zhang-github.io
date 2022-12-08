@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://example.com/categories/index.html">
+  <meta name="description" content="Java类加载机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java类加载机制">
+<meta property="og:url" content="http://example.com/2022/12/08/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Java类加载机制">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-07T08:20:17.000Z">
-<meta property="article:modified_time" content="2022-12-08T01:45:46.388Z">
+<meta property="article:published_time" content="2022-12-08T01:54:27.000Z">
+<meta property="article:modified_time" content="2022-12-08T02:31:59.057Z">
 <meta property="article:author" content="Rainy">
+<meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/categories/">
+<link rel="canonical" href="http://example.com/2022/12/08/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">
 
 
 <script id="page-configurations">
@@ -38,13 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>categories | Hexo
-</title>
+  <title>Java类加载机制 | Hexo</title>
   
 
 
@@ -156,51 +158,151 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java类加载机制
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2022-12-08 09:54:27 / 修改时间：10:31:59" itemprop="dateCreated datePublished" datetime="2022-12-08T09:54:27+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Java类加载机制</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="⭐类加载机制"><a href="#⭐类加载机制" class="headerlink" title="⭐类加载机制"></a>⭐类加载机制</h2><p>从class文件到内存中的类，需要经过<a href="#%E5%8A%A0%E8%BD%BD">加载</a>、<a href="#%E9%AA%8C%E8%AF%81">验证</a>、<a href="#%E5%87%86%E5%A4%87">准备</a>、<a href="#%E8%A7%A3%E6%9E%90">解析</a>、<a href="#%E5%88%9D%E5%A7%8B%E5%8C%96">初始化</a>五个步骤。</p>
+<p>⭐<b id='加载'>加载</b>：</p>
+<p>加载是指查找字节流，并创建类的过程。</p>
+<p>基础类是Java虚拟机预先定义好的，数组类是由Java虚拟机直接生成的，对于其他类，Java虚拟机需要依赖类加载器完成加载过程。</p>
+<p>类加载器有三种：<strong>启动类加载器</strong>、<strong>拓展类加载器</strong>、<strong>应用类加载器</strong>。</p>
+<ul>
+<li><strong>启动类加载器</strong>：是虚拟机的一部分，是由C++实现的，没有对应的Java对象。主要负责加载JDK目录中lib文件夹中的jar包。以及<code>-Xbootclasspath</code>参数指定的路径中的jar包。</li>
+<li><strong>拓展类加载器</strong>：拓展类加载器的父加载器是启动类加载器，主要负责加载JDK目录中lib\ext文件夹中的jar包，以及系统变量<code>java.ext.dirs</code>指定的类。</li>
+<li><strong>应用类加载器</strong>：应用类加载器的父加载器是拓展类加载器，主要负责加载应用程序路径下的类。</li>
+</ul>
+<p>在Java虚拟机中，<strong>类的唯一性是由类加载器和类的全名确定的，就算是同一个class文件，由两个不同的类加载器加载，也会得到两个不同的类</strong>。为了避免同一个类被重复加载，Java虚拟机用双亲委派机制来解决这个问题。</p>
+<p>JDK9版本引入了模块系统，把拓展类加载器改为平台类加载器。只有少数的几个核心模块，比如java.base是由启动类加载器加载的，其它模块都是平台类加载器加载的。</p>
+<p><strong>⭐双亲委派机制</strong>：</p>
+<p>如果一个类加载器收到了加载类的请求，它会先将其委托给父加载器，父加载器继续向上委托，直到启动类加载器。只有父加载器无法加载该类的时候，子加载器才会自己去加载。</p>
+<p>类加载器之间并没有继承关系，是通过组合来实现委派的。</p>
+<p><strong>双亲委派机制是为了保证同一个类只被加载一次</strong>。</p>
+<p>假设没有双亲委派机制，如果在代码中创建了Object类的对象，那么应用类加载器加载这个类的时候就会去加载Object类（会在解析阶段触发Object类的加载），但是Object类已经被启动类加载器加载过了，因为类的唯一性是通过类加载器和全类名确定的，这就会导致应用中有两个Object类。</p>
+<p>⭐<b id='验证'>验证</b></p>
+<p>验证阶段的目的是，确保被加载进来的类满足Java虚拟机的约束条件。</p>
+<blockquote>
+<p>通常Java编译器生成的class文件必然满足Java虚拟机的约束条件，</p>
+</blockquote>
+<p>⭐<b id='准备'>准备</b>：</p>
+<p>准备阶段的目的是，为静态变量分配内存并设置初始值，以及创建当前类的<a href="#%E6%96%B9%E6%B3%95%E8%A1%A8">方法表</a>。</p>
+<p>⭐<b id='解析'>解析</b>：</p>
+<p>解析阶段的目的，是把<a href="#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8">符号引用</a>解析成实际引用。</p>
+<p>如果符号引用指向一个未被加载的类，那么将会触发这个类的<strong>加载</strong>（不会触发这个类的验证、准备、解析、初始化）。</p>
+<p>对于一个方法的符号引用可以分为接口符号引用和非接口符号引用：</p>
+<ul>
+<li><p>对于接口符号引用，Java虚拟机首先会在目标接口中查找方法名和<a href="#%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0%E7%AC%A6">方法描述符</a>都相同的方法。</p>
+<ul>
+<li><p>如果没有找到，就在Object类中找。</p>
+</li>
+<li><p>如果还是没有找到，就在目标接口的父接口中寻找。</p>
+</li>
+</ul>
+</li>
+<li><p>对于非接口符号引用，Java虚拟机首先会在目标类中查找方法名和<a href="#%E6%96%B9%E6%B3%95%E6%8F%8F%E8%BF%B0%E7%AC%A6">方法描述符</a>都相同的方法。</p>
+<ul>
+<li><p>如果没有找到，就在父类中寻找，直到Object类。</p>
+</li>
+<li><p>如果还是没有找到，就在实现的接口中找。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><b id='符号引用'>符号引用</b>：</p>
+<p>在编译阶段，一个类被加载到Java虚拟机之前，这个类无法知道其他类、方法、字段对应的具体地址。所以需要引用这些对象的时候，Java编译器会生成一个符号引用。符号引用存储在class文件常量池中。</p>
+<p>一个方法的符号引用包含：<strong>目标方法所在类的名字、目标方法的名字、接收参数类型、返回值类型</strong>。</p>
+<p>⭐<b id='初始化'>初始化</b>：</p>
+<p>初始化阶段会执行<code>&lt;clinit&gt;</code>方法。</p>
+<p>编译器会在编译阶段，把赋值操作、静态代码块中的代码，收集在一起组成<code>&lt;clinit&gt;</code>方法。</p>
+<blockquote>
+<p>子类初始化时会首先调用父类的 <code>&lt;clinit&gt;</code>方法，然后再执行子类的 <code>&lt;clinit&gt;</code> 方法。</p>
+<p>JVM会通过加锁的方式保证<code>&lt;clinit&gt;</code>方法只会执行一次。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/08/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" rel="prev" title="Java内存模型">
+      <i class="fa fa-chevron-left"></i> Java内存模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/08/Java%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E5%8E%9F%E7%90%86/" rel="next" title="Java方法调用原理">
+      Java方法调用原理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              目前共计 1 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">12</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -252,6 +354,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%AD%90%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">⭐类加载机制</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -386,7 +489,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'rainy-zhang.github.io',
       owner       : 'rainy-zhang',
       admin       : ['rainy-zhang'],
-      id          : 'a676607444a8bc8b150c9a3aff884e61',
+      id          : 'ae707e7372f60c599a790705e9e9f616',
         language: 'zh-CN',
       distractionFreeMode: true
     });

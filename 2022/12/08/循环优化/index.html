@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://example.com/categories/index.html">
+  <meta name="description" content="循环无关代码外提、循环展开概述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环优化">
+<meta property="og:url" content="http://example.com/2022/12/08/%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="循环无关代码外提、循环展开概述">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-07T08:20:17.000Z">
-<meta property="article:modified_time" content="2022-12-08T01:45:46.388Z">
+<meta property="article:published_time" content="2022-12-08T02:21:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T02:22:37.051Z">
 <meta property="article:author" content="Rainy">
+<meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/categories/">
+<link rel="canonical" href="http://example.com/2022/12/08/%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96/">
 
 
 <script id="page-configurations">
@@ -38,13 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>categories | Hexo
-</title>
+  <title>循环优化 | Hexo</title>
   
 
 
@@ -156,51 +158,109 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/08/%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          循环优化
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2022-12-08 10:21:44 / 修改时间：10:22:37" itemprop="dateCreated datePublished" datetime="2022-12-08T10:21:44+08:00">2022-12-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">循环无关代码外提、循环展开概述</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="循环优化"><a href="#循环优化" class="headerlink" title="循环优化"></a>循环优化</h3><p><b id='循环无关代码外提'>循环无关代码外提</b>：</p>
+<p>在循环中，对于一些值不变的表达式，在能够不改变程序语义的情况下，把这些代码提出循环外，就可以避免重复执行这些代码，从而达到性能提升的效果。</p>
+<p>比如我们在遍历一个集合的时候，通常会把<code>size()</code>方法放到循环体里面，但实际上<code>size()</code>方法是不会变化的，经过循环外提后，<code>size()</code>方法会作为局部变量保存起来。</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span>[] array)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; array.length; i++) &#123;</span><br><span class="line">		sum += x + y + array[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码中，循环体中的<code>x + y</code>以及array.length属于恒定不变的代码。经过循环无关代码外提后，会变成这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span>[] array)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> x + y;</span><br><span class="line">	<span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> array.length;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">		sum += n + array[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><b id='循环展开'>循环展开</b>：</p>
+<p>循环展开可以减少循环执行次数。</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">200</span>, i++) &#123;</span><br><span class="line">		delete(i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码需要循环200次，通过循环展开可以得到下面这段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">200</span>, i+=<span class="number">5</span>) &#123;</span><br><span class="line">		delete(i);</span><br><span class="line">		delete(i+<span class="number">1</span>);</span><br><span class="line">		delete(i+<span class="number">2</span>);</span><br><span class="line">		delete(i+<span class="number">3</span>);</span><br><span class="line">		delete(i+<span class="number">4</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/08/%E6%B3%9B%E5%9E%8B%E6%93%A6%E9%99%A4/" rel="prev" title="泛型擦除">
+      <i class="fa fa-chevron-left"></i> 泛型擦除
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              目前共计 1 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">12</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -252,6 +312,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">循环优化</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -386,7 +447,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'rainy-zhang.github.io',
       owner       : 'rainy-zhang',
       admin       : ['rainy-zhang'],
-      id          : 'a676607444a8bc8b150c9a3aff884e61',
+      id          : 'fd24e9c9bc8e5c4b89f9ce66692489c5',
         language: 'zh-CN',
       distractionFreeMode: true
     });

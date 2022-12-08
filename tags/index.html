@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-07T08:19:33.000Z">
-<meta property="article:modified_time" content="2022-12-07T09:33:54.782Z">
+<meta property="article:modified_time" content="2022-12-07T09:38:39.314Z">
 <meta property="article:author" content="Rainy">
 <meta name="twitter:card" content="summary">
 
@@ -205,6 +205,7 @@
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -256,6 +257,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rainy"
+      src="/images/avatar.gif">
   <p class="site-author-name" itemprop="name">Rainy</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -264,9 +267,15 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
@@ -278,10 +287,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/rainy-zhang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;rainy-zhang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:yourname@gmail.com" title="E-Mail → mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+        <a href="mailto:rainy_zhang@foxmail.com" title="E-Mail → mailto:rainy_zhang@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
   </div>
 
@@ -365,6 +374,26 @@
   
 
   
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'edb1b2802d6853e3cc24',
+      clientSecret: '77dfb2ff88a1839ad1f7d904cb216b5e8b1cbaf1',
+      repo        : 'rainy-zhang.github.io',
+      owner       : 'rainy-zhang',
+      admin       : ['rainy-zhang'],
+      id          : 'f47af1d1eda4d807b02bba32be15120b',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>
