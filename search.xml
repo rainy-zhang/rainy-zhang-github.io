@@ -88,136 +88,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Spring相关</title>
-    <url>/2022/12/08/Spring%E7%9B%B8%E5%85%B3/</url>
-    <content><![CDATA[<h2 id="⭐AOP"><a href="#⭐AOP" class="headerlink" title="⭐AOP"></a>⭐AOP</h2><p>AOP就是按照一定的规则去匹配方法，然后在方法的执行前后添加一些额外的通用逻辑。</p>
-<p>常用的场景有：日志、接口鉴权、异常处理、Spring中的事务也是通过AOP实现的。</p>
-<ul>
-<li>切面（Aspect）：可以用<code>@Aspect</code>注解或者<code>&lt;aop:aspect&gt;</code>标签定义一个切面。</li>
-<li>切点（Pointcut）：可以用来定义方法的匹配规则，当符合规则的方法被调用时，会触发对应的通知。</li>
-<li>通知（Advice）：<ul>
-<li>环绕通知（around）：目标方法执行前和执行后都会触发。用<code>@Around</code>声明。</li>
-<li>前置通知（before）：目标方法执行前触发。用<code>@Before</code>声明。</li>
-<li>后置通知（after）：目标方法执行后触发。用<code>@After</code>声明。</li>
-<li>异常通知（exception）：目标方法执行抛异常时触发。用<code>@AfterThrowing</code>声明。</li>
-<li>返回通知（return）：目标方法返回时触发。用<code>@AfterReturning</code>声明。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明切面</span></span><br><span class="line"><span class="meta">@Aspect</span>	</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义切点</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(public * com.ao.bing.demo.spring.aop..*.*(..))&quot;)</span>	</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">pctMethod</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 环绕通知</span></span><br><span class="line">    <span class="meta">@Around(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">ret</span> <span class="operator">=</span> pjp.proceed();</span><br><span class="line">        System.out.println(<span class="string">&quot;Around advice&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 前置通知</span></span><br><span class="line">    <span class="meta">@Before(&quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Before advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 后置通知</span></span><br><span class="line">    <span class="meta">@After(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">after</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;After advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回通知</span></span><br><span class="line">    <span class="meta">@AfterReturning(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterReturning advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 异常通知</span></span><br><span class="line">    <span class="meta">@AfterThrowing(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterThrowing</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterThrowing advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="⭐IOC"><a href="#⭐IOC" class="headerlink" title="⭐IOC"></a>⭐IOC</h2><p>如果没有IOC，假设A依赖B，就需要自己手动创建B的实例，如果后面B又需要依赖C，这个时候就需要调整A的代码，让A再创建C的实例并注入给B，这样对象之间的耦合度就太高了。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果之后B又需要依赖C，就需要调整A的代码</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>(<span class="keyword">new</span> <span class="title class_">C</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">    <span class="comment">// 构造器注入</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> C c;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">B</span><span class="params">(C c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.c = c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="⭐Spring事务"><a href="#⭐Spring事务" class="headerlink" title="⭐Spring事务"></a>⭐Spring事务</h2><h3 id="⭐事务的隔离级别"><a href="#⭐事务的隔离级别" class="headerlink" title="⭐事务的隔离级别"></a>⭐事务的隔离级别</h3><p>TransactionDefinition接口中定义了五个表示隔离级别的常量。</p>
-<ul>
-<li><strong>TransactionDefinition.ISOLATION_DEFAULT</strong>：数据库默认的隔离级别（Mysql是RR，Oracle是RC）。</li>
-<li><strong>TransactionDefinition.ISOLATION_READ_UNCOMMITTED</strong>：读未提交，可能会出现脏读。</li>
-<li><strong>TransactionDefinition.ISOLATION_READ_COMMITTED</strong>：读提交，可以解决脏读，会出现不可重复读。</li>
-<li><strong>TransactionDefinition.ISOLATION_REPEATABLE_READ</strong>：可重复读，可以解决不可重复读，会出现幻读。</li>
-<li><strong>TransactionDefinition.ISOLATION_SERIALIZABLE</strong>：串行化。</li>
-</ul>
-<h3 id="⭐事务的传播方式"><a href="#⭐事务的传播方式" class="headerlink" title="⭐事务的传播方式"></a>⭐事务的传播方式</h3><ul>
-<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRED</strong>：（默认的隔离级别）如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_SUPPORTS</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_MANDATORY</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。</p>
-<blockquote>
-<p>适用于对于一些不会单独执行，一旦被调用就必须包含事务的方法。</p>
-</blockquote>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRES_NEW</strong>：创建一个新的事务，如果当前存在事务，则把当前事务挂起，等新事物执行完之后，再恢复之前的事务继续执行。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_NOT_SUPPORTED</strong>：以非事务方式运行，如果当前存在事务，则把当前事务挂起，方法执行完之后，再恢复之前的事务继续执行。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_NEVER</strong>：以非事务方式运行，如果当前存在事务，则抛出异常。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_NESTED</strong>：如果当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务，则创建一个新事务。</p>
-<blockquote>
-<p>嵌套事务是指：子事务是父事务的一部分，父事务执行到子事务时，会创建一个回滚点，如果子事务回滚，父事务只会回滚到回滚点，也就是说，父事务之前的操作不会受到影响。</p>
-<p>如果父事务回滚，子事务也会一起回滚，因为子事务需要和父事务统一提交。</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="⭐事务失效的情况"><a href="#⭐事务失效的情况" class="headerlink" title="⭐事务失效的情况"></a>⭐事务失效的情况</h3><ul>
-<li><p>@Transactional注解只能在public修饰的方法上才起作用。</p>
-<blockquote>
-<p>因为Spring是通过动态代理的方式实现AOP，private修饰的方法无法被代理到。</p>
-</blockquote>
-</li>
-<li><p>如果<strong>数据库不支持事务</strong>，事务也会不起作用。</p>
-<blockquote>
-<p>比如MySQL的MyISAM引擎。</p>
-</blockquote>
-</li>
-<li><p>默认情况下，如果<strong>抛出了非RuntimeException异常</strong>，事务不会回滚。</p>
-<blockquote>
-<p>可以在@Transactional注解中指定rollbackFor为特定的异常类。@Transactional(rollbackFor = Exception.class)。</p>
-</blockquote>
-</li>
-<li><p>如果<strong>用try-catch捕获了异常，但是却没有手动回滚事物</strong>，事务不会回滚。</p>
-<blockquote>
-<p>在Spring的TransactionAspectSupport类中有个<code>invokeWithTransaction()</code>方法，这里面就是处理事物的逻辑，只有在捕获到异常之后才会进行后续的事物处理。</p>
-<p>可以在catch代码块中使用TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();手动提交事务。</p>
-</blockquote>
-</li>
-<li><p>在同一个类中有a()和b()两个方法，在b()方法上加@Transactional注解，然后在a()方法中调用b()方法，这种情况b()方法中得事务不会生效。</p>
-<blockquote>
-<p>因为必须通过代理过的类从外部调用目标方法才能生效。可以在代码中注入一个this，然后通过this在调用b()方法。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="⭐循环依赖"><a href="#⭐循环依赖" class="headerlink" title="⭐循环依赖"></a>⭐循环依赖</h2><p>多个bean之间相互引用，比如A依赖B，B也依赖A。</p>
-<p>出现循环引用的bean必须是单例的，多例模式(propotype)的bean是不支持循环依赖的，会抛异常。因为propotype多例模式每次都会创建一个新的bean，当创建A时，发现引用了B就会创建B，发现B引用了A，这时又会去创建A，这就套娃了。</p>
-<p>Spring内部维护了三个Map，就是通常说的三级缓存。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>singletonObjects：</strong>一级缓存，缓存的是创建完成的Bean。</li>
-<li><strong>earlySingletonObjects：</strong>二级缓存，缓存的是提前暴露出来的Bean，在这个Map里的Bean还未完成初始化，属于半成品。</li>
-<li><strong>singletonFactories：</strong>三级缓存，映射了创建Bean的原始工厂。</li>
-</ul>
-<p>假设A和B互相依赖：</p>
-<ol>
-<li><p>首先A会被创建出来，并将自己暴露到三级缓存中，然后进行初始化。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> &#123;</span><br><span class="line">		Assert.notNull(singletonFactory, <span class="string">&quot;Singleton factory must not be null&quot;</span>);</span><br><span class="line">		<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!<span class="built_in">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">				<span class="built_in">this</span>.singletonFactories.put(beanName, singletonFactory);	<span class="comment">// 将bean添加到三级缓存中</span></span><br><span class="line">				<span class="built_in">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">				<span class="built_in">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>在初始化的过程中发现A依赖B，此时就会尝试从一级缓存中去获取B，然后发现B还没有被创建，这个时候就会触发B的创建。</p>
-</li>
-<li><p>B在初始化的时候发现依赖A，就会尝试从一级缓存中获取A。这个时候A还没有初始化完成，所以一级缓存中肯定没有，然后尝试从二级缓存中获取，此时也没有，最后尝试从三级缓存中获取A的工厂类，然后调用其<code>getObject()</code>就可以获取到A。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> Object <span class="title function_">getSingleton</span><span class="params">(String beanName, <span class="type">boolean</span> allowEarlyReference)</span> &#123;</span><br><span class="line">		<span class="type">Object</span> <span class="variable">singletonObject</span> <span class="operator">=</span> <span class="built_in">this</span>.singletonObjects.get(beanName);	<span class="comment">// 1.从一级缓存中获取bean</span></span><br><span class="line">		<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123; </span><br><span class="line">			<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">				singletonObject = <span class="built_in">this</span>.earlySingletonObjects.get(beanName);	<span class="comment">// 2.一级缓存如果没有,就从二级缓存中获取</span></span><br><span class="line">				<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">					ObjectFactory&lt;?&gt; singletonFactory = <span class="built_in">this</span>.singletonFactories.get(beanName);	<span class="comment">// 3.如果二级缓存中也没有，就从三级缓存中获取其工厂类</span></span><br><span class="line">					<span class="keyword">if</span> (singletonFactory != <span class="literal">null</span>) &#123;</span><br><span class="line">						singletonObject = singletonFactory.getObject();	<span class="comment">// 4.调用其工厂类的getObject()方法获取bean</span></span><br><span class="line">						<span class="built_in">this</span>.earlySingletonObjects.put(beanName, singletonObject);	<span class="comment">// 5.将其加入到二级缓存</span></span><br><span class="line">						<span class="built_in">this</span>.singletonFactories.remove(beanName);	<span class="comment">// 6.从三级缓存中删除</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> singletonObject;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>B拿到A对象的引用之后可以顺利的完成自己的初始化，并将自己加入到一级缓存中。</p>
-</li>
-<li><p>然后A得到B对象的引用之后也可以完成初始化，进入到一级缓存中。</p>
-</li>
-</ol>
-<h2 id="⭐Bean生命周期"><a href="#⭐Bean生命周期" class="headerlink" title="⭐Bean生命周期"></a>⭐Bean生命周期</h2><ol>
-<li>实例化Bean对象，设置Bean属性。</li>
-<li>如果实现了各种Aware接口，则会对Bean注入一些其它信息。比如BeanNameAware会注入Bean ID、BeanFactoryAware会注入Bean Factory、ApplicationContextAware会注入ApplicationContext。</li>
-<li>如果实现了BeanPostProcessor接口，则会调用<code>postProcessBeforeInitialization()</code>和<code>postProcessAfterInitialization()</code>方法。</li>
-<li>调用Bean自身定义的init方法。</li>
-<li>最后依次调用DisposableBean的<code>destroy()</code>方法和Bean自身定制的<code>destroy()</code>方法。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RocketMQ</title>
     <url>/2022/12/08/RocketMQ/</url>
     <content><![CDATA[<h2 id="⭐应用场景"><a href="#⭐应用场景" class="headerlink" title="⭐应用场景"></a>⭐应用场景</h2><p><strong>异步处理</strong>：</p>
@@ -350,6 +220,136 @@
       </categories>
       <tags>
         <tag>RocketMQ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring相关</title>
+    <url>/2022/12/08/Spring%E7%9B%B8%E5%85%B3/</url>
+    <content><![CDATA[<h2 id="⭐AOP"><a href="#⭐AOP" class="headerlink" title="⭐AOP"></a>⭐AOP</h2><p>AOP就是按照一定的规则去匹配方法，然后在方法的执行前后添加一些额外的通用逻辑。</p>
+<p>常用的场景有：日志、接口鉴权、异常处理、Spring中的事务也是通过AOP实现的。</p>
+<ul>
+<li>切面（Aspect）：可以用<code>@Aspect</code>注解或者<code>&lt;aop:aspect&gt;</code>标签定义一个切面。</li>
+<li>切点（Pointcut）：可以用来定义方法的匹配规则，当符合规则的方法被调用时，会触发对应的通知。</li>
+<li>通知（Advice）：<ul>
+<li>环绕通知（around）：目标方法执行前和执行后都会触发。用<code>@Around</code>声明。</li>
+<li>前置通知（before）：目标方法执行前触发。用<code>@Before</code>声明。</li>
+<li>后置通知（after）：目标方法执行后触发。用<code>@After</code>声明。</li>
+<li>异常通知（exception）：目标方法执行抛异常时触发。用<code>@AfterThrowing</code>声明。</li>
+<li>返回通知（return）：目标方法返回时触发。用<code>@AfterReturning</code>声明。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明切面</span></span><br><span class="line"><span class="meta">@Aspect</span>	</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义切点</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(public * com.ao.bing.demo.spring.aop..*.*(..))&quot;)</span>	</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">pctMethod</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 环绕通知</span></span><br><span class="line">    <span class="meta">@Around(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">ret</span> <span class="operator">=</span> pjp.proceed();</span><br><span class="line">        System.out.println(<span class="string">&quot;Around advice&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 前置通知</span></span><br><span class="line">    <span class="meta">@Before(&quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Before advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 后置通知</span></span><br><span class="line">    <span class="meta">@After(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">after</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;After advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回通知</span></span><br><span class="line">    <span class="meta">@AfterReturning(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterReturning advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 异常通知</span></span><br><span class="line">    <span class="meta">@AfterThrowing(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterThrowing</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterThrowing advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="⭐IOC"><a href="#⭐IOC" class="headerlink" title="⭐IOC"></a>⭐IOC</h2><p>如果没有IOC，假设A依赖B，就需要自己手动创建B的实例，如果后面B又需要依赖C，这个时候就需要调整A的代码，让A再创建C的实例并注入给B，这样对象之间的耦合度就太高了。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果之后B又需要依赖C，就需要调整A的代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>(<span class="keyword">new</span> <span class="title class_">C</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">    <span class="comment">// 构造器注入</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> C c;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">B</span><span class="params">(C c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.c = c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="⭐Spring事务"><a href="#⭐Spring事务" class="headerlink" title="⭐Spring事务"></a>⭐Spring事务</h2><h3 id="⭐事务的隔离级别"><a href="#⭐事务的隔离级别" class="headerlink" title="⭐事务的隔离级别"></a>⭐事务的隔离级别</h3><p>TransactionDefinition接口中定义了五个表示隔离级别的常量。</p>
+<ul>
+<li><strong>TransactionDefinition.ISOLATION_DEFAULT</strong>：数据库默认的隔离级别（Mysql是RR，Oracle是RC）。</li>
+<li><strong>TransactionDefinition.ISOLATION_READ_UNCOMMITTED</strong>：读未提交，可能会出现脏读。</li>
+<li><strong>TransactionDefinition.ISOLATION_READ_COMMITTED</strong>：读提交，可以解决脏读，会出现不可重复读。</li>
+<li><strong>TransactionDefinition.ISOLATION_REPEATABLE_READ</strong>：可重复读，可以解决不可重复读，会出现幻读。</li>
+<li><strong>TransactionDefinition.ISOLATION_SERIALIZABLE</strong>：串行化。</li>
+</ul>
+<h3 id="⭐事务的传播方式"><a href="#⭐事务的传播方式" class="headerlink" title="⭐事务的传播方式"></a>⭐事务的传播方式</h3><ul>
+<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRED</strong>：（默认的隔离级别）如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_SUPPORTS</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_MANDATORY</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。</p>
+<blockquote>
+<p>适用于对于一些不会单独执行，一旦被调用就必须包含事务的方法。</p>
+</blockquote>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRES_NEW</strong>：创建一个新的事务，如果当前存在事务，则把当前事务挂起，等新事物执行完之后，再恢复之前的事务继续执行。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_NOT_SUPPORTED</strong>：以非事务方式运行，如果当前存在事务，则把当前事务挂起，方法执行完之后，再恢复之前的事务继续执行。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_NEVER</strong>：以非事务方式运行，如果当前存在事务，则抛出异常。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_NESTED</strong>：如果当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务，则创建一个新事务。</p>
+<blockquote>
+<p>嵌套事务是指：子事务是父事务的一部分，父事务执行到子事务时，会创建一个回滚点，如果子事务回滚，父事务只会回滚到回滚点，也就是说，父事务之前的操作不会受到影响。</p>
+<p>如果父事务回滚，子事务也会一起回滚，因为子事务需要和父事务统一提交。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="⭐事务失效的情况"><a href="#⭐事务失效的情况" class="headerlink" title="⭐事务失效的情况"></a>⭐事务失效的情况</h3><ul>
+<li><p>@Transactional注解只能在public修饰的方法上才起作用。</p>
+<blockquote>
+<p>因为Spring是通过动态代理的方式实现AOP，private修饰的方法无法被代理到。</p>
+</blockquote>
+</li>
+<li><p>如果<strong>数据库不支持事务</strong>，事务也会不起作用。</p>
+<blockquote>
+<p>比如MySQL的MyISAM引擎。</p>
+</blockquote>
+</li>
+<li><p>默认情况下，如果<strong>抛出了非RuntimeException异常</strong>，事务不会回滚。</p>
+<blockquote>
+<p>可以在@Transactional注解中指定rollbackFor为特定的异常类。@Transactional(rollbackFor = Exception.class)。</p>
+</blockquote>
+</li>
+<li><p>如果<strong>用try-catch捕获了异常，但是却没有手动回滚事物</strong>，事务不会回滚。</p>
+<blockquote>
+<p>在Spring的TransactionAspectSupport类中有个<code>invokeWithTransaction()</code>方法，这里面就是处理事物的逻辑，只有在捕获到异常之后才会进行后续的事物处理。</p>
+<p>可以在catch代码块中使用TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();手动提交事务。</p>
+</blockquote>
+</li>
+<li><p>在同一个类中有a()和b()两个方法，在b()方法上加@Transactional注解，然后在a()方法中调用b()方法，这种情况b()方法中得事务不会生效。</p>
+<blockquote>
+<p>因为必须通过代理过的类从外部调用目标方法才能生效。可以在代码中注入一个this，然后通过this在调用b()方法。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="⭐循环依赖"><a href="#⭐循环依赖" class="headerlink" title="⭐循环依赖"></a>⭐循环依赖</h2><p>多个bean之间相互引用，比如A依赖B，B也依赖A。</p>
+<p>出现循环引用的bean必须是单例的，多例模式(propotype)的bean是不支持循环依赖的，会抛异常。因为propotype多例模式每次都会创建一个新的bean，当创建A时，发现引用了B就会创建B，发现B引用了A，这时又会去创建A，这就套娃了。</p>
+<p>Spring内部维护了三个Map，就是通常说的三级缓存。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>singletonObjects：</strong>一级缓存，缓存的是创建完成的Bean。</li>
+<li><strong>earlySingletonObjects：</strong>二级缓存，缓存的是提前暴露出来的Bean，在这个Map里的Bean还未完成初始化，属于半成品。</li>
+<li><strong>singletonFactories：</strong>三级缓存，映射了创建Bean的原始工厂。</li>
+</ul>
+<p>假设A和B互相依赖：</p>
+<ol>
+<li><p>首先A会被创建出来，并将自己暴露到三级缓存中，然后进行初始化。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> &#123;</span><br><span class="line">		Assert.notNull(singletonFactory, <span class="string">&quot;Singleton factory must not be null&quot;</span>);</span><br><span class="line">		<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!<span class="built_in">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">				<span class="built_in">this</span>.singletonFactories.put(beanName, singletonFactory);	<span class="comment">// 将bean添加到三级缓存中</span></span><br><span class="line">				<span class="built_in">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">				<span class="built_in">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在初始化的过程中发现A依赖B，此时就会尝试从一级缓存中去获取B，然后发现B还没有被创建，这个时候就会触发B的创建。</p>
+</li>
+<li><p>B在初始化的时候发现依赖A，就会尝试从一级缓存中获取A。这个时候A还没有初始化完成，所以一级缓存中肯定没有，然后尝试从二级缓存中获取，此时也没有，最后尝试从三级缓存中获取A的工厂类，然后调用其<code>getObject()</code>就可以获取到A。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> Object <span class="title function_">getSingleton</span><span class="params">(String beanName, <span class="type">boolean</span> allowEarlyReference)</span> &#123;</span><br><span class="line">		<span class="type">Object</span> <span class="variable">singletonObject</span> <span class="operator">=</span> <span class="built_in">this</span>.singletonObjects.get(beanName);	<span class="comment">// 1.从一级缓存中获取bean</span></span><br><span class="line">		<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123; </span><br><span class="line">			<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">				singletonObject = <span class="built_in">this</span>.earlySingletonObjects.get(beanName);	<span class="comment">// 2.一级缓存如果没有,就从二级缓存中获取</span></span><br><span class="line">				<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">					ObjectFactory&lt;?&gt; singletonFactory = <span class="built_in">this</span>.singletonFactories.get(beanName);	<span class="comment">// 3.如果二级缓存中也没有，就从三级缓存中获取其工厂类</span></span><br><span class="line">					<span class="keyword">if</span> (singletonFactory != <span class="literal">null</span>) &#123;</span><br><span class="line">						singletonObject = singletonFactory.getObject();	<span class="comment">// 4.调用其工厂类的getObject()方法获取bean</span></span><br><span class="line">						<span class="built_in">this</span>.earlySingletonObjects.put(beanName, singletonObject);	<span class="comment">// 5.将其加入到二级缓存</span></span><br><span class="line">						<span class="built_in">this</span>.singletonFactories.remove(beanName);	<span class="comment">// 6.从三级缓存中删除</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> singletonObject;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>B拿到A对象的引用之后可以顺利的完成自己的初始化，并将自己加入到一级缓存中。</p>
+</li>
+<li><p>然后A得到B对象的引用之后也可以完成初始化，进入到一级缓存中。</p>
+</li>
+</ol>
+<h2 id="⭐Bean生命周期"><a href="#⭐Bean生命周期" class="headerlink" title="⭐Bean生命周期"></a>⭐Bean生命周期</h2><ol>
+<li>实例化Bean对象，设置Bean属性。</li>
+<li>如果实现了各种Aware接口，则会对Bean注入一些其它信息。比如BeanNameAware会注入Bean ID、BeanFactoryAware会注入Bean Factory、ApplicationContextAware会注入ApplicationContext。</li>
+<li>如果实现了BeanPostProcessor接口，则会调用<code>postProcessBeforeInitialization()</code>和<code>postProcessAfterInitialization()</code>方法。</li>
+<li>调用Bean自身定义的init方法。</li>
+<li>最后依次调用DisposableBean的<code>destroy()</code>方法和Bean自身定制的<code>destroy()</code>方法。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
