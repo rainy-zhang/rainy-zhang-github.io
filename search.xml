@@ -223,136 +223,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Spring相关</title>
-    <url>/2022/12/08/Spring%E7%9B%B8%E5%85%B3/</url>
-    <content><![CDATA[<h2 id="⭐AOP"><a href="#⭐AOP" class="headerlink" title="⭐AOP"></a>⭐AOP</h2><p>AOP就是按照一定的规则去匹配方法，然后在方法的执行前后添加一些额外的通用逻辑。</p>
-<p>常用的场景有：日志、接口鉴权、异常处理、Spring中的事务也是通过AOP实现的。</p>
-<ul>
-<li>切面（Aspect）：可以用<code>@Aspect</code>注解或者<code>&lt;aop:aspect&gt;</code>标签定义一个切面。</li>
-<li>切点（Pointcut）：可以用来定义方法的匹配规则，当符合规则的方法被调用时，会触发对应的通知。</li>
-<li>通知（Advice）：<ul>
-<li>环绕通知（around）：目标方法执行前和执行后都会触发。用<code>@Around</code>声明。</li>
-<li>前置通知（before）：目标方法执行前触发。用<code>@Before</code>声明。</li>
-<li>后置通知（after）：目标方法执行后触发。用<code>@After</code>声明。</li>
-<li>异常通知（exception）：目标方法执行抛异常时触发。用<code>@AfterThrowing</code>声明。</li>
-<li>返回通知（return）：目标方法返回时触发。用<code>@AfterReturning</code>声明。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明切面</span></span><br><span class="line"><span class="meta">@Aspect</span>	</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义切点</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(public * com.ao.bing.demo.spring.aop..*.*(..))&quot;)</span>	</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">pctMethod</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 环绕通知</span></span><br><span class="line">    <span class="meta">@Around(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">ret</span> <span class="operator">=</span> pjp.proceed();</span><br><span class="line">        System.out.println(<span class="string">&quot;Around advice&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 前置通知</span></span><br><span class="line">    <span class="meta">@Before(&quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Before advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 后置通知</span></span><br><span class="line">    <span class="meta">@After(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">after</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;After advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回通知</span></span><br><span class="line">    <span class="meta">@AfterReturning(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterReturning advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 异常通知</span></span><br><span class="line">    <span class="meta">@AfterThrowing(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterThrowing</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterThrowing advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="⭐IOC"><a href="#⭐IOC" class="headerlink" title="⭐IOC"></a>⭐IOC</h2><p>如果没有IOC，假设A依赖B，就需要自己手动创建B的实例，如果后面B又需要依赖C，这个时候就需要调整A的代码，让A再创建C的实例并注入给B，这样对象之间的耦合度就太高了。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果之后B又需要依赖C，就需要调整A的代码</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>(<span class="keyword">new</span> <span class="title class_">C</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">    <span class="comment">// 构造器注入</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> C c;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">B</span><span class="params">(C c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.c = c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="⭐Spring事务"><a href="#⭐Spring事务" class="headerlink" title="⭐Spring事务"></a>⭐Spring事务</h2><h3 id="⭐事务的隔离级别"><a href="#⭐事务的隔离级别" class="headerlink" title="⭐事务的隔离级别"></a>⭐事务的隔离级别</h3><p>TransactionDefinition接口中定义了五个表示隔离级别的常量。</p>
-<ul>
-<li><strong>TransactionDefinition.ISOLATION_DEFAULT</strong>：数据库默认的隔离级别（Mysql是RR，Oracle是RC）。</li>
-<li><strong>TransactionDefinition.ISOLATION_READ_UNCOMMITTED</strong>：读未提交，可能会出现脏读。</li>
-<li><strong>TransactionDefinition.ISOLATION_READ_COMMITTED</strong>：读提交，可以解决脏读，会出现不可重复读。</li>
-<li><strong>TransactionDefinition.ISOLATION_REPEATABLE_READ</strong>：可重复读，可以解决不可重复读，会出现幻读。</li>
-<li><strong>TransactionDefinition.ISOLATION_SERIALIZABLE</strong>：串行化。</li>
-</ul>
-<h3 id="⭐事务的传播方式"><a href="#⭐事务的传播方式" class="headerlink" title="⭐事务的传播方式"></a>⭐事务的传播方式</h3><ul>
-<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRED</strong>：（默认的隔离级别）如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_SUPPORTS</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_MANDATORY</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。</p>
-<blockquote>
-<p>适用于对于一些不会单独执行，一旦被调用就必须包含事务的方法。</p>
-</blockquote>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRES_NEW</strong>：创建一个新的事务，如果当前存在事务，则把当前事务挂起，等新事物执行完之后，再恢复之前的事务继续执行。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_NOT_SUPPORTED</strong>：以非事务方式运行，如果当前存在事务，则把当前事务挂起，方法执行完之后，再恢复之前的事务继续执行。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_NEVER</strong>：以非事务方式运行，如果当前存在事务，则抛出异常。</p>
-</li>
-<li><p><strong>TransactionDefinition.PROPAGATION_NESTED</strong>：如果当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务，则创建一个新事务。</p>
-<blockquote>
-<p>嵌套事务是指：子事务是父事务的一部分，父事务执行到子事务时，会创建一个回滚点，如果子事务回滚，父事务只会回滚到回滚点，也就是说，父事务之前的操作不会受到影响。</p>
-<p>如果父事务回滚，子事务也会一起回滚，因为子事务需要和父事务统一提交。</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="⭐事务失效的情况"><a href="#⭐事务失效的情况" class="headerlink" title="⭐事务失效的情况"></a>⭐事务失效的情况</h3><ul>
-<li><p>@Transactional注解只能在public修饰的方法上才起作用。</p>
-<blockquote>
-<p>因为Spring是通过动态代理的方式实现AOP，private修饰的方法无法被代理到。</p>
-</blockquote>
-</li>
-<li><p>如果<strong>数据库不支持事务</strong>，事务也会不起作用。</p>
-<blockquote>
-<p>比如MySQL的MyISAM引擎。</p>
-</blockquote>
-</li>
-<li><p>默认情况下，如果<strong>抛出了非RuntimeException异常</strong>，事务不会回滚。</p>
-<blockquote>
-<p>可以在@Transactional注解中指定rollbackFor为特定的异常类。@Transactional(rollbackFor = Exception.class)。</p>
-</blockquote>
-</li>
-<li><p>如果<strong>用try-catch捕获了异常，但是却没有手动回滚事物</strong>，事务不会回滚。</p>
-<blockquote>
-<p>在Spring的TransactionAspectSupport类中有个<code>invokeWithTransaction()</code>方法，这里面就是处理事物的逻辑，只有在捕获到异常之后才会进行后续的事物处理。</p>
-<p>可以在catch代码块中使用TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();手动提交事务。</p>
-</blockquote>
-</li>
-<li><p>在同一个类中有a()和b()两个方法，在b()方法上加@Transactional注解，然后在a()方法中调用b()方法，这种情况b()方法中得事务不会生效。</p>
-<blockquote>
-<p>因为必须通过代理过的类从外部调用目标方法才能生效。可以在代码中注入一个this，然后通过this在调用b()方法。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="⭐循环依赖"><a href="#⭐循环依赖" class="headerlink" title="⭐循环依赖"></a>⭐循环依赖</h2><p>多个bean之间相互引用，比如A依赖B，B也依赖A。</p>
-<p>出现循环引用的bean必须是单例的，多例模式(propotype)的bean是不支持循环依赖的，会抛异常。因为propotype多例模式每次都会创建一个新的bean，当创建A时，发现引用了B就会创建B，发现B引用了A，这时又会去创建A，这就套娃了。</p>
-<p>Spring内部维护了三个Map，就是通常说的三级缓存。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>singletonObjects：</strong>一级缓存，缓存的是创建完成的Bean。</li>
-<li><strong>earlySingletonObjects：</strong>二级缓存，缓存的是提前暴露出来的Bean，在这个Map里的Bean还未完成初始化，属于半成品。</li>
-<li><strong>singletonFactories：</strong>三级缓存，映射了创建Bean的原始工厂。</li>
-</ul>
-<p>假设A和B互相依赖：</p>
-<ol>
-<li><p>首先A会被创建出来，并将自己暴露到三级缓存中，然后进行初始化。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> &#123;</span><br><span class="line">		Assert.notNull(singletonFactory, <span class="string">&quot;Singleton factory must not be null&quot;</span>);</span><br><span class="line">		<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!<span class="built_in">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">				<span class="built_in">this</span>.singletonFactories.put(beanName, singletonFactory);	<span class="comment">// 将bean添加到三级缓存中</span></span><br><span class="line">				<span class="built_in">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">				<span class="built_in">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>在初始化的过程中发现A依赖B，此时就会尝试从一级缓存中去获取B，然后发现B还没有被创建，这个时候就会触发B的创建。</p>
-</li>
-<li><p>B在初始化的时候发现依赖A，就会尝试从一级缓存中获取A。这个时候A还没有初始化完成，所以一级缓存中肯定没有，然后尝试从二级缓存中获取，此时也没有，最后尝试从三级缓存中获取A的工厂类，然后调用其<code>getObject()</code>就可以获取到A。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> Object <span class="title function_">getSingleton</span><span class="params">(String beanName, <span class="type">boolean</span> allowEarlyReference)</span> &#123;</span><br><span class="line">		<span class="type">Object</span> <span class="variable">singletonObject</span> <span class="operator">=</span> <span class="built_in">this</span>.singletonObjects.get(beanName);	<span class="comment">// 1.从一级缓存中获取bean</span></span><br><span class="line">		<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123; </span><br><span class="line">			<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">				singletonObject = <span class="built_in">this</span>.earlySingletonObjects.get(beanName);	<span class="comment">// 2.一级缓存如果没有,就从二级缓存中获取</span></span><br><span class="line">				<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">					ObjectFactory&lt;?&gt; singletonFactory = <span class="built_in">this</span>.singletonFactories.get(beanName);	<span class="comment">// 3.如果二级缓存中也没有，就从三级缓存中获取其工厂类</span></span><br><span class="line">					<span class="keyword">if</span> (singletonFactory != <span class="literal">null</span>) &#123;</span><br><span class="line">						singletonObject = singletonFactory.getObject();	<span class="comment">// 4.调用其工厂类的getObject()方法获取bean</span></span><br><span class="line">						<span class="built_in">this</span>.earlySingletonObjects.put(beanName, singletonObject);	<span class="comment">// 5.将其加入到二级缓存</span></span><br><span class="line">						<span class="built_in">this</span>.singletonFactories.remove(beanName);	<span class="comment">// 6.从三级缓存中删除</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> singletonObject;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>B拿到A对象的引用之后可以顺利的完成自己的初始化，并将自己加入到一级缓存中。</p>
-</li>
-<li><p>然后A得到B对象的引用之后也可以完成初始化，进入到一级缓存中。</p>
-</li>
-</ol>
-<h2 id="⭐Bean生命周期"><a href="#⭐Bean生命周期" class="headerlink" title="⭐Bean生命周期"></a>⭐Bean生命周期</h2><ol>
-<li>实例化Bean对象，设置Bean属性。</li>
-<li>如果实现了各种Aware接口，则会对Bean注入一些其它信息。比如BeanNameAware会注入Bean ID、BeanFactoryAware会注入Bean Factory、ApplicationContextAware会注入ApplicationContext。</li>
-<li>如果实现了BeanPostProcessor接口，则会调用<code>postProcessBeforeInitialization()</code>和<code>postProcessAfterInitialization()</code>方法。</li>
-<li>调用Bean自身定义的init方法。</li>
-<li>最后依次调用DisposableBean的<code>destroy()</code>方法和Bean自身定制的<code>destroy()</code>方法。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>分布式理论</title>
     <url>/2022/12/08/%E5%88%86%E5%B8%83%E5%BC%8F%E7%90%86%E8%AE%BA/</url>
     <content><![CDATA[<h2 id="⭐CAP理论"><a href="#⭐CAP理论" class="headerlink" title="⭐CAP理论"></a>⭐CAP理论</h2><p>CAP理论是说：在一个分布式系统中，最多只能满足C、A、P中的两个需求。</p>
@@ -558,6 +428,136 @@
       </tags>
   </entry>
   <entry>
+    <title>Spring相关</title>
+    <url>/2022/12/08/Spring%E7%9B%B8%E5%85%B3/</url>
+    <content><![CDATA[<h2 id="⭐AOP"><a href="#⭐AOP" class="headerlink" title="⭐AOP"></a>⭐AOP</h2><p>AOP就是按照一定的规则去匹配方法，然后在方法的执行前后添加一些额外的通用逻辑。</p>
+<p>常用的场景有：日志、接口鉴权、异常处理、Spring中的事务也是通过AOP实现的。</p>
+<ul>
+<li>切面（Aspect）：可以用<code>@Aspect</code>注解或者<code>&lt;aop:aspect&gt;</code>标签定义一个切面。</li>
+<li>切点（Pointcut）：可以用来定义方法的匹配规则，当符合规则的方法被调用时，会触发对应的通知。</li>
+<li>通知（Advice）：<ul>
+<li>环绕通知（around）：目标方法执行前和执行后都会触发。用<code>@Around</code>声明。</li>
+<li>前置通知（before）：目标方法执行前触发。用<code>@Before</code>声明。</li>
+<li>后置通知（after）：目标方法执行后触发。用<code>@After</code>声明。</li>
+<li>异常通知（exception）：目标方法执行抛异常时触发。用<code>@AfterThrowing</code>声明。</li>
+<li>返回通知（return）：目标方法返回时触发。用<code>@AfterReturning</code>声明。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明切面</span></span><br><span class="line"><span class="meta">@Aspect</span>	</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义切点</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(public * com.ao.bing.demo.spring.aop..*.*(..))&quot;)</span>	</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">pctMethod</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 环绕通知</span></span><br><span class="line">    <span class="meta">@Around(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">ret</span> <span class="operator">=</span> pjp.proceed();</span><br><span class="line">        System.out.println(<span class="string">&quot;Around advice&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 前置通知</span></span><br><span class="line">    <span class="meta">@Before(&quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Before advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 后置通知</span></span><br><span class="line">    <span class="meta">@After(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">after</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;After advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回通知</span></span><br><span class="line">    <span class="meta">@AfterReturning(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterReturning advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 异常通知</span></span><br><span class="line">    <span class="meta">@AfterThrowing(value = &quot;pctMethod()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterThrowing</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;AfterThrowing advice&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="⭐IOC"><a href="#⭐IOC" class="headerlink" title="⭐IOC"></a>⭐IOC</h2><p>如果没有IOC，假设A依赖B，就需要自己手动创建B的实例，如果后面B又需要依赖C，这个时候就需要调整A的代码，让A再创建C的实例并注入给B，这样对象之间的耦合度就太高了。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果之后B又需要依赖C，就需要调整A的代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">B</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>(<span class="keyword">new</span> <span class="title class_">C</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line">    <span class="comment">// 构造器注入</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> C c;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">B</span><span class="params">(C c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.c = c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="⭐Spring事务"><a href="#⭐Spring事务" class="headerlink" title="⭐Spring事务"></a>⭐Spring事务</h2><h3 id="⭐事务的隔离级别"><a href="#⭐事务的隔离级别" class="headerlink" title="⭐事务的隔离级别"></a>⭐事务的隔离级别</h3><p>TransactionDefinition接口中定义了五个表示隔离级别的常量。</p>
+<ul>
+<li><strong>TransactionDefinition.ISOLATION_DEFAULT</strong>：数据库默认的隔离级别（Mysql是RR，Oracle是RC）。</li>
+<li><strong>TransactionDefinition.ISOLATION_READ_UNCOMMITTED</strong>：读未提交，可能会出现脏读。</li>
+<li><strong>TransactionDefinition.ISOLATION_READ_COMMITTED</strong>：读提交，可以解决脏读，会出现不可重复读。</li>
+<li><strong>TransactionDefinition.ISOLATION_REPEATABLE_READ</strong>：可重复读，可以解决不可重复读，会出现幻读。</li>
+<li><strong>TransactionDefinition.ISOLATION_SERIALIZABLE</strong>：串行化。</li>
+</ul>
+<h3 id="⭐事务的传播方式"><a href="#⭐事务的传播方式" class="headerlink" title="⭐事务的传播方式"></a>⭐事务的传播方式</h3><ul>
+<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRED</strong>：（默认的隔离级别）如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_SUPPORTS</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_MANDATORY</strong>：如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。</p>
+<blockquote>
+<p>适用于对于一些不会单独执行，一旦被调用就必须包含事务的方法。</p>
+</blockquote>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_REQUIRES_NEW</strong>：创建一个新的事务，如果当前存在事务，则把当前事务挂起，等新事物执行完之后，再恢复之前的事务继续执行。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_NOT_SUPPORTED</strong>：以非事务方式运行，如果当前存在事务，则把当前事务挂起，方法执行完之后，再恢复之前的事务继续执行。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_NEVER</strong>：以非事务方式运行，如果当前存在事务，则抛出异常。</p>
+</li>
+<li><p><strong>TransactionDefinition.PROPAGATION_NESTED</strong>：如果当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务，则创建一个新事务。</p>
+<blockquote>
+<p>嵌套事务是指：子事务是父事务的一部分，父事务执行到子事务时，会创建一个回滚点，如果子事务回滚，父事务只会回滚到回滚点，也就是说，父事务之前的操作不会受到影响。</p>
+<p>如果父事务回滚，子事务也会一起回滚，因为子事务需要和父事务统一提交。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="⭐事务失效的情况"><a href="#⭐事务失效的情况" class="headerlink" title="⭐事务失效的情况"></a>⭐事务失效的情况</h3><ul>
+<li><p>@Transactional注解只能在public修饰的方法上才起作用。</p>
+<blockquote>
+<p>因为Spring是通过动态代理的方式实现AOP，private修饰的方法无法被代理到。</p>
+</blockquote>
+</li>
+<li><p>如果<strong>数据库不支持事务</strong>，事务也会不起作用。</p>
+<blockquote>
+<p>比如MySQL的MyISAM引擎。</p>
+</blockquote>
+</li>
+<li><p>默认情况下，如果<strong>抛出了非RuntimeException异常</strong>，事务不会回滚。</p>
+<blockquote>
+<p>可以在@Transactional注解中指定rollbackFor为特定的异常类。@Transactional(rollbackFor = Exception.class)。</p>
+</blockquote>
+</li>
+<li><p>如果<strong>用try-catch捕获了异常，但是却没有手动回滚事物</strong>，事务不会回滚。</p>
+<blockquote>
+<p>在Spring的TransactionAspectSupport类中有个<code>invokeWithTransaction()</code>方法，这里面就是处理事物的逻辑，只有在捕获到异常之后才会进行后续的事物处理。</p>
+<p>可以在catch代码块中使用TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();手动提交事务。</p>
+</blockquote>
+</li>
+<li><p>在同一个类中有a()和b()两个方法，在b()方法上加@Transactional注解，然后在a()方法中调用b()方法，这种情况b()方法中得事务不会生效。</p>
+<blockquote>
+<p>因为必须通过代理过的类从外部调用目标方法才能生效。可以在代码中注入一个this，然后通过this在调用b()方法。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="⭐循环依赖"><a href="#⭐循环依赖" class="headerlink" title="⭐循环依赖"></a>⭐循环依赖</h2><p>多个bean之间相互引用，比如A依赖B，B也依赖A。</p>
+<p>出现循环引用的bean必须是单例的，多例模式(propotype)的bean是不支持循环依赖的，会抛异常。因为propotype多例模式每次都会创建一个新的bean，当创建A时，发现引用了B就会创建B，发现B引用了A，这时又会去创建A，这就套娃了。</p>
+<p>Spring内部维护了三个Map，就是通常说的三级缓存。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, ObjectFactory&lt;?&gt;&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>singletonObjects：</strong>一级缓存，缓存的是创建完成的Bean。</li>
+<li><strong>earlySingletonObjects：</strong>二级缓存，缓存的是提前暴露出来的Bean，在这个Map里的Bean还未完成初始化，属于半成品。</li>
+<li><strong>singletonFactories：</strong>三级缓存，映射了创建Bean的原始工厂。</li>
+</ul>
+<p>假设A和B互相依赖：</p>
+<ol>
+<li><p>首先A会被创建出来，并将自己暴露到三级缓存中，然后进行初始化。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> &#123;</span><br><span class="line">		Assert.notNull(singletonFactory, <span class="string">&quot;Singleton factory must not be null&quot;</span>);</span><br><span class="line">		<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!<span class="built_in">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">				<span class="built_in">this</span>.singletonFactories.put(beanName, singletonFactory);	<span class="comment">// 将bean添加到三级缓存中</span></span><br><span class="line">				<span class="built_in">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">				<span class="built_in">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在初始化的过程中发现A依赖B，此时就会尝试从一级缓存中去获取B，然后发现B还没有被创建，这个时候就会触发B的创建。</p>
+</li>
+<li><p>B在初始化的时候发现依赖A，就会尝试从一级缓存中获取A。这个时候A还没有初始化完成，所以一级缓存中肯定没有，然后尝试从二级缓存中获取，此时也没有，最后尝试从三级缓存中获取A的工厂类，然后调用其<code>getObject()</code>就可以获取到A。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> Object <span class="title function_">getSingleton</span><span class="params">(String beanName, <span class="type">boolean</span> allowEarlyReference)</span> &#123;</span><br><span class="line">		<span class="type">Object</span> <span class="variable">singletonObject</span> <span class="operator">=</span> <span class="built_in">this</span>.singletonObjects.get(beanName);	<span class="comment">// 1.从一级缓存中获取bean</span></span><br><span class="line">		<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123; </span><br><span class="line">			<span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">				singletonObject = <span class="built_in">this</span>.earlySingletonObjects.get(beanName);	<span class="comment">// 2.一级缓存如果没有,就从二级缓存中获取</span></span><br><span class="line">				<span class="keyword">if</span> (singletonObject == <span class="literal">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">					ObjectFactory&lt;?&gt; singletonFactory = <span class="built_in">this</span>.singletonFactories.get(beanName);	<span class="comment">// 3.如果二级缓存中也没有，就从三级缓存中获取其工厂类</span></span><br><span class="line">					<span class="keyword">if</span> (singletonFactory != <span class="literal">null</span>) &#123;</span><br><span class="line">						singletonObject = singletonFactory.getObject();	<span class="comment">// 4.调用其工厂类的getObject()方法获取bean</span></span><br><span class="line">						<span class="built_in">this</span>.earlySingletonObjects.put(beanName, singletonObject);	<span class="comment">// 5.将其加入到二级缓存</span></span><br><span class="line">						<span class="built_in">this</span>.singletonFactories.remove(beanName);	<span class="comment">// 6.从三级缓存中删除</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> singletonObject;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>B拿到A对象的引用之后可以顺利的完成自己的初始化，并将自己加入到一级缓存中。</p>
+</li>
+<li><p>然后A得到B对象的引用之后也可以完成初始化，进入到一级缓存中。</p>
+</li>
+</ol>
+<h2 id="⭐Bean生命周期"><a href="#⭐Bean生命周期" class="headerlink" title="⭐Bean生命周期"></a>⭐Bean生命周期</h2><ol>
+<li>实例化Bean对象，设置Bean属性。</li>
+<li>如果实现了各种Aware接口，则会对Bean注入一些其它信息。比如BeanNameAware会注入Bean ID、BeanFactoryAware会注入Bean Factory、ApplicationContextAware会注入ApplicationContext。</li>
+<li>如果实现了BeanPostProcessor接口，则会调用<code>postProcessBeforeInitialization()</code>和<code>postProcessAfterInitialization()</code>方法。</li>
+<li>调用Bean自身定义的init方法。</li>
+<li>最后依次调用DisposableBean的<code>destroy()</code>方法和Bean自身定制的<code>destroy()</code>方法。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo next 隐藏分类和标签页面的评论框</title>
     <url>/2022/12/13/hexo-next-%E9%9A%90%E8%97%8F%E5%88%86%E7%B1%BB%E5%92%8C%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86/</url>
     <content><![CDATA[<p>在<code>categories/index.md</code>和<code>tags/index.md</code>文件头中添加：<code>comments: false</code>。</p>
@@ -568,6 +568,51 @@
 ]]></content>
       <tags>
         <tag>questions</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>系统设计</title>
+    <url>/2022/12/08/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</url>
+    <content><![CDATA[<h2 id="秒杀系统"><a href="#秒杀系统" class="headerlink" title="秒杀系统"></a>秒杀系统</h2><p><strong>巨大的瞬时流量</strong>：</p>
+<p>秒杀系统的特点，就是几乎所有的请求会集中到同一时刻，这种场景会在短时间内产生巨大的流量。</p>
+<ol>
+<li><p><strong>验证码</strong>：验证码可以拦截掉机器人发出的请求，可以起到防刷作用。也可以延缓并发，因为有的用户手速快，有的手速慢，可以让一瞬间的集中流量平均到5~10秒。</p>
+</li>
+<li><p><strong>消息队列</strong>：可以把请求暂存到消息队列中，让服务根据自己的处理能力来消费请求，避免大量请求直接进入后台。</p>
+</li>
+<li><p><strong>限流</strong>：限流就是通过校验，丢弃掉多余流量，减少下游服务需要处理的请求数量。</p>
+<ul>
+<li><p>Nginx限流：Nginx自带限流功能，可以根据IP地址或者自定义参数来做限流。</p>
+<blockquote>
+<p>比如可以限制每个IP只能发送一个请求，或者每个用户ID只能发送一个请求。</p>
+</blockquote>
+</li>
+<li><p>线程池限流：通过配置线程池的最大线程数，当等待队列满了，并且所有线程都处于工作状态，多余的请求就会被丢弃，也可以实现限流。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>流量隔离</strong>：</p>
+<p>参与秒杀活动的商品通常只占很少一部分，为了不影响普通商品的交易，需要对流量进行隔离。</p>
+<ul>
+<li><strong>商品打标</strong>：可以通过对秒杀商品打上特殊的标签，然后在网关层将秒杀商品的请求路由到对应的秒杀服务。</li>
+</ul>
+<p><strong>热点数据问题</strong>：</p>
+<p>对于秒杀系统，大家抢购的通常都是同一件商品，不管是用数据库，还是用缓存，都无法支撑几十万、上百万对同一个key的读写。</p>
+<blockquote>
+<p>Redis最高只能支撑几万的TPS。</p>
+</blockquote>
+<p>热点数据可以分为<strong>读热数据</strong>和<strong>写热数据</strong>：</p>
+<ol>
+<li><strong>读热数据</strong>：可以把热点数据加载到本地缓存中，需要注意的是本地缓存会导致数据延迟，可以通过调整本地缓存的有效期降低数据不一致的时间。</li>
+<li><strong>写热数据</strong>：先把库存数据同步到Redis中，通过Lua脚本把校验库存、扣减库存的命令打包到一个脚本中，发送给Redis执行。Redis扣减库存成功后，再通过异步将数据保存到数据库中。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>系统设计</category>
+      </categories>
+      <tags>
+        <tag>系统设计</tag>
       </tags>
   </entry>
   <entry>
@@ -615,51 +660,6 @@
       </categories>
       <tags>
         <tag>调优</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>系统设计</title>
-    <url>/2022/12/08/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</url>
-    <content><![CDATA[<h2 id="秒杀系统"><a href="#秒杀系统" class="headerlink" title="秒杀系统"></a>秒杀系统</h2><p><strong>巨大的瞬时流量</strong>：</p>
-<p>秒杀系统的特点，就是几乎所有的请求会集中到同一时刻，这种场景会在短时间内产生巨大的流量。</p>
-<ol>
-<li><p><strong>验证码</strong>：验证码可以拦截掉机器人发出的请求，可以起到防刷作用。也可以延缓并发，因为有的用户手速快，有的手速慢，可以让一瞬间的集中流量平均到5~10秒。</p>
-</li>
-<li><p><strong>消息队列</strong>：可以把请求暂存到消息队列中，让服务根据自己的处理能力来消费请求，避免大量请求直接进入后台。</p>
-</li>
-<li><p><strong>限流</strong>：限流就是通过校验，丢弃掉多余流量，减少下游服务需要处理的请求数量。</p>
-<ul>
-<li><p>Nginx限流：Nginx自带限流功能，可以根据IP地址或者自定义参数来做限流。</p>
-<blockquote>
-<p>比如可以限制每个IP只能发送一个请求，或者每个用户ID只能发送一个请求。</p>
-</blockquote>
-</li>
-<li><p>线程池限流：通过配置线程池的最大线程数，当等待队列满了，并且所有线程都处于工作状态，多余的请求就会被丢弃，也可以实现限流。</p>
-</li>
-</ul>
-</li>
-</ol>
-<p><strong>流量隔离</strong>：</p>
-<p>参与秒杀活动的商品通常只占很少一部分，为了不影响普通商品的交易，需要对流量进行隔离。</p>
-<ul>
-<li><strong>商品打标</strong>：可以通过对秒杀商品打上特殊的标签，然后在网关层将秒杀商品的请求路由到对应的秒杀服务。</li>
-</ul>
-<p><strong>热点数据问题</strong>：</p>
-<p>对于秒杀系统，大家抢购的通常都是同一件商品，不管是用数据库，还是用缓存，都无法支撑几十万、上百万对同一个key的读写。</p>
-<blockquote>
-<p>Redis最高只能支撑几万的TPS。</p>
-</blockquote>
-<p>热点数据可以分为<strong>读热数据</strong>和<strong>写热数据</strong>：</p>
-<ol>
-<li><strong>读热数据</strong>：可以把热点数据加载到本地缓存中，需要注意的是本地缓存会导致数据延迟，可以通过调整本地缓存的有效期降低数据不一致的时间。</li>
-<li><strong>写热数据</strong>：先把库存数据同步到Redis中，通过Lua脚本把校验库存、扣减库存的命令打包到一个脚本中，发送给Redis执行。Redis扣减库存成功后，再通过异步将数据保存到数据库中。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>系统设计</category>
-      </categories>
-      <tags>
-        <tag>系统设计</tag>
       </tags>
   </entry>
   <entry>
@@ -1839,6 +1839,518 @@
       </tags>
   </entry>
   <entry>
+    <title>Redis</title>
+    <url>/2022/12/08/Redis/</url>
+    <content><![CDATA[<h3 id="⭐哈希冲突"><a href="#⭐哈希冲突" class="headerlink" title="⭐哈希冲突"></a>⭐哈希冲突</h3><p>哈希冲突是指，两个key的哈希值和哈希桶计算对应关系的时候，正好落在了同一个哈希桶中。这是哈希表没法避免的问题。</p>
+<p><strong>Redis解决哈希冲突的方式是链表，就是同一个哈希桶中的多个元素用一个链表来保存</strong>。</p>
+<p>但是如果哈希冲突越来越多，就会导致某些哈希桶上的链表特别长，就导致在这些哈希桶上查找数据变得很慢。Redis的解决方案是<a href="#rehash">rehash</a>。</p>
+<p>⭐<b id='rehash'>rehash</b>：rehash操作就是为了增加现有哈希桶的数量，让元素能在更多的哈希桶之间分散保存。</p>
+<p>为了让rehash更加高效，Redis使用了两个全局哈希表，默认使用的是哈希表1，哈希表2不会被分配空间。Redis的rehash主要分三个步骤：</p>
+<ol>
+<li>给哈希表2分配更大的空间。</li>
+<li>把哈希表1中的数据重新映射并拷贝到哈希表2中。</li>
+<li>最后释放哈希表1的空间。</li>
+</ol>
+<p>这个过程会涉及到大量的数据拷贝，如果一次性把哈希表1的数据都拷贝完，会造成Redis线程的阻塞，无法服务其他请求。为了避免这个问题Redis采用了<a href="#%E6%B8%90%E8%BF%9B%E5%BC%8Frehash">渐进式rehash</a>。</p>
+<p><b id='渐进式rehash'>渐进式rehash</b>：就是在拷贝数据时，Redis每收到一个请求，就把这个请求操作的哈希桶中所有元素拷贝到哈希表2中。这样就可以把rehash过程分摊到多次请求中。</p>
+<p>如果是查询操作，Redis会现在哈希表1里面查找，如果没找到就在哈希表2里面找。</p>
+<p>如果是新增操作，Redis只会把数据新增到哈希表2中，这样就可以保证哈希表1的数据只减不增，最终所有数据都会被拷贝到哈希表2中。</p>
+<h3 id="⭐Redis中的数据结构"><a href="#⭐Redis中的数据结构" class="headerlink" title="⭐Redis中的数据结构"></a>⭐Redis中的数据结构</h3><p>Redis中数据类型一共有5种：<strong>String</strong>、<strong>List</strong>、<strong>Hash</strong>、<strong>Set</strong>、<strong>Sorted Set</strong>。</p>
+<p>底层的数据结构一共有6种：<a href="#%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2">简单动态字符串(SDS)</a>、<strong>双向链表</strong>、<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>、<strong>哈希表</strong>、<a href="#%E8%B7%B3%E8%A1%A8">跳表</a>、<strong>数组</strong>。</p>
+<p><b id='String'>String</b>：String类型的底层实现只用了一种，<a href="#%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2">简单动态字符串</a>。</p>
+<p><b id='List'>List</b>：List类型有两种底层实现，双向链表和<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>。</p>
+<p><b id='Hash'>Hash</b>：Hash类型有两种底层实现，<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>和哈希表。</p>
+<p><b id='Sorted Set'>Sorted Set</b>：Sorted Set类型有两种底层实现，<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>和<a href="#%E8%B7%B3%E8%A1%A8">跳表</a>。</p>
+<p><b id='Set'>Set</b>：Set类型有两种底层实现，哈希表和数组。</p>
+<p>⭐<b id="简单动态字符串">简单动态字符串（Simple Dynamic String）</b>：</p>
+<p><strong>简单动态字符串</strong>主要有三部分组成：</p>
+<ul>
+<li><strong>buf</strong>：字节数组，用来保存实际的数据。会在数组结尾处加上一个 “\0” ，用来表示数组的末尾。会占用1个额外的字节。</li>
+<li><strong>len</strong>：占用4个字节，表示buf的长度。</li>
+<li><strong>alloc</strong>：也占用4个字节，用来表示buf实际分配的长度，一般大于len。</li>
+</ul>
+<p>在SDS中，只有buf保存实际的数据，len和alloc都是SDS结构的额外开销。</p>
+<p>⭐<b id="压缩列表">压缩列表</b>：</p>
+<p>压缩列表跟数组很像，但是比数组更节省内存，因为数组中每个元素的大小都是相同的，就需要为每个元素都分配最大元素占用的内存空间，如果大部分元素都不需要这么大的内存空间，就会浪费很多内存（因为数组需要提前知道每个元素的大小才能计算出下一个元素的位置）。</p>
+<p>压缩列表就是在数组的基础上对每个元素的大小进行压缩。</p>
+<p>压缩列表会维护一个表头，这个表头包含三个属性：列表长度（zlbytes）、列表尾部的偏移量（zltail）、列表中元素的个数（zllen）。</p>
+<p>压缩列表会为每个元素都维护一些元数据：前一个entry的长度（pre_len）、自己的长度（len）、保存的数据类型（encoding）、content（实际保存的数据）。</p>
+<p>⭐<b id='跳表'>跳表</b>：</p>
+<p><strong>跳表是在链表的基础上，增加了多级索引，通过索引位置的跳转，可以快速定位到数据</strong>。</p>
+<blockquote>
+<p>假设链表中十个元素。如果要在链表中查找8这个元素，就只能从头开始遍历，需要查找8次，效率比较低。复杂度是O(N)。</p>
+<p>可以通过增加索引的方式来提升查找速度：从第一个元素开始，每两个元素选出来一个索引。这些索引再通过指针指向原来的链表。</p>
+<p>比如在，1和2中选择1作为索引，从3和4中选择3作为索引，5和6中选择5作为索引，这样就只需要遍历1、3、5、7、8就可以查找到8了，只需要5次查询。</p>
+<p>如果还想更快点，可以在一级索引的基础上增加二级索引：从一级索引中每两个元素建立一个索引，这些索引再指向一级索引。</p>
+<p>跳表的时间复杂度是O(logN)</p>
+</blockquote>
+<h3 id="⭐AOF日志"><a href="#⭐AOF日志" class="headerlink" title="⭐AOF日志"></a>⭐AOF日志</h3><p>AOF日志里面记录的是Redis收到的每一条写命令，这些命令是以文本形式保存的。Redis采用的是<a href="#%E5%85%88%E5%86%99%E5%86%85%E5%AD%98%E5%90%8E%E5%86%99%E6%97%A5%E5%BF%97">先写内存后写日志</a>的方式。</p>
+<p>因为AOF日志是以文件的形式保存的，写命令越多，AOF文件就越大。AOF日志大小超过限制就会触发<a href="#AOF%E9%87%8D%E5%86%99%E6%9C%BA%E5%88%B6">AOF重写机制</a>。</p>
+<p>AOF日志过大带来的问题：</p>
+<ol>
+<li>占用更多磁盘空间</li>
+<li>大文件会导致写效率变低。</li>
+<li>会导致恢复数据变得很慢。</li>
+</ol>
+<p>AOF是默认关闭的，可以通过<code>appendonly</code>参数开启。RDB和AOF同时开启的情况下，会优先使用AOF恢复数据。</p>
+<p>⭐<b id='先写内存后写日志'>先写内存后写日志</b>：</p>
+<p>先写内存后写日志这种方式的好处是：可以避免语法检查的额外开销，而且AOF是在命令执行之后才记录日志的，所以不会对当前操作的性能有影响。但是会对下一条操作有影响，因为往AOF记录日志是主线程进行的，磁盘压力比较大导致写日志速度比较慢，就会导致后续的操作阻塞。而且如果一个命令刚执行完，还没来得及记录日志就宕机了，那这个命令对应的数据就会丢失。</p>
+<p>AOF提供了三个选项，可以通过<code>appendfsync</code>参数控制AOF写日志的时机：</p>
+<ul>
+<li><strong>Always</strong>：同步写回，每个写请求都会对应一次写日志的操作，会影响Redis性能，最多会丢失一条命令的数据。</li>
+<li><strong>Everysec</strong>：每秒写回，Redis会先把写请求记录到AOF内存缓冲区，每隔一秒就把缓冲区的内容写到磁盘上，可能会丢失1秒的数据。</li>
+<li><strong>No</strong>：由操作系统来控制写回，Redis会先把请求记录到AOF内存缓冲区，由操作系统来决定什么时候把缓冲区的内容写到磁盘上（通常是系统比较空闲的时候）。</li>
+</ul>
+<p>⭐<strong>AOF重写机制触发规则</strong>：</p>
+<ol>
+<li>可以通过<code>bgrewriteaof</code>命令手动触发AOF重写。</li>
+<li>也可以通过调整Redis参数来控制AOF触发时机：需要同时满足<code>auto-aof-rewrite-min-size</code>和<code>auto-aof-rewrite-precentage</code>两个参数<ul>
+<li><code>auto-aof-rewrite-min-size</code>：表示触发AOF重写时，文件的最小大小，默认为64MB。</li>
+<li><code>auto-aof-rewrite-precentage</code>：当前AOF文件与上一次AOF文件重写后的大小的比值，默认是100%。也就是说如果当前AOF日志是10MB，上一次AOF文件重写之后是20MB，那么当前AOF文件需要增长到40MB才满足AOF重写机制。</li>
+</ul>
+</li>
+</ol>
+<p>⭐<b id='AOF重写机制'>AOF重写机制</b>：</p>
+<p>AOF重写就是把Redis中当前所有数据转换成写命令，然后再记录到AOF日志中。</p>
+<p>因为当前数据库中的一条数据可能会对应AOF日志中多个命令，比如原本是name=张三，然后被改成name=李四。name=李四这条数据在AOF日志中就有两条命令。重写时只需要保存name=李四这一条命令就可以了。这样就可以减少AOF日志的大小。</p>
+<p>重写是通过后台进程（bgrewriteaof）来完成的，所以不会影响主线程处理请求的性能。</p>
+<p>重写过程大概是这样的：</p>
+<ol>
+<li>首先主线程会创建一个后台进程，然后把内存中的数据拷贝一份给这个后台进程。然后后台进程再把数据转换成写命令记录到新的日志中。</li>
+<li>重写过程中，主线程如果接收到新的写命令，Redis会把命令记录同时记录到旧的AOF日志和AOF缓冲区中。</li>
+<li>等重写完成后，再把新收到的命令记录到新的AOF日志中。</li>
+<li>然后就可以用新日志替换旧日志了。</li>
+</ol>
+<h3 id="⭐RDB内存快照"><a href="#⭐RDB内存快照" class="headerlink" title="⭐RDB内存快照"></a>⭐<span id='RDB内存快照'>RDB内存快照</span></h3><p>内存快照就是把，数据库中某一时刻所有数据的状态保存到磁盘上。</p>
+<p>RDB记录的是某一时刻的数据，可以直接把RDB文件读到内存，恢复数据的效率很高。</p>
+<p>Redis提供了两个命令生成RDB文件，<code>save</code>和<code>bgsave</code>：</p>
+<ul>
+<li><strong>save</strong>：在主线程执行，会阻塞主线程。</li>
+<li><strong>bgsave</strong>：会创建一个后台进程，专门用来写RDB文件，可以避免主线程被阻塞。Redis默认用的是<strong>bgsave</strong>。</li>
+</ul>
+<p>在生成RDB文件时，如果主线程接收到了写命令，那这条写命令对应的数据就会被复制一份，生成一个副本。后台进程会把这个副本一起写进RDB文件中，这样就可以保证快照的完整性。</p>
+<p>⭐<b id='内存快照的频率'>内存快照的频率</b>：</p>
+<p>如果频率太高：每次生成内存快照都会把全量数据写到磁盘上，会给磁盘带来很大压力。而且后台进程是主线程创建出来的，创建的过程本身是会阻塞主线程的，如果快照生成频率过高，就会频繁创建进程，就会很频繁的阻塞主线程。</p>
+<p>如果频率太低：两次快照生成时间间隔较长，如果服务宕机，就会丢失很多数据。</p>
+<h3 id="⭐混合模式"><a href="#⭐混合模式" class="headerlink" title="⭐混合模式"></a>⭐混合模式</h3><p>⭐<strong>Redis4.0版本新增了混合使用AOF和RDB的机制，就是在两次快照之间，用AOF日志记录这期间的所有命令，等下一次快照执行完再清空AOF日志</strong>。（可以通过<code>aof-use-rdb-preamble</code>参数开启）</p>
+<p>这样可以降低<a href="#%E5%86%85%E5%AD%98%E5%BF%AB%E7%85%A7%E7%9A%84%E9%A2%91%E7%8E%87">内存快照的频率</a>，而且AOF日志也只需要记录两次快照之间的操作，不会出现文件过大的情况。</p>
+<p>在混合模式下，AOF重写时，后台进程会先把内存中的数据以RDB的格式写入到AOF文件中，再把AOF缓冲区中的命令以AOF的格式写到文件中。</p>
+<p>这样新的AOF文件就会包含RDB格式的数据和AOF格式的数据，在恢复数据时，会先加载RDB格式的数据，然后再执行AOF格式的操作命令。</p>
+<h3 id="⭐主从集群"><a href="#⭐主从集群" class="headerlink" title="⭐主从集群"></a>⭐主从集群</h3><p>Redis提供了主从模式。在从库上执行<code>replicaof 127.0.0.1(主库ip) 6379(主库端口)</code>。</p>
+<p>通常情况下主库负责写操作，然后再把写操作同步给从库。从库只负责读操作。</p>
+<p>Redis2.6版本之后，从库默认是只读的，可以通过<code>slave-read-only</code>参数修改。</p>
+<p>⭐<b id='主从同步原理'>主从同步原理</b>：</p>
+<ol>
+<li><p>主从库建立连接后，从库会给主库发送<code>psync</code>命令，表示要进行数据同步。<code>psync</code>命令包含<strong>ID</strong>和<strong>offset</strong>两个参数。</p>
+<blockquote>
+<p><strong>ID</strong>：每个Redis实例启动时都会自动生成一个随机ID。主库和从库第一次同步数据时，从库不知道主库的ID，所以此时ID的值为”?”。</p>
+<p><strong>offset</strong>：复制进度。第一次同步数据时，offset为-1。</p>
+</blockquote>
+</li>
+<li><p>主库收到<code>psync</code>命令后，如果是第一次同步，主库会用<code>FULLRESYNC</code>命令给从库返回响应。</p>
+<blockquote>
+<p><strong>FULLRESYNC</strong>：表示全量同步，这个命令包含两个参数：<strong>主库ID</strong>和<strong>复制进度offset</strong>。</p>
+</blockquote>
+</li>
+<li><p>从库收到响应后会把这两个参数记录下来。</p>
+</li>
+<li><p>主库将数据同步给从库，这个过程需要依赖<a href="#RDB%E5%86%85%E5%AD%98%E5%BF%AB%E7%85%A7"><strong>内存快照</strong></a>生成的RDB文件。主库会先执行<code>bgsave</code>命令生成RDB文件，然后再把文件发送给从库。</p>
+<blockquote>
+<p>Redis可以先把RDB文件写到磁盘上，再发送给从库。也可以直接通过socket把RDB文件发送给从库（无需落盘）。</p>
+<p>可以通过参数<code>repl-diskless-sync</code>开启无盘传输。默认是关闭的。</p>
+</blockquote>
+</li>
+<li><p>从库接收到RDB文件后，会先清空当前数据库，然后加载RDB文件。</p>
+</li>
+<li><p>主库发送RDB文件的过程中，如果又接收到了新的写命令，就会把这些命令记录到<strong>replication buffer</strong>中。</p>
+</li>
+<li><p>最后主库再把<strong>replication buffer</strong>中的命令发送给从库。</p>
+</li>
+</ol>
+<p>执行全量数据同步，对于主库来说主要有两个操作：<strong>生成RDB文件</strong>和<strong>传输RDB文件</strong>。生成RDB文件需要创建后台进程，这个过程会阻塞主线程。而且传输RDB文件也会占用网络带宽。如果从库的数量比较多，就会对主库性能产生影响。可以通过主从级联模式缓解数据同步时主库的压力。</p>
+<p>⭐<b id='主从级联模式'>主从级联模式</b>：</p>
+<p>可以选择一个配置比较高的从库，让其他从库和这个从库建立主从关系。这样就可以把一部分数据同步的压力分摊到从库上。</p>
+<p>⭐<b id='主从连接中断'>主从连接中断</b>：</p>
+<p>在Redis2.8版本之前，如果主从库连接中断，再次连接后主从库就会进行一次全量数据同步。</p>
+<p>Redis2.8版本之后，主库会采用<a href="#%E5%A2%9E%E9%87%8F%E5%90%8C%E6%AD%A5">增量同步</a>的方式。</p>
+<p>⭐<b id='增量同步'>增量同步</b>：主库只会把连接中断期间收到的命令同步给从库。</p>
+<ol>
+<li><p>主从库断开连接后，主库会把期间收到的写命令写到<strong>repl_backlog_buffer</strong>中。</p>
+<blockquote>
+<p><strong>repl_backlog_buffer</strong>：是一个环形缓冲区，主库会记录自己写到的位置（master_repl_offset），从库会记录自己读到的位置（slave_repl_offset）。</p>
+</blockquote>
+</li>
+<li><p>主从库恢复连接之后，从库会发送<code>psync</code>命令，并且把当前<strong>repl_backlog_buffer</strong>的偏移量发送给主库。</p>
+</li>
+<li><p>主库会判断自己的偏移量与从库偏移量之间的差距。如果差距超过了缓冲区的大小，就说明缓冲区中没有被读取的操作被覆盖过，这种情况就需要重新执行全量数据同步了。</p>
+<blockquote>
+<p>可以通过<code>repl_backlog_size</code>这个参数，调整缓冲区的大小，来减少全量数据同步的次数。</p>
+</blockquote>
+</li>
+</ol>
+<p>⭐<strong>主从数据不一致</strong>？</p>
+<p>因为<strong>主从库之间的数据同步是异步进行的</strong>，主库执行完写命令之后，并不会等从库同步完数据后再给客户端返回结果。而且从库需要先处理完当前收到的请求，才会执行主库发送的写命令。如果从库正在执行<code>keys *</code>之类的耗时比较长的命令，就有可能导致客户端读到旧数据。</p>
+<p>解决办法：</p>
+<p>可以开发一个服务来监控主从库之间的数据同步进度，可以通过<code>INFO replication</code>命令获取主库写数据的进度（master_repl_offset）和从库复制数据的进度（slave_repl_offset），然后比较主从库数据同步的差值，如果差值比较大，就可以把读请求发送到主库上执行。</p>
+<h3 id="⭐哨兵集群"><a href="#⭐哨兵集群" class="headerlink" title="⭐哨兵集群"></a>⭐哨兵集群</h3><p>哨兵实际上就是一个特殊的Redis实例，它主要负责：<a href="#%E7%9B%91%E6%8E%A7"><strong>监控</strong></a>、<a href="#%E9%80%89%E6%8B%A9%E4%B8%BB%E5%BA%93"><strong>选择主库</strong></a>和<a href="#%E9%80%9A%E7%9F%A5"><strong>通知</strong></a>。</p>
+<p>哨兵集群之间的相互发现需要依赖于Redis的发布/订阅机制（pub/sub）。主库上有一个<code>__sentinel__:hello</code>的频道，哨兵和主库建立连接之后，就会在这个频道上发布自己的连接信息（IP和端口），同时也会订阅这个频道，来获取其它哨兵的连接信息。</p>
+<p><strong>哨兵如何获取从库的IP和端口</strong>？</p>
+<p>哨兵会向主库发送<code>INFO</code>命令来获取从库的信息，主库在接收到INFO命令之后，会把从库列表发送给哨兵，哨兵就会根据从库列表中的连接信息，和每一个从库建立连接，对这些从库进行监控。</p>
+<p>⭐<b id='监控'>监控</b>：</p>
+<p>哨兵会周期性的给所有节点发送<code>PING</code>命令，如果哨兵没有在规定时间收到响应，哨兵就会把这个节点标记为下线状态。</p>
+<p>如果被标记为下线状态的节点是主库，哨兵就会开启切换主库的流程。</p>
+<p>可以通过参数<code>down-after-milliseconds</code>调整哨兵监控周期。</p>
+<p>但是哨兵是会有误判的（比如网络压力较大导致哨兵没有及时收到响应），如果被误判的是从库对集群的影响不会太大。如果被误判的是主库就会开始切换主库的流程，选择主库的过程开销就比较大了。可以通过部署多个哨兵一起来判断，降低误判概率。</p>
+<p>在哨兵集群中，当某个哨兵与主库连接中断后，就会通知其它哨兵节点主库已下线，其它哨兵会根据自己和主库的连接情况投出赞成票（Y）或反对票（Ｎ）。当赞成票的数量达到<code>quorum</code>参数后，主库就会被标记为下线状态。</p>
+<p>⭐<b id='选择主库'>选择主库</b>：</p>
+<p>在选择主库的过程中，读请求可以在从库上正常执行，写请求会失败。</p>
+<p>选择主库的过程可以分为<strong>筛选</strong>和<strong>打分</strong>两个阶段。</p>
+<ul>
+<li><p>筛选阶段：主要是判断节点的网络连接状态，如果断开连接的次数比较多，哨兵就会认为这个从库的网络状态不是很好，就会把这个节点筛选掉。</p>
+</li>
+<li><p>打分阶段：打分分为三轮，只要在任何一轮有从库得到了最高分，这个从库就会被选为主库。</p>
+<ol>
+<li><p>根据优先级来打分，可以通过<code>slave-priority</code>参数设置优先级。可以给配置比较高的节点分配更高的优先级。</p>
+</li>
+<li><p>根据数据同步进度来打分，在主从库数据同步时，从库会记录当前数据同步的进度，哨兵会比较所有从库的数据同步进度，谁的数据多谁就会成为主库。</p>
+</li>
+<li><p>根据节点ID来打分，ID号小的会成为主库。</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>在哨兵集群中，发现主库下线的哨兵会主动向其它哨兵发送命令，希望由自己来执行主从切换，其它哨兵会进行投票。这个过程也叫Leader选举。</p>
+<p>想要成为Leader哨兵，需要满足两个条件：</p>
+<ol>
+<li>拿到半数以上的赞成票。</li>
+<li>拿到的票数必须大于等于<code>quorum</code>参数。</li>
+</ol>
+<p>如果选举失败，哨兵集群会等待一段时间，再重新选举。</p>
+<p>需要注意的是：如果哨兵集群只有2个节点，必须要拿到2票才能成为Leader，如果其中有一个哨兵挂掉了，就没办法切换主库了。所以通常至少要配置3个哨兵节点。</p>
+<p>⭐<b id='通知'>通知</b>：</p>
+<p>新的主库选出来之后，哨兵会把新主库的连接信息发送给所有从库，让它们执行<code>replicaof</code>命令与新主库建立连接并同步数据。</p>
+<p>哨兵还会把新主库的连接信息发送给客户端，客户端可以通过订阅<code>switch-master</code>频道来获取主从切换的事件。</p>
+<p>客户端也可以主动获取新的主从地址，所以在哨兵模式下，客户端不能直接写死主从库的地址了，需要使用<code>sentinel get-master-addr-by-name</code>命令获取新地址。</p>
+<h3 id="⭐切片集群"><a href="#⭐切片集群" class="headerlink" title="⭐切片集群"></a>⭐切片集群</h3><p><strong>切片集群就是把数据拆分成多份，每一份都分别用一个实例来保存，Redis3.0版本提供了Redis Cluster切片集群方案</strong>。</p>
+<p>Redis Cluster通过哈希槽来处理数据与Redis节点的<a href="#%E5%93%88%E5%B8%8C%E6%A7%BD%E6%98%A0%E5%B0%84">映射</a>关系，一个切片集群一共有16384个哈希槽，这些哈希槽可以理解为数据分区，每一个键值对都会根据它的key，被映射到一个哈希槽中。</p>
+<p>客户端与集群建立连接之后，集群就会把哈希槽的分配信息发送给客户端，客户端会把哈希槽信息缓存在本地，当客户端请求键值对时，会先计算数据对应的哈希槽，然后就可以根据哈希槽向对应的节点发送请求了。</p>
+<p>如果需要新增节点或者删除节点，就需要重新分配哈希槽。哈希槽对应的数据也需要迁移。在集群内部，节点之间可以相互通信来获得最新的哈希槽的映射关系。</p>
+<p>这种情况下，客户端维护的哈希槽信息就是错误的了，Redis Cluster提供了一种<a href="#%E9%87%8D%E5%AE%9A%E5%90%91%E6%9C%BA%E5%88%B6">重定向机制</a>。</p>
+<p>⭐<strong>故障处理机制</strong>：</p>
+<p>通常情况下，集群中每个节点都会配置为主从模式，当某一个主节点没有和其它节点完成<code>PING</code>通信，就会被标记为主观下线，然后通知其它节点，其他节点会根据自己与该节点的连接情况进行投票，投票通过后该主节点就会被标记为客观下线。然后开始主从切换，等原来的主节点恢复以后，会自动成为新主节点的从节点。</p>
+<p>如果主节点没有从节点，主节点挂了的话，整个集群就会处于不可用的状态。</p>
+<p>⭐<b id='哈希槽映射'>哈希槽映射</b>：</p>
+<p>首先根据键值对的key，通过<code>CRC16算法</code>计算出一个16位的值。然后再用这个值和16384取模，就可以得到一个0~16383范围内的数字。这个数字就代表这个键值对对应的哈希槽。</p>
+<p>默认情况下切片集群会自动把16384个哈希槽平均分布在集群所有节点上，集群中的每个节点内部都会保存哈希槽和Redis节点的对应关系。</p>
+<p>⭐<b id='重定向机制'>重定向机制</b>：</p>
+<p>就是客户端给一个节点发送读写操作时，如果这个节点上没有对应的数据，这个节点就会给客户端返回<code>MOVED</code>命令，这个命令会包含键值对所在的节点信息。客户端也会更新本地缓存的哈希槽信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET hello:key</span><br><span class="line">(error) MOVED 13320（哈希槽） 172.16.19.5:6379（节点信息）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>还有一种情况是，哈希槽重新映射之后，数据还没有迁移完成，客户端就会收到一条<code>ASK</code>命令，这个命令会包含数据所在的节点信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET hello:key</span><br><span class="line">(error) ASK 13320 172.16.19.5:6379</span><br></pre></td></tr></table></figure>
+
+<p>客户端需要再向新节点发送<code>ASKING</code>命令，这个命令表示让新节点处理客户端的请求。</p>
+<h3 id="⭐Redis内存优化"><a href="#⭐Redis内存优化" class="headerlink" title="⭐Redis内存优化"></a>⭐Redis内存优化</h3><p>实际上Redis中的每一个键值对都对应一个RedisObject对象，这个对象主要用来记录一些元数据，比如：最后一次访问事件，被访问的次数等。</p>
+<p>也就是说Redis中的键值对越多，对应的RedisObject对象就越多，这些元数据就会占用越多的内存空间。这种情况下，可以通过Hash集合来减少Redis中的键值对。</p>
+<p>⭐<strong>基于Hash类型的二级编码</strong>：</p>
+<p>就是把一个String类型的数据中的key拆分成两部分，前一部分作为Redis中的key，后一部分Hash集合的key，Hash集合的value就是要保存的数据。这样就可以减少数据库中键值对的数量，就可以减少元数据占用的内存空间。</p>
+<p>而且String类型底层数据结构是<a href="#%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2">简单动态字符串</a>，Hash类型的底层数据结构是<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>，也相对更省空间。</p>
+<p>这种方式虽然可以节省空间，但是就没有办法针对每某一个key单独设置过期时间了，虽然可以通过业务层单独维护每个元素的过期删除逻辑，但是会比较复杂。</p>
+<p>Hash类型底层其实有两种数据结构的实现：</p>
+<p>它会根据Redis中的两个参数动态选择底层的数据结构，一个是Hash集合中最大元素个数（hash-max-ziplist-entries），另一个是单个元素的最大长度（hash-max-ziplist-value）。</p>
+<p>如果Hash集合中的元素个数，或者单个元素的大小超过这两个参数，Hash类型的底层实现就会变为哈希表，并且不会再变回来了。节省空间的效果也就没那么好了。</p>
+<p>所以需要通过调整字符串的拆分长度，让数据均匀地分布在多个Hash集合中。</p>
+<h3 id="⭐数据淘汰机制"><a href="#⭐数据淘汰机制" class="headerlink" title="⭐数据淘汰机制"></a>⭐数据淘汰机制</h3><p>Redis 4.0版本之前提供了5种淘汰策略，4.0之后又新加了2种，可以通过<code>maxmemory-policy</code>参数配置。淘汰策略可以分为两类：</p>
+<p><strong>在设置了过期时间的数据中进行淘汰</strong>：</p>
+<ul>
+<li>volatile-ttl：会针对设置了过期时间的数据，根据过期时间的先后顺序进行删除，越早过期就越先删除。</li>
+<li>volatile-random：在设置了过期时间的数据中，随即删除。</li>
+<li>volatile-lru：会使用LRU算法删除设置了过期时间的数据，优先删除最近最少使用的key。</li>
+<li>volatile-lfu：会使用LFU算法删除设置了过期时间的数据，优先删除最少使用的key。(Redis 4.0版本新增的)</li>
+</ul>
+<p><strong>在所有数据中进行淘汰</strong>：</p>
+<ul>
+<li>allkeys-random：会从所有数据中，随机删除数据。</li>
+<li>allkeys-lru：使用LRU算法在所有数据中删除数据，优先删除最近最少使用的key。</li>
+<li>allkeys-lfu：使用LFU算法在所有数据中删除数据，优先删除最少使用的key。(Redis 4.0版本新增的)</li>
+</ul>
+<p>默认情况下，如果内存满了，并不会淘汰数据，再有写请求进来的时候，Redis会直接抛异常。</p>
+<p>从算法角度来说：</p>
+<p>其实Redis4.0以后提供的LFU算法比LRU更实用一些。因为如果某一个Key是一天访问一次，正好这个key刚刚在一秒前被访问过，那么LRU就不会淘汰这个Key，反而会去淘汰一个每分钟都会被访问，但是最近1秒没有被访问过的key。LFU算法就不会有这个问题。</p>
+<p>TTL算法比较简单粗暴，它会优先删除最早过期的Key，但是这个key有可能正在被大量访问，所以这种算法会有一些风险。</p>
+<p>从key的范围来说：</p>
+<p>allkeys可以保证就算忘记设置过期时间，也可以保证key被删掉。如果被删掉的key访问频率很高，有可能会造成<a href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF">缓存击穿</a>，volatile会更稳妥一些。</p>
+<h4 id="⭐LRU算法原理"><a href="#⭐LRU算法原理" class="headerlink" title="⭐LRU算法原理"></a>⭐LRU算法原理</h4><p>LRU算法的核心是淘汰最久没有使用的数据。</p>
+<p>具体来说就是，<strong>LRU会把所有数据组成一个链表，链表的头部代表最常使用的数据，链表的尾部代表最不经常使用的数据。在删除数据的时候，会从链表的尾部开始删除</strong>。</p>
+<p>如果要写入一个新数据，但是链表已经没有空余位置了，LRU算法会做两件事：</p>
+<ol>
+<li>新数据是刚被访问的，所以会放到链表头部。</li>
+<li>再把链表尾部的数据删除。</li>
+</ol>
+<p>不过LRU算法需要用链表来管理数据，会带来额外的开销。而且如果有大量的数据访问，就会有很多链表移动操作，会降低Redis的性能。</p>
+<p>所以Redis对LRU算法做了优化，Redis会记录每个数据每个数据最近一次访问的时间戳（RedisObject中的lru属性）。</p>
+<ol>
+<li><p>在第一次淘汰数据的时候，会随机选出一批数据，作为候选集合，然后找出集合中lru最小的数据淘汰出去。</p>
+</li>
+<li><p>下一次淘汰数据的时候，会再挑选一批数据进入到候选集合中，这里进入候选集合的标准是必须小于候选集合中最小的lru。然后再把集合lru最小的数据淘汰出去。</p>
+</li>
+</ol>
+<p>这样就可以解决链表移动导致的性能问题。</p>
+<p>这里的候选集合是一个链表，数据会按照lru排序，表头是lru最大的，表尾是lru最小的，如果链表满了就会把表头的数据移出去。</p>
+<p>可以通过参数<code>maxmemory-samples</code>来控制挑选数据的个数，默认是5。</p>
+<p>建议：</p>
+<ul>
+<li>如果业务场景有冷热数据区分的话，优先使用allkeys-lru策略。这样可以把经常访问的热数据留在缓存中。</li>
+<li>如果业务中数据访问的频率差不多，没有冷热数据区分，建议用allkeys-random策略。随机淘汰就行。</li>
+<li>如果业务中有一些不需要被删除的数据，可以使用volatile-lru策略。然后设置这些数据永不过期。这样这些数据就一直不会被删除了。</li>
+</ul>
+<h4 id="⭐LFU算法原理"><a href="#⭐LFU算法原理" class="headerlink" title="⭐LFU算法原理"></a>⭐LFU算法原理</h4><p>LFU是在LRU算法的基础上，为每个数据增加一个计数器，用来统计这个数据的访问次数。</p>
+<p>淘汰数据的时候，会随机选出一批数据，作为候选集合，然后根据根据集合中数据的访问次数进行筛选，会把访问次数最低的数据淘汰出去。如果两个数据的访问次数一样，会把访问时间更久的数据淘汰出去。</p>
+<p>这个计数器的大小只有8位，最大值是255。</p>
+<p>所以并不是数据每访问一次，就给对应的计数器+1，而是每当一个数据被访问一次，先用计数器当前的值 * 配置参数<code>lfu_log_factor</code> + 1 然后再取倒数，然后判断这个倒数是否大于一个取值范围在0~1之间的随机数，如果大于的话，计数器就+1。（n的倒数是n分之1）</p>
+<p>这样设计的好处是可以避免计数器很快就达到255。</p>
+<p>可以通过增加<code>lfu_log_factor</code>的值来减少计数器的增加速度。</p>
+<p>有些数据可能刚开始被大量访问之后就不会再被访问了，LFU算法还有一个衰退机制。</p>
+<p>衰退机制就是，LFU算法会计算当前时间和数据最近一次被访问的时间的差值，然后把这个差值换算成分钟，然后再把这个差值除以<code>lfu_decay_time</code>参数，得到的结果就是计数器要衰减的值。</p>
+<h3 id="⭐过期策略"><a href="#⭐过期策略" class="headerlink" title="⭐过期策略"></a>⭐<b id='过期策略'>过期策略</b></h3><p>Redis的过期策略有被动删除和主动删除两种，这两种策略会一起配合使用。</p>
+<ul>
+<li><p><b id='被动删除'>被动删除</b>：</p>
+<ul>
+<li><p>当收到查询请求时，判断请求的key是否过期，过期了就直接删除。</p>
+</li>
+<li><p>这个策略的好处是可以降低CPU资源的消耗，缺点是会导致内存中有大量已经过期的key还留在内存中。</p>
+</li>
+</ul>
+</li>
+<li><p><b id='主动删除'>主动删除</b>：</p>
+<ul>
+<li>默认是100ms，就随机抽取一些设置了过期时间的key，检查是否过期，过期了就直接删除。</li>
+<li>可以通过<code>hz</code>参数调整检查频率。</li>
+<li>主动删除是在Redis主线程中执行的，如果有大量的key在同一时间过期，会导致Redis响应时间变长。</li>
+</ul>
+</li>
+</ul>
+<h3 id="⭐事务机制"><a href="#⭐事务机制" class="headerlink" title="⭐事务机制"></a>⭐事务机制</h3><p>Redis提供了四个命令来完成事务：MULTI（开启事务）、EXEC（提交事务）、DISCARD（回滚事务）、WATCH（监听数据是否变更）。</p>
+<p><strong>客户端需要用MULTI命令开启一个事务，然后把需要执行的操作发送给Redis，Redis收到这些命令之后并不会立即执行，而是会把这些命令暂存到一个命令队列中。最后客户端发送EXEC命令之后，Redis才会执行命令队列中的内容</strong>。</p>
+<p><strong>DISCARD可以用来回滚事务</strong>。</p>
+<p><strong>WATCH命令可以用来监控某些数据是否被修改了，如果被修改了就可以选择放弃事务</strong>。</p>
+<h3 id="⭐缓存不一致"><a href="#⭐缓存不一致" class="headerlink" title="⭐缓存不一致"></a>⭐缓存不一致</h3><p>其实不管是先更新数据库还是先更新缓存，或者先更新数据库再删除缓存，只要没办法保证第二个操作成功，就会导致数据不一致。</p>
+<p>更好的方式是，新增一个服务监听binlog，然后把发生变化的数据更新到缓存中。</p>
+<p>如果不考虑新增服务，<strong>最好的策略是先更新数据库，再删除缓存</strong>。这种策略在多线程环境下也可能出现数据不一致，但是概率非常低，需要满足3个条件才有可能发生：</p>
+<ol>
+<li>缓存刚好失效</li>
+<li>同时出现读请求+写请求</li>
+<li>更新数据库比查询数据库时间短</li>
+</ol>
+<p>A和B两个线程，线程A是查询请求，线程B是更新请求，缓存中的数据也刚好过期了：</p>
+<ol>
+<li>线程A查询缓存发现数据不存在，</li>
+<li>线程A读取数据库，得到X=1</li>
+<li>线程B更新数据库，把X更新为2</li>
+<li>线程B删除缓存</li>
+<li>线程A将X=1写入缓存</li>
+</ol>
+<p>如果一定要求强一致性，常见的方案是：两阶段提交、三阶段提交、Paxos、Raft这类分布式事务，但它们的性能都很差，而且实现起来也很复杂，这就违背了我们引入缓存的目的。之所以要引入缓存是为了解决<strong>性能</strong>问题，只要数据库和缓存完成操作之前，有其他请求进来，都可能查到中间状态的数据，如果非要追求强一致性，那就要求更新操作完成之前不能有其它请求进来，这个可以通过<a href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81">分布式锁</a>来实现。但是又会牺牲系统的可用性，并且分布式锁也有很多问题要解决。</p>
+<p>所以，既然决定使用缓存，就必须容忍「一致性」问题，否则不建议使用缓存。</p>
+<h3 id="⭐缓存雪崩"><a href="#⭐缓存雪崩" class="headerlink" title="⭐缓存雪崩"></a>⭐缓存雪崩</h3><p><strong>缓存雪崩是指短时间内大量缓存失效的情况，就会导致原本可以在Redis中处理的请求全都发送到数据库，导致数据库压力很大</strong>。</p>
+<p>产生缓存雪崩的原因通常是大量的key在同一时间过期。（缓存雪崩是热key大规模的过期失效，缓存击穿是单个热key过期失效）</p>
+<p>解决办法：</p>
+<ol>
+<li><p>针对不同的key设置不同的过期时间，可以在Redis中存数据的时候，把每个Key的失效时间加一个随机值。</p>
+</li>
+<li><p>或者在内存中定义一个二级缓存(Map)，提前把数据从数据库加载到内存中，缓存失效就直接走内存查询。</p>
+</li>
+</ol>
+<h3 id="⭐缓存击穿"><a href="#⭐缓存击穿" class="headerlink" title="⭐缓存击穿"></a>⭐<span id='缓存击穿'>缓存击穿</span></h3><p><strong>缓存击穿是指，某个非常频繁被访问的key突然过期，就会导致访问这个key的大量请求，就都发送到了后端数据库，导致数据库压力很大</strong>。</p>
+<p>解决办法：</p>
+<ol>
+<li><p>设置热点Key永不过期，并且选择volatile系列的数据淘汰算法。</p>
+</li>
+<li><p>也可以通过加锁来限制回表的并发。</p>
+<ul>
+<li><p>可以使用Redission来获取一个基于Redis的分布式锁，查询数据库之前先获取锁。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> RedissionClient redissionClient;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">query</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">String</span> <span class="variable">data</span> <span class="operator">=</span> redisTemplate.opsForValue().get(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;	<span class="comment">// 如果数据为空就通过Redission尝试获取分布式锁</span></span><br><span class="line">		<span class="type">RLock</span> <span class="variable">locker</span> <span class="operator">=</span> redissionClient.getLock(<span class="string">&quot;locker&quot;</span>);</span><br><span class="line">		<span class="comment">// 尝试获取分布式锁，获取不到会阻塞</span></span><br><span class="line">		<span class="keyword">if</span> (locker.tryLock()) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//获取到锁后，再次判断数据是否为空，因为其它线程可能已经把数据写回缓存了</span></span><br><span class="line">				data = redisTemplate.opsForValue().get(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;</span><br><span class="line">                    <span class="comment">// 从数据库获取数据</span></span><br><span class="line">					data = queryForMySQL();</span><br><span class="line">					redisTemplate.opsForValue().set(<span class="string">&quot;key&quot;</span>, data);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">				<span class="comment">// 释放锁</span></span><br><span class="line">				locker.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>不过也不一定非要使用分布式锁，因为这样会导致只有一个线程可以获取数据，其它线程都会阻塞。可以考虑使用进程内的锁，这样每一个节点都可以有一个线程回表查询数据，可以提升一些并发度，也不会对数据库有太大影响。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="⭐缓存穿透"><a href="#⭐缓存穿透" class="headerlink" title="⭐缓存穿透"></a>⭐缓存穿透</h3><p><strong>缓存穿透是指缓存中查不到的数据不一定是数据没有缓存，有可能是原始数据压根就不存在</strong>。</p>
+<p>缓存穿透有两种解决办法：</p>
+<ul>
+<li>第一种办法是，对于不存在的数据，也同样设置一个特殊的value。比如当查询数据库时发现数据为空，就设置-1保存到缓存中，这样下次请求就可以命中缓存了。如果每次请求的key都是随机数，就会导致缓存中有大量无效的key。</li>
+<li>第二种办法：<a href="#BloomFilter">布隆过滤器</a>。</li>
+</ul>
+<p>如果业务规则比较明确的话，可以直接判断请求参数是否合法。</p>
+<p>其实这两种方法可以一起用，把布隆过滤器作为前置过滤，对于少量的误判再保存特殊值到缓存。</p>
+<h3 id="⭐布隆过滤器-BloomFilter"><a href="#⭐布隆过滤器-BloomFilter" class="headerlink" title="⭐布隆过滤器(BloomFilter)"></a>⭐<span id="布隆过滤器">布隆过滤器</span>(BloomFilter)</h3><p>布隆过滤器是一种概率性的数据结构，由一个数组和一系列随机映射函数组成，可以用来快速判断某个数据是否存在。</p>
+<p>它的原理是：</p>
+<ol>
+<li><p>当我们想标记某个数据的时候，布隆过滤器首先会使用多个哈希函数，分别计算这个数据的哈希值，可以得到多个哈希值。</p>
+</li>
+<li><p>然后把这些哈希值和数组长度取模，可以得到每个哈希值在数组中对应的位置。</p>
+</li>
+<li><p>然后把数组中的位置设置为1。</p>
+</li>
+<li><p>判断某个数据是否存在的时候，就检查这个数据在数组中对应的多个位置，只要有一个位置是0，就说明数据肯定不存在。</p>
+</li>
+</ol>
+<p>布隆过滤器不支持删除，因为多个数据通过哈希函数换算出来的下标可能是一样的，删除某一个key的数据可能会导致其他数据一起被删除。</p>
+<p>布隆过滤器还有一个问题就是会误判，因为它本身是一个数组，数组的长度是有限制的，可能会有多个值换算出来的点是同一个位置。所以数组的长度越大，误判的概率就会越低。</p>
+<p>可以使用Google的Guava工具包提供的BloomFilter类。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> BloomFilter&lt;Integer&gt; bloomFilter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstract</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">// 创建布隆过滤器，元素数量10000，期望误判率1%</span></span><br><span class="line">	bloomFilter = BloomFilter.create(Funnels.integerFunnel(), <span class="number">10000</span>, <span class="number">0.01</span>);</span><br><span class="line">	<span class="comment">// 填充布隆过滤器</span></span><br><span class="line">	IntStream.rangeClosed(<span class="number">1</span>, <span class="number">10000</span>).forEach(bloomFilter::put);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">query</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">	<span class="type">String</span> <span class="variable">data</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="comment">// 通过布隆过滤器判断</span></span><br><span class="line">	<span class="keyword">if</span> (bloomFilter.mightContain(id)) &#123;</span><br><span class="line">		<span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> <span class="string">&quot;user&quot;</span> + id;</span><br><span class="line">		<span class="comment">// 查询缓存</span></span><br><span class="line">		data = redisTemplate.opsForValue().get(key);</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;</span><br><span class="line">			data = queryForMySQL(id);</span><br><span class="line">            <span class="comment">// 双重判断，如果数据库中也没有数据，就设置特殊值到Redis中</span></span><br><span class="line">            <span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;</span><br><span class="line">                redisTemplate.opsForValue().set(key, <span class="string">&quot;NODATA&quot;</span>, <span class="number">60</span>, TimeUnit.SECOND);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				redisTemplate.opsForValue().set(key, data, <span class="number">30</span>, TimeUnit.MINUTE);                </span><br><span class="line">            &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="⭐热key问题"><a href="#⭐热key问题" class="headerlink" title="⭐热key问题"></a>⭐热key问题</h3><ul>
+<li>热key的问题就是，突然大量的请求去访问redis上某些特定的key，这样可能会造成流量过于集中，导致这台redis服务宕机引发雪崩。</li>
+<li>解决方案：<ol>
+<li>提前把热key打散到不同的服务器，降低压力。</li>
+<li>加入二级缓存，提前把热key数据从数据库加载到内存中，如果redis宕机，就直接内存查询。</li>
+</ol>
+</li>
+</ul>
+<h3 id="⭐排查Redis性能问题"><a href="#⭐排查Redis性能问题" class="headerlink" title="⭐排查Redis性能问题"></a>⭐排查Redis性能问题</h3><p>如果发现业务响应时间变长，首先需要定位到究竟是哪个环节慢，比较高效的做法是集成<strong>链路追踪</strong>，在服务访问外部资源的地方，记录下时间。</p>
+<p>假如发现操作Redis耗时变长了，就只需要关注Redis这条链路上。</p>
+<p>操作Redis耗时变长的原因主要有2个：</p>
+<ol>
+<li>业务服务和Redis之间网络存在问题，比如网速太慢，存在延迟、丢包等问题。</li>
+<li>Redis本身出现问题，需要进一步排查是具体原因。</li>
+</ol>
+<p>通常第一种情况发生的概率比较小，如果网络出现问题，这台服务器上的所有服务都会发生网络延迟的情况。</p>
+<p>可以通过基准测试判断Redis是不是真的变慢了：</p>
+<p><code>redis-cli -h 127.0.0.1 -p 6379 --intrinsic-latency 60</code>这个命令可以测试出60秒内最大响应延迟。</p>
+<p><strong>查看慢日志</strong>：</p>
+<p>Redis提供了慢日志，用来记录哪些命令执行耗时比较久。</p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 执行时间超过5毫秒，记录为慢日志</span><br><span class="line">CONFIG SET slowlog-log-slower-than 5000</span><br><span class="line"># 只保留最近500条慢日志</span><br><span class="line">CONFIG SET slowlog-max-len 500</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>可以通过<code>SLOWLOG get 5</code>命令查看具体的慢日志，分析哪些命令比较耗时。</p>
+<p>如果有SET / DEL这种简单的命令出现在慢日志中，就有可能是bigkey导致的。</p>
+<p>可以通过<code>redis-cli -h 127.0.0.1 -p 6379 --bigkeys -i 0.01</code>命令扫描出bigkey的分布情况。</p>
+<p>如果写入的value非常大，Redis在分配内存的时候就会比较耗时，删除这个key也会比较耗时。所以应该避免写入bigkey。</p>
+<p>如果使用的是Redis4.0以上的版本，可以用UNLINK命令代替DEL。</p>
+<blockquote>
+<p>UNLINK命令可以把释放内存的操作放到后台线程去执行。</p>
+</blockquote>
+<p><strong>集中过期</strong>：</p>
+<p>如果是在某个时间点突然出现一波延时，可以排查一下是否存在大量key集中过期的情况。</p>
+<p>Redis的过期策略是<a href="#%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5">主动删除</a>+被动删除，主动删除是在主线程中执行的，Redis必须要把所有key都删除掉才能正常处理请求，如果要删除的key有很多、或者要删除的key很大，耗时就会很长。Redis的响应时间也会变长。</p>
+<p>解决办法是给过期时间增加一个随机数，把集中过期的时间点打散。</p>
+<p><strong>内存达到上限</strong>：</p>
+<p>当Redis使用的内存达到上限之后，每次写入新数据的时间会变长，这是因为Redis内存用完了之后，会触发淘汰策略，删除掉一部分数据之后，才能把新数据写进来。</p>
+<p>淘汰数据消耗的时间主要取决于配置的淘汰策略，一般比较常用的是 allkeys-lru / volatile-lru，如果存储的key比较大，淘汰数据的耗时也会比较久。</p>
+<p>解决办法：</p>
+<ol>
+<li>把淘汰策略改为随机淘汰，随机淘汰比LRU算法快很多，不过随机淘汰可能会把很热的key淘汰掉也会有一些别的问题。</li>
+<li>避免存储大key。</li>
+<li>增加服务器内存。</li>
+</ol>
+<h3 id="⭐应用场景"><a href="#⭐应用场景" class="headerlink" title="⭐应用场景"></a>⭐应用场景</h3><h4 id="⭐分布式锁"><a href="#⭐分布式锁" class="headerlink" title="⭐分布式锁"></a>⭐分布式锁</h4><p>加锁时，用Redis的<code>setnx key value</code>命令，这个命令的逻辑是这样的：当key不存在时，则设置key和value，并返回1，如果key已经存在了，直接返回0.</p>
+<p>如果客户端加完锁之后就掉线了，那其它节点就再也获取不到锁了，所以还要通过<code>set expire</code>命令设置过期时间。</p>
+<p>需要注意的是，如果客户端执行完<code>setnx</code>命令之后，还没来得及设置过期时间就掉线了，同样会产生死锁，所以需要Redis 2.6.12版本之后拓展了SET命令的参数：<code>SET lock 1 EX 10 NX</code>。</p>
+<p><strong>锁释放错误</strong>：</p>
+<p>如果代码执行时间超过了锁过期时间，就会导致锁提前释放，然后被其它节点持有，代码执行完后释放锁，这个时候释放的是其它节点的锁。</p>
+<blockquote>
+<ol>
+<li>节点A加锁成功，开始执行代码</li>
+<li>节点A代码执行时间超过了锁的过期时间，锁被自动释放</li>
+<li>节点B加锁成功，开始执行代码</li>
+<li>节点A代码执行完毕，释放锁（释放的是节点B的锁）</li>
+</ol>
+</blockquote>
+<p>解决办法是：加锁时将锁对应的value设置为当前节点的ID，释放锁时判断这把锁是否是自己加的。</p>
+<p>Redission就有自动续期的方案来避免锁过期，逻辑是是启动一个守护线程定时检测锁的失效时间，如果锁快过期了，代码还没执行完，就自动对锁进行续期。</p>
+<p><strong>主从切换问题</strong>：</p>
+<p>因为Redis主从同步数据是异步的，有可能出现这样的情况：</p>
+<ol>
+<li>节点A在主库上执行SET命令加锁成功</li>
+<li>主库还没来得及把SET命令同步给从库，就异常下线了</li>
+<li>从库被选举为新的主库，这个锁在新的主库上就丢了</li>
+</ol>
+<p>Redis的作者提供了一个解决方案：Redlock。Redlock方案有2个前提：</p>
+<ol>
+<li>不需要部署从库和哨兵，只部署主库。</li>
+<li>主库需要部署多个，官方推荐至少是5个（这些主库之间没有任何关系）。</li>
+</ol>
+<p>加锁的流程是这样的：</p>
+<ol>
+<li>客户端先获取当前时间戳T1</li>
+<li>客户端依次向这5个Redis实例发起加锁请求，并且每个请求都设置超时时间，如果加锁失败就向下一个Redis实例申请加锁。</li>
+<li>如果客户端在半数以上的Redis实例上加锁成功，则再次获取时间戳T2，如果T2 - T1 &lt; 锁过期时间，则认为加锁成功，否则加锁失败。</li>
+<li>如果加锁失败，需要向所有节点发起释放锁的请求。</li>
+</ol>
+<h4 id="⭐zset深度分页"><a href="#⭐zset深度分页" class="headerlink" title="⭐zset深度分页"></a>⭐zset深度分页</h4><ol>
+<li>将数据库中的主键保存到Zset集合中，假设需要按照创建时间排序，就把创建时间转换为时间戳作为zscore用于排序。</li>
+<li>分页查询时通过<code>zrange key start stop</code>命令获取目标记录的主键，然后根据主键回表。</li>
+<li>新增数据时使用<code>Zadd</code>命令将主键加入缓存。</li>
+<li>删除数据时使用<code>zrem</code>命令删除缓存。</li>
+</ol>
+<h3 id="⭐Redis-6-0新特性"><a href="#⭐Redis-6-0新特性" class="headerlink" title="⭐Redis 6.0新特性"></a>⭐Redis 6.0新特性</h3><h4 id="⭐多线程模型"><a href="#⭐多线程模型" class="headerlink" title="⭐多线程模型"></a>⭐多线程模型</h4><p>Redis 6.0版本采用了多个IO线程来处理网络请求，但是对于读写命令，Redis还是采用单线程来处理。</p>
+<p>具体的流程是这样的：</p>
+<ol>
+<li>首先客户端和主线程建立Socket连接后，Redis会把Socket放到一个等待队列中。</li>
+<li>然后通过轮询的方式把Socket连接分配给IO线程，主线程会进入等待状态。</li>
+<li>等IO线程解析完请求后，主线程会以单线程的方式执行这些命令。</li>
+<li>主线程执行完命令后，会把结果写入到缓冲区。</li>
+<li>最后IO线程会把结果返回给客户端。</li>
+</ol>
+<p>多线程机制默认是关闭的，可以在redis.conf配置文件中配置：</p>
+<ul>
+<li><code>io-threads-do-reads</code>：设置为yes表示开启多线程。</li>
+<li><code>io-threads</code>：设置线程数量，线程数量要小于CPU核心数。官方给的建议是6个线程。</li>
+</ul>
+<h4 id="⭐客户端缓存"><a href="#⭐客户端缓存" class="headerlink" title="⭐客户端缓存"></a>⭐客户端缓存</h4><p>客户端缓存就是Redis客户端可以把，读取到的数据缓存在本地，这样就相当于每个客户端都多了一个本地缓存，数据没有发生变化时直接读取本地缓存就能拿到数据，可以节省网络带宽，降低Redis的请求压力。</p>
+<p>如果数据被修改或者是失效了，Redis提供了两种方式来通知客户端做缓存失效：</p>
+<p><strong>普通模式</strong>：Redis会记录客户端读取过的key，并监控key是否发生变化。如果key发生变化，Redis就会给客户端发送<code>invalidate</code>消息，让客户端做缓存失效。</p>
+<p>如果一个key被连续修改两次，Redis只会通知客户端一次，只有客户端再次读取这个key之后，Redis才会再发送缓存失效消息。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLIENT TRACKING ON|OFF</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>广播模式</strong>：客户端可以注册要缓存的key的前缀，当这些前缀的key被修改时，Redis就会把缓存失效的消息发送给客户端。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLIENT TRACKING ON BCAST PREFIX keyPrefix</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h4><p>Redis 6.0版本支持创建不同用户来访问Redis。可以使用<code>ACL SETUSER</code>命令创建用户：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ACL SETUSER zhangsan on &gt; 123456</span><br></pre></td></tr></table></figure>
+
+
+
+<p>6.0版本还增加了以用户为单位的命令访问权限：</p>
+<ul>
+<li>+：给用户添加可执行的命令。</li>
+<li>-：减少用户可执行的命令。</li>
+<li>+@：把一类命令分配给用户执行。</li>
+<li>-@：把一类命令禁止用户执行。</li>
+<li>+@all：允许用户执行所有命令。</li>
+<li>-@all：禁止用户执行所有命令。</li>
+</ul>
+<p>假设要让用户zhangsan只能调用String类型的命令，不能调用Hash类型的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ACL SETUSER zhangsan +@string -@hash</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Redis 6.0版本还支持以key位粒度设置访问权限。可以用波浪号 ”~“和key的前缀对key进行权限控制。</p>
+<p>假设用户zhangsan只能对以 ”user“为前缀的key进行操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ACL SETUSER zhangsan ~user* +@all</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>缓存</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL</title>
     <url>/2022/12/08/MySQL/</url>
     <content><![CDATA[<h3 id="查询语句执行流程"><a href="#查询语句执行流程" class="headerlink" title="查询语句执行流程"></a>查询语句执行流程</h3><ol>
@@ -2427,518 +2939,6 @@
       </categories>
       <tags>
         <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis</title>
-    <url>/2022/12/08/Redis/</url>
-    <content><![CDATA[<h3 id="⭐哈希冲突"><a href="#⭐哈希冲突" class="headerlink" title="⭐哈希冲突"></a>⭐哈希冲突</h3><p>哈希冲突是指，两个key的哈希值和哈希桶计算对应关系的时候，正好落在了同一个哈希桶中。这是哈希表没法避免的问题。</p>
-<p><strong>Redis解决哈希冲突的方式是链表，就是同一个哈希桶中的多个元素用一个链表来保存</strong>。</p>
-<p>但是如果哈希冲突越来越多，就会导致某些哈希桶上的链表特别长，就导致在这些哈希桶上查找数据变得很慢。Redis的解决方案是<a href="#rehash">rehash</a>。</p>
-<p>⭐<b id='rehash'>rehash</b>：rehash操作就是为了增加现有哈希桶的数量，让元素能在更多的哈希桶之间分散保存。</p>
-<p>为了让rehash更加高效，Redis使用了两个全局哈希表，默认使用的是哈希表1，哈希表2不会被分配空间。Redis的rehash主要分三个步骤：</p>
-<ol>
-<li>给哈希表2分配更大的空间。</li>
-<li>把哈希表1中的数据重新映射并拷贝到哈希表2中。</li>
-<li>最后释放哈希表1的空间。</li>
-</ol>
-<p>这个过程会涉及到大量的数据拷贝，如果一次性把哈希表1的数据都拷贝完，会造成Redis线程的阻塞，无法服务其他请求。为了避免这个问题Redis采用了<a href="#%E6%B8%90%E8%BF%9B%E5%BC%8Frehash">渐进式rehash</a>。</p>
-<p><b id='渐进式rehash'>渐进式rehash</b>：就是在拷贝数据时，Redis每收到一个请求，就把这个请求操作的哈希桶中所有元素拷贝到哈希表2中。这样就可以把rehash过程分摊到多次请求中。</p>
-<p>如果是查询操作，Redis会现在哈希表1里面查找，如果没找到就在哈希表2里面找。</p>
-<p>如果是新增操作，Redis只会把数据新增到哈希表2中，这样就可以保证哈希表1的数据只减不增，最终所有数据都会被拷贝到哈希表2中。</p>
-<h3 id="⭐Redis中的数据结构"><a href="#⭐Redis中的数据结构" class="headerlink" title="⭐Redis中的数据结构"></a>⭐Redis中的数据结构</h3><p>Redis中数据类型一共有5种：<strong>String</strong>、<strong>List</strong>、<strong>Hash</strong>、<strong>Set</strong>、<strong>Sorted Set</strong>。</p>
-<p>底层的数据结构一共有6种：<a href="#%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2">简单动态字符串(SDS)</a>、<strong>双向链表</strong>、<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>、<strong>哈希表</strong>、<a href="#%E8%B7%B3%E8%A1%A8">跳表</a>、<strong>数组</strong>。</p>
-<p><b id='String'>String</b>：String类型的底层实现只用了一种，<a href="#%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2">简单动态字符串</a>。</p>
-<p><b id='List'>List</b>：List类型有两种底层实现，双向链表和<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>。</p>
-<p><b id='Hash'>Hash</b>：Hash类型有两种底层实现，<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>和哈希表。</p>
-<p><b id='Sorted Set'>Sorted Set</b>：Sorted Set类型有两种底层实现，<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>和<a href="#%E8%B7%B3%E8%A1%A8">跳表</a>。</p>
-<p><b id='Set'>Set</b>：Set类型有两种底层实现，哈希表和数组。</p>
-<p>⭐<b id="简单动态字符串">简单动态字符串（Simple Dynamic String）</b>：</p>
-<p><strong>简单动态字符串</strong>主要有三部分组成：</p>
-<ul>
-<li><strong>buf</strong>：字节数组，用来保存实际的数据。会在数组结尾处加上一个 “\0” ，用来表示数组的末尾。会占用1个额外的字节。</li>
-<li><strong>len</strong>：占用4个字节，表示buf的长度。</li>
-<li><strong>alloc</strong>：也占用4个字节，用来表示buf实际分配的长度，一般大于len。</li>
-</ul>
-<p>在SDS中，只有buf保存实际的数据，len和alloc都是SDS结构的额外开销。</p>
-<p>⭐<b id="压缩列表">压缩列表</b>：</p>
-<p>压缩列表跟数组很像，但是比数组更节省内存，因为数组中每个元素的大小都是相同的，就需要为每个元素都分配最大元素占用的内存空间，如果大部分元素都不需要这么大的内存空间，就会浪费很多内存（因为数组需要提前知道每个元素的大小才能计算出下一个元素的位置）。</p>
-<p>压缩列表就是在数组的基础上对每个元素的大小进行压缩。</p>
-<p>压缩列表会维护一个表头，这个表头包含三个属性：列表长度（zlbytes）、列表尾部的偏移量（zltail）、列表中元素的个数（zllen）。</p>
-<p>压缩列表会为每个元素都维护一些元数据：前一个entry的长度（pre_len）、自己的长度（len）、保存的数据类型（encoding）、content（实际保存的数据）。</p>
-<p>⭐<b id='跳表'>跳表</b>：</p>
-<p><strong>跳表是在链表的基础上，增加了多级索引，通过索引位置的跳转，可以快速定位到数据</strong>。</p>
-<blockquote>
-<p>假设链表中十个元素。如果要在链表中查找8这个元素，就只能从头开始遍历，需要查找8次，效率比较低。复杂度是O(N)。</p>
-<p>可以通过增加索引的方式来提升查找速度：从第一个元素开始，每两个元素选出来一个索引。这些索引再通过指针指向原来的链表。</p>
-<p>比如在，1和2中选择1作为索引，从3和4中选择3作为索引，5和6中选择5作为索引，这样就只需要遍历1、3、5、7、8就可以查找到8了，只需要5次查询。</p>
-<p>如果还想更快点，可以在一级索引的基础上增加二级索引：从一级索引中每两个元素建立一个索引，这些索引再指向一级索引。</p>
-<p>跳表的时间复杂度是O(logN)</p>
-</blockquote>
-<h3 id="⭐AOF日志"><a href="#⭐AOF日志" class="headerlink" title="⭐AOF日志"></a>⭐AOF日志</h3><p>AOF日志里面记录的是Redis收到的每一条写命令，这些命令是以文本形式保存的。Redis采用的是<a href="#%E5%85%88%E5%86%99%E5%86%85%E5%AD%98%E5%90%8E%E5%86%99%E6%97%A5%E5%BF%97">先写内存后写日志</a>的方式。</p>
-<p>因为AOF日志是以文件的形式保存的，写命令越多，AOF文件就越大。AOF日志大小超过限制就会触发<a href="#AOF%E9%87%8D%E5%86%99%E6%9C%BA%E5%88%B6">AOF重写机制</a>。</p>
-<p>AOF日志过大带来的问题：</p>
-<ol>
-<li>占用更多磁盘空间</li>
-<li>大文件会导致写效率变低。</li>
-<li>会导致恢复数据变得很慢。</li>
-</ol>
-<p>AOF是默认关闭的，可以通过<code>appendonly</code>参数开启。RDB和AOF同时开启的情况下，会优先使用AOF恢复数据。</p>
-<p>⭐<b id='先写内存后写日志'>先写内存后写日志</b>：</p>
-<p>先写内存后写日志这种方式的好处是：可以避免语法检查的额外开销，而且AOF是在命令执行之后才记录日志的，所以不会对当前操作的性能有影响。但是会对下一条操作有影响，因为往AOF记录日志是主线程进行的，磁盘压力比较大导致写日志速度比较慢，就会导致后续的操作阻塞。而且如果一个命令刚执行完，还没来得及记录日志就宕机了，那这个命令对应的数据就会丢失。</p>
-<p>AOF提供了三个选项，可以通过<code>appendfsync</code>参数控制AOF写日志的时机：</p>
-<ul>
-<li><strong>Always</strong>：同步写回，每个写请求都会对应一次写日志的操作，会影响Redis性能，最多会丢失一条命令的数据。</li>
-<li><strong>Everysec</strong>：每秒写回，Redis会先把写请求记录到AOF内存缓冲区，每隔一秒就把缓冲区的内容写到磁盘上，可能会丢失1秒的数据。</li>
-<li><strong>No</strong>：由操作系统来控制写回，Redis会先把请求记录到AOF内存缓冲区，由操作系统来决定什么时候把缓冲区的内容写到磁盘上（通常是系统比较空闲的时候）。</li>
-</ul>
-<p>⭐<strong>AOF重写机制触发规则</strong>：</p>
-<ol>
-<li>可以通过<code>bgrewriteaof</code>命令手动触发AOF重写。</li>
-<li>也可以通过调整Redis参数来控制AOF触发时机：需要同时满足<code>auto-aof-rewrite-min-size</code>和<code>auto-aof-rewrite-precentage</code>两个参数<ul>
-<li><code>auto-aof-rewrite-min-size</code>：表示触发AOF重写时，文件的最小大小，默认为64MB。</li>
-<li><code>auto-aof-rewrite-precentage</code>：当前AOF文件与上一次AOF文件重写后的大小的比值，默认是100%。也就是说如果当前AOF日志是10MB，上一次AOF文件重写之后是20MB，那么当前AOF文件需要增长到40MB才满足AOF重写机制。</li>
-</ul>
-</li>
-</ol>
-<p>⭐<b id='AOF重写机制'>AOF重写机制</b>：</p>
-<p>AOF重写就是把Redis中当前所有数据转换成写命令，然后再记录到AOF日志中。</p>
-<p>因为当前数据库中的一条数据可能会对应AOF日志中多个命令，比如原本是name=张三，然后被改成name=李四。name=李四这条数据在AOF日志中就有两条命令。重写时只需要保存name=李四这一条命令就可以了。这样就可以减少AOF日志的大小。</p>
-<p>重写是通过后台进程（bgrewriteaof）来完成的，所以不会影响主线程处理请求的性能。</p>
-<p>重写过程大概是这样的：</p>
-<ol>
-<li>首先主线程会创建一个后台进程，然后把内存中的数据拷贝一份给这个后台进程。然后后台进程再把数据转换成写命令记录到新的日志中。</li>
-<li>重写过程中，主线程如果接收到新的写命令，Redis会把命令记录同时记录到旧的AOF日志和AOF缓冲区中。</li>
-<li>等重写完成后，再把新收到的命令记录到新的AOF日志中。</li>
-<li>然后就可以用新日志替换旧日志了。</li>
-</ol>
-<h3 id="⭐RDB内存快照"><a href="#⭐RDB内存快照" class="headerlink" title="⭐RDB内存快照"></a>⭐<span id='RDB内存快照'>RDB内存快照</span></h3><p>内存快照就是把，数据库中某一时刻所有数据的状态保存到磁盘上。</p>
-<p>RDB记录的是某一时刻的数据，可以直接把RDB文件读到内存，恢复数据的效率很高。</p>
-<p>Redis提供了两个命令生成RDB文件，<code>save</code>和<code>bgsave</code>：</p>
-<ul>
-<li><strong>save</strong>：在主线程执行，会阻塞主线程。</li>
-<li><strong>bgsave</strong>：会创建一个后台进程，专门用来写RDB文件，可以避免主线程被阻塞。Redis默认用的是<strong>bgsave</strong>。</li>
-</ul>
-<p>在生成RDB文件时，如果主线程接收到了写命令，那这条写命令对应的数据就会被复制一份，生成一个副本。后台进程会把这个副本一起写进RDB文件中，这样就可以保证快照的完整性。</p>
-<p>⭐<b id='内存快照的频率'>内存快照的频率</b>：</p>
-<p>如果频率太高：每次生成内存快照都会把全量数据写到磁盘上，会给磁盘带来很大压力。而且后台进程是主线程创建出来的，创建的过程本身是会阻塞主线程的，如果快照生成频率过高，就会频繁创建进程，就会很频繁的阻塞主线程。</p>
-<p>如果频率太低：两次快照生成时间间隔较长，如果服务宕机，就会丢失很多数据。</p>
-<h3 id="⭐混合模式"><a href="#⭐混合模式" class="headerlink" title="⭐混合模式"></a>⭐混合模式</h3><p>⭐<strong>Redis4.0版本新增了混合使用AOF和RDB的机制，就是在两次快照之间，用AOF日志记录这期间的所有命令，等下一次快照执行完再清空AOF日志</strong>。（可以通过<code>aof-use-rdb-preamble</code>参数开启）</p>
-<p>这样可以降低<a href="#%E5%86%85%E5%AD%98%E5%BF%AB%E7%85%A7%E7%9A%84%E9%A2%91%E7%8E%87">内存快照的频率</a>，而且AOF日志也只需要记录两次快照之间的操作，不会出现文件过大的情况。</p>
-<p>在混合模式下，AOF重写时，后台进程会先把内存中的数据以RDB的格式写入到AOF文件中，再把AOF缓冲区中的命令以AOF的格式写到文件中。</p>
-<p>这样新的AOF文件就会包含RDB格式的数据和AOF格式的数据，在恢复数据时，会先加载RDB格式的数据，然后再执行AOF格式的操作命令。</p>
-<h3 id="⭐主从集群"><a href="#⭐主从集群" class="headerlink" title="⭐主从集群"></a>⭐主从集群</h3><p>Redis提供了主从模式。在从库上执行<code>replicaof 127.0.0.1(主库ip) 6379(主库端口)</code>。</p>
-<p>通常情况下主库负责写操作，然后再把写操作同步给从库。从库只负责读操作。</p>
-<p>Redis2.6版本之后，从库默认是只读的，可以通过<code>slave-read-only</code>参数修改。</p>
-<p>⭐<b id='主从同步原理'>主从同步原理</b>：</p>
-<ol>
-<li><p>主从库建立连接后，从库会给主库发送<code>psync</code>命令，表示要进行数据同步。<code>psync</code>命令包含<strong>ID</strong>和<strong>offset</strong>两个参数。</p>
-<blockquote>
-<p><strong>ID</strong>：每个Redis实例启动时都会自动生成一个随机ID。主库和从库第一次同步数据时，从库不知道主库的ID，所以此时ID的值为”?”。</p>
-<p><strong>offset</strong>：复制进度。第一次同步数据时，offset为-1。</p>
-</blockquote>
-</li>
-<li><p>主库收到<code>psync</code>命令后，如果是第一次同步，主库会用<code>FULLRESYNC</code>命令给从库返回响应。</p>
-<blockquote>
-<p><strong>FULLRESYNC</strong>：表示全量同步，这个命令包含两个参数：<strong>主库ID</strong>和<strong>复制进度offset</strong>。</p>
-</blockquote>
-</li>
-<li><p>从库收到响应后会把这两个参数记录下来。</p>
-</li>
-<li><p>主库将数据同步给从库，这个过程需要依赖<a href="#RDB%E5%86%85%E5%AD%98%E5%BF%AB%E7%85%A7"><strong>内存快照</strong></a>生成的RDB文件。主库会先执行<code>bgsave</code>命令生成RDB文件，然后再把文件发送给从库。</p>
-<blockquote>
-<p>Redis可以先把RDB文件写到磁盘上，再发送给从库。也可以直接通过socket把RDB文件发送给从库（无需落盘）。</p>
-<p>可以通过参数<code>repl-diskless-sync</code>开启无盘传输。默认是关闭的。</p>
-</blockquote>
-</li>
-<li><p>从库接收到RDB文件后，会先清空当前数据库，然后加载RDB文件。</p>
-</li>
-<li><p>主库发送RDB文件的过程中，如果又接收到了新的写命令，就会把这些命令记录到<strong>replication buffer</strong>中。</p>
-</li>
-<li><p>最后主库再把<strong>replication buffer</strong>中的命令发送给从库。</p>
-</li>
-</ol>
-<p>执行全量数据同步，对于主库来说主要有两个操作：<strong>生成RDB文件</strong>和<strong>传输RDB文件</strong>。生成RDB文件需要创建后台进程，这个过程会阻塞主线程。而且传输RDB文件也会占用网络带宽。如果从库的数量比较多，就会对主库性能产生影响。可以通过主从级联模式缓解数据同步时主库的压力。</p>
-<p>⭐<b id='主从级联模式'>主从级联模式</b>：</p>
-<p>可以选择一个配置比较高的从库，让其他从库和这个从库建立主从关系。这样就可以把一部分数据同步的压力分摊到从库上。</p>
-<p>⭐<b id='主从连接中断'>主从连接中断</b>：</p>
-<p>在Redis2.8版本之前，如果主从库连接中断，再次连接后主从库就会进行一次全量数据同步。</p>
-<p>Redis2.8版本之后，主库会采用<a href="#%E5%A2%9E%E9%87%8F%E5%90%8C%E6%AD%A5">增量同步</a>的方式。</p>
-<p>⭐<b id='增量同步'>增量同步</b>：主库只会把连接中断期间收到的命令同步给从库。</p>
-<ol>
-<li><p>主从库断开连接后，主库会把期间收到的写命令写到<strong>repl_backlog_buffer</strong>中。</p>
-<blockquote>
-<p><strong>repl_backlog_buffer</strong>：是一个环形缓冲区，主库会记录自己写到的位置（master_repl_offset），从库会记录自己读到的位置（slave_repl_offset）。</p>
-</blockquote>
-</li>
-<li><p>主从库恢复连接之后，从库会发送<code>psync</code>命令，并且把当前<strong>repl_backlog_buffer</strong>的偏移量发送给主库。</p>
-</li>
-<li><p>主库会判断自己的偏移量与从库偏移量之间的差距。如果差距超过了缓冲区的大小，就说明缓冲区中没有被读取的操作被覆盖过，这种情况就需要重新执行全量数据同步了。</p>
-<blockquote>
-<p>可以通过<code>repl_backlog_size</code>这个参数，调整缓冲区的大小，来减少全量数据同步的次数。</p>
-</blockquote>
-</li>
-</ol>
-<p>⭐<strong>主从数据不一致</strong>？</p>
-<p>因为<strong>主从库之间的数据同步是异步进行的</strong>，主库执行完写命令之后，并不会等从库同步完数据后再给客户端返回结果。而且从库需要先处理完当前收到的请求，才会执行主库发送的写命令。如果从库正在执行<code>keys *</code>之类的耗时比较长的命令，就有可能导致客户端读到旧数据。</p>
-<p>解决办法：</p>
-<p>可以开发一个服务来监控主从库之间的数据同步进度，可以通过<code>INFO replication</code>命令获取主库写数据的进度（master_repl_offset）和从库复制数据的进度（slave_repl_offset），然后比较主从库数据同步的差值，如果差值比较大，就可以把读请求发送到主库上执行。</p>
-<h3 id="⭐哨兵集群"><a href="#⭐哨兵集群" class="headerlink" title="⭐哨兵集群"></a>⭐哨兵集群</h3><p>哨兵实际上就是一个特殊的Redis实例，它主要负责：<a href="#%E7%9B%91%E6%8E%A7"><strong>监控</strong></a>、<a href="#%E9%80%89%E6%8B%A9%E4%B8%BB%E5%BA%93"><strong>选择主库</strong></a>和<a href="#%E9%80%9A%E7%9F%A5"><strong>通知</strong></a>。</p>
-<p>哨兵集群之间的相互发现需要依赖于Redis的发布/订阅机制（pub/sub）。主库上有一个<code>__sentinel__:hello</code>的频道，哨兵和主库建立连接之后，就会在这个频道上发布自己的连接信息（IP和端口），同时也会订阅这个频道，来获取其它哨兵的连接信息。</p>
-<p><strong>哨兵如何获取从库的IP和端口</strong>？</p>
-<p>哨兵会向主库发送<code>INFO</code>命令来获取从库的信息，主库在接收到INFO命令之后，会把从库列表发送给哨兵，哨兵就会根据从库列表中的连接信息，和每一个从库建立连接，对这些从库进行监控。</p>
-<p>⭐<b id='监控'>监控</b>：</p>
-<p>哨兵会周期性的给所有节点发送<code>PING</code>命令，如果哨兵没有在规定时间收到响应，哨兵就会把这个节点标记为下线状态。</p>
-<p>如果被标记为下线状态的节点是主库，哨兵就会开启切换主库的流程。</p>
-<p>可以通过参数<code>down-after-milliseconds</code>调整哨兵监控周期。</p>
-<p>但是哨兵是会有误判的（比如网络压力较大导致哨兵没有及时收到响应），如果被误判的是从库对集群的影响不会太大。如果被误判的是主库就会开始切换主库的流程，选择主库的过程开销就比较大了。可以通过部署多个哨兵一起来判断，降低误判概率。</p>
-<p>在哨兵集群中，当某个哨兵与主库连接中断后，就会通知其它哨兵节点主库已下线，其它哨兵会根据自己和主库的连接情况投出赞成票（Y）或反对票（Ｎ）。当赞成票的数量达到<code>quorum</code>参数后，主库就会被标记为下线状态。</p>
-<p>⭐<b id='选择主库'>选择主库</b>：</p>
-<p>在选择主库的过程中，读请求可以在从库上正常执行，写请求会失败。</p>
-<p>选择主库的过程可以分为<strong>筛选</strong>和<strong>打分</strong>两个阶段。</p>
-<ul>
-<li><p>筛选阶段：主要是判断节点的网络连接状态，如果断开连接的次数比较多，哨兵就会认为这个从库的网络状态不是很好，就会把这个节点筛选掉。</p>
-</li>
-<li><p>打分阶段：打分分为三轮，只要在任何一轮有从库得到了最高分，这个从库就会被选为主库。</p>
-<ol>
-<li><p>根据优先级来打分，可以通过<code>slave-priority</code>参数设置优先级。可以给配置比较高的节点分配更高的优先级。</p>
-</li>
-<li><p>根据数据同步进度来打分，在主从库数据同步时，从库会记录当前数据同步的进度，哨兵会比较所有从库的数据同步进度，谁的数据多谁就会成为主库。</p>
-</li>
-<li><p>根据节点ID来打分，ID号小的会成为主库。</p>
-</li>
-</ol>
-</li>
-</ul>
-<p>在哨兵集群中，发现主库下线的哨兵会主动向其它哨兵发送命令，希望由自己来执行主从切换，其它哨兵会进行投票。这个过程也叫Leader选举。</p>
-<p>想要成为Leader哨兵，需要满足两个条件：</p>
-<ol>
-<li>拿到半数以上的赞成票。</li>
-<li>拿到的票数必须大于等于<code>quorum</code>参数。</li>
-</ol>
-<p>如果选举失败，哨兵集群会等待一段时间，再重新选举。</p>
-<p>需要注意的是：如果哨兵集群只有2个节点，必须要拿到2票才能成为Leader，如果其中有一个哨兵挂掉了，就没办法切换主库了。所以通常至少要配置3个哨兵节点。</p>
-<p>⭐<b id='通知'>通知</b>：</p>
-<p>新的主库选出来之后，哨兵会把新主库的连接信息发送给所有从库，让它们执行<code>replicaof</code>命令与新主库建立连接并同步数据。</p>
-<p>哨兵还会把新主库的连接信息发送给客户端，客户端可以通过订阅<code>switch-master</code>频道来获取主从切换的事件。</p>
-<p>客户端也可以主动获取新的主从地址，所以在哨兵模式下，客户端不能直接写死主从库的地址了，需要使用<code>sentinel get-master-addr-by-name</code>命令获取新地址。</p>
-<h3 id="⭐切片集群"><a href="#⭐切片集群" class="headerlink" title="⭐切片集群"></a>⭐切片集群</h3><p><strong>切片集群就是把数据拆分成多份，每一份都分别用一个实例来保存，Redis3.0版本提供了Redis Cluster切片集群方案</strong>。</p>
-<p>Redis Cluster通过哈希槽来处理数据与Redis节点的<a href="#%E5%93%88%E5%B8%8C%E6%A7%BD%E6%98%A0%E5%B0%84">映射</a>关系，一个切片集群一共有16384个哈希槽，这些哈希槽可以理解为数据分区，每一个键值对都会根据它的key，被映射到一个哈希槽中。</p>
-<p>客户端与集群建立连接之后，集群就会把哈希槽的分配信息发送给客户端，客户端会把哈希槽信息缓存在本地，当客户端请求键值对时，会先计算数据对应的哈希槽，然后就可以根据哈希槽向对应的节点发送请求了。</p>
-<p>如果需要新增节点或者删除节点，就需要重新分配哈希槽。哈希槽对应的数据也需要迁移。在集群内部，节点之间可以相互通信来获得最新的哈希槽的映射关系。</p>
-<p>这种情况下，客户端维护的哈希槽信息就是错误的了，Redis Cluster提供了一种<a href="#%E9%87%8D%E5%AE%9A%E5%90%91%E6%9C%BA%E5%88%B6">重定向机制</a>。</p>
-<p>⭐<strong>故障处理机制</strong>：</p>
-<p>通常情况下，集群中每个节点都会配置为主从模式，当某一个主节点没有和其它节点完成<code>PING</code>通信，就会被标记为主观下线，然后通知其它节点，其他节点会根据自己与该节点的连接情况进行投票，投票通过后该主节点就会被标记为客观下线。然后开始主从切换，等原来的主节点恢复以后，会自动成为新主节点的从节点。</p>
-<p>如果主节点没有从节点，主节点挂了的话，整个集群就会处于不可用的状态。</p>
-<p>⭐<b id='哈希槽映射'>哈希槽映射</b>：</p>
-<p>首先根据键值对的key，通过<code>CRC16算法</code>计算出一个16位的值。然后再用这个值和16384取模，就可以得到一个0~16383范围内的数字。这个数字就代表这个键值对对应的哈希槽。</p>
-<p>默认情况下切片集群会自动把16384个哈希槽平均分布在集群所有节点上，集群中的每个节点内部都会保存哈希槽和Redis节点的对应关系。</p>
-<p>⭐<b id='重定向机制'>重定向机制</b>：</p>
-<p>就是客户端给一个节点发送读写操作时，如果这个节点上没有对应的数据，这个节点就会给客户端返回<code>MOVED</code>命令，这个命令会包含键值对所在的节点信息。客户端也会更新本地缓存的哈希槽信息。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET hello:key</span><br><span class="line">(error) MOVED 13320（哈希槽） 172.16.19.5:6379（节点信息）</span><br></pre></td></tr></table></figure>
-
-
-
-<p>还有一种情况是，哈希槽重新映射之后，数据还没有迁移完成，客户端就会收到一条<code>ASK</code>命令，这个命令会包含数据所在的节点信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET hello:key</span><br><span class="line">(error) ASK 13320 172.16.19.5:6379</span><br></pre></td></tr></table></figure>
-
-<p>客户端需要再向新节点发送<code>ASKING</code>命令，这个命令表示让新节点处理客户端的请求。</p>
-<h3 id="⭐Redis内存优化"><a href="#⭐Redis内存优化" class="headerlink" title="⭐Redis内存优化"></a>⭐Redis内存优化</h3><p>实际上Redis中的每一个键值对都对应一个RedisObject对象，这个对象主要用来记录一些元数据，比如：最后一次访问事件，被访问的次数等。</p>
-<p>也就是说Redis中的键值对越多，对应的RedisObject对象就越多，这些元数据就会占用越多的内存空间。这种情况下，可以通过Hash集合来减少Redis中的键值对。</p>
-<p>⭐<strong>基于Hash类型的二级编码</strong>：</p>
-<p>就是把一个String类型的数据中的key拆分成两部分，前一部分作为Redis中的key，后一部分Hash集合的key，Hash集合的value就是要保存的数据。这样就可以减少数据库中键值对的数量，就可以减少元数据占用的内存空间。</p>
-<p>而且String类型底层数据结构是<a href="#%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2">简单动态字符串</a>，Hash类型的底层数据结构是<a href="#%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8">压缩列表</a>，也相对更省空间。</p>
-<p>这种方式虽然可以节省空间，但是就没有办法针对每某一个key单独设置过期时间了，虽然可以通过业务层单独维护每个元素的过期删除逻辑，但是会比较复杂。</p>
-<p>Hash类型底层其实有两种数据结构的实现：</p>
-<p>它会根据Redis中的两个参数动态选择底层的数据结构，一个是Hash集合中最大元素个数（hash-max-ziplist-entries），另一个是单个元素的最大长度（hash-max-ziplist-value）。</p>
-<p>如果Hash集合中的元素个数，或者单个元素的大小超过这两个参数，Hash类型的底层实现就会变为哈希表，并且不会再变回来了。节省空间的效果也就没那么好了。</p>
-<p>所以需要通过调整字符串的拆分长度，让数据均匀地分布在多个Hash集合中。</p>
-<h3 id="⭐数据淘汰机制"><a href="#⭐数据淘汰机制" class="headerlink" title="⭐数据淘汰机制"></a>⭐数据淘汰机制</h3><p>Redis 4.0版本之前提供了5种淘汰策略，4.0之后又新加了2种，可以通过<code>maxmemory-policy</code>参数配置。淘汰策略可以分为两类：</p>
-<p><strong>在设置了过期时间的数据中进行淘汰</strong>：</p>
-<ul>
-<li>volatile-ttl：会针对设置了过期时间的数据，根据过期时间的先后顺序进行删除，越早过期就越先删除。</li>
-<li>volatile-random：在设置了过期时间的数据中，随即删除。</li>
-<li>volatile-lru：会使用LRU算法删除设置了过期时间的数据，优先删除最近最少使用的key。</li>
-<li>volatile-lfu：会使用LFU算法删除设置了过期时间的数据，优先删除最少使用的key。(Redis 4.0版本新增的)</li>
-</ul>
-<p><strong>在所有数据中进行淘汰</strong>：</p>
-<ul>
-<li>allkeys-random：会从所有数据中，随机删除数据。</li>
-<li>allkeys-lru：使用LRU算法在所有数据中删除数据，优先删除最近最少使用的key。</li>
-<li>allkeys-lfu：使用LFU算法在所有数据中删除数据，优先删除最少使用的key。(Redis 4.0版本新增的)</li>
-</ul>
-<p>默认情况下，如果内存满了，并不会淘汰数据，再有写请求进来的时候，Redis会直接抛异常。</p>
-<p>从算法角度来说：</p>
-<p>其实Redis4.0以后提供的LFU算法比LRU更实用一些。因为如果某一个Key是一天访问一次，正好这个key刚刚在一秒前被访问过，那么LRU就不会淘汰这个Key，反而会去淘汰一个每分钟都会被访问，但是最近1秒没有被访问过的key。LFU算法就不会有这个问题。</p>
-<p>TTL算法比较简单粗暴，它会优先删除最早过期的Key，但是这个key有可能正在被大量访问，所以这种算法会有一些风险。</p>
-<p>从key的范围来说：</p>
-<p>allkeys可以保证就算忘记设置过期时间，也可以保证key被删掉。如果被删掉的key访问频率很高，有可能会造成<a href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF">缓存击穿</a>，volatile会更稳妥一些。</p>
-<h4 id="⭐LRU算法原理"><a href="#⭐LRU算法原理" class="headerlink" title="⭐LRU算法原理"></a>⭐LRU算法原理</h4><p>LRU算法的核心是淘汰最久没有使用的数据。</p>
-<p>具体来说就是，<strong>LRU会把所有数据组成一个链表，链表的头部代表最常使用的数据，链表的尾部代表最不经常使用的数据。在删除数据的时候，会从链表的尾部开始删除</strong>。</p>
-<p>如果要写入一个新数据，但是链表已经没有空余位置了，LRU算法会做两件事：</p>
-<ol>
-<li>新数据是刚被访问的，所以会放到链表头部。</li>
-<li>再把链表尾部的数据删除。</li>
-</ol>
-<p>不过LRU算法需要用链表来管理数据，会带来额外的开销。而且如果有大量的数据访问，就会有很多链表移动操作，会降低Redis的性能。</p>
-<p>所以Redis对LRU算法做了优化，Redis会记录每个数据每个数据最近一次访问的时间戳（RedisObject中的lru属性）。</p>
-<ol>
-<li><p>在第一次淘汰数据的时候，会随机选出一批数据，作为候选集合，然后找出集合中lru最小的数据淘汰出去。</p>
-</li>
-<li><p>下一次淘汰数据的时候，会再挑选一批数据进入到候选集合中，这里进入候选集合的标准是必须小于候选集合中最小的lru。然后再把集合lru最小的数据淘汰出去。</p>
-</li>
-</ol>
-<p>这样就可以解决链表移动导致的性能问题。</p>
-<p>这里的候选集合是一个链表，数据会按照lru排序，表头是lru最大的，表尾是lru最小的，如果链表满了就会把表头的数据移出去。</p>
-<p>可以通过参数<code>maxmemory-samples</code>来控制挑选数据的个数，默认是5。</p>
-<p>建议：</p>
-<ul>
-<li>如果业务场景有冷热数据区分的话，优先使用allkeys-lru策略。这样可以把经常访问的热数据留在缓存中。</li>
-<li>如果业务中数据访问的频率差不多，没有冷热数据区分，建议用allkeys-random策略。随机淘汰就行。</li>
-<li>如果业务中有一些不需要被删除的数据，可以使用volatile-lru策略。然后设置这些数据永不过期。这样这些数据就一直不会被删除了。</li>
-</ul>
-<h4 id="⭐LFU算法原理"><a href="#⭐LFU算法原理" class="headerlink" title="⭐LFU算法原理"></a>⭐LFU算法原理</h4><p>LFU是在LRU算法的基础上，为每个数据增加一个计数器，用来统计这个数据的访问次数。</p>
-<p>淘汰数据的时候，会随机选出一批数据，作为候选集合，然后根据根据集合中数据的访问次数进行筛选，会把访问次数最低的数据淘汰出去。如果两个数据的访问次数一样，会把访问时间更久的数据淘汰出去。</p>
-<p>这个计数器的大小只有8位，最大值是255。</p>
-<p>所以并不是数据每访问一次，就给对应的计数器+1，而是每当一个数据被访问一次，先用计数器当前的值 * 配置参数<code>lfu_log_factor</code> + 1 然后再取倒数，然后判断这个倒数是否大于一个取值范围在0~1之间的随机数，如果大于的话，计数器就+1。（n的倒数是n分之1）</p>
-<p>这样设计的好处是可以避免计数器很快就达到255。</p>
-<p>可以通过增加<code>lfu_log_factor</code>的值来减少计数器的增加速度。</p>
-<p>有些数据可能刚开始被大量访问之后就不会再被访问了，LFU算法还有一个衰退机制。</p>
-<p>衰退机制就是，LFU算法会计算当前时间和数据最近一次被访问的时间的差值，然后把这个差值换算成分钟，然后再把这个差值除以<code>lfu_decay_time</code>参数，得到的结果就是计数器要衰减的值。</p>
-<h3 id="⭐过期策略"><a href="#⭐过期策略" class="headerlink" title="⭐过期策略"></a>⭐<b id='过期策略'>过期策略</b></h3><p>Redis的过期策略有被动删除和主动删除两种，这两种策略会一起配合使用。</p>
-<ul>
-<li><p><b id='被动删除'>被动删除</b>：</p>
-<ul>
-<li><p>当收到查询请求时，判断请求的key是否过期，过期了就直接删除。</p>
-</li>
-<li><p>这个策略的好处是可以降低CPU资源的消耗，缺点是会导致内存中有大量已经过期的key还留在内存中。</p>
-</li>
-</ul>
-</li>
-<li><p><b id='主动删除'>主动删除</b>：</p>
-<ul>
-<li>默认是100ms，就随机抽取一些设置了过期时间的key，检查是否过期，过期了就直接删除。</li>
-<li>可以通过<code>hz</code>参数调整检查频率。</li>
-<li>主动删除是在Redis主线程中执行的，如果有大量的key在同一时间过期，会导致Redis响应时间变长。</li>
-</ul>
-</li>
-</ul>
-<h3 id="⭐事务机制"><a href="#⭐事务机制" class="headerlink" title="⭐事务机制"></a>⭐事务机制</h3><p>Redis提供了四个命令来完成事务：MULTI（开启事务）、EXEC（提交事务）、DISCARD（回滚事务）、WATCH（监听数据是否变更）。</p>
-<p><strong>客户端需要用MULTI命令开启一个事务，然后把需要执行的操作发送给Redis，Redis收到这些命令之后并不会立即执行，而是会把这些命令暂存到一个命令队列中。最后客户端发送EXEC命令之后，Redis才会执行命令队列中的内容</strong>。</p>
-<p><strong>DISCARD可以用来回滚事务</strong>。</p>
-<p><strong>WATCH命令可以用来监控某些数据是否被修改了，如果被修改了就可以选择放弃事务</strong>。</p>
-<h3 id="⭐缓存不一致"><a href="#⭐缓存不一致" class="headerlink" title="⭐缓存不一致"></a>⭐缓存不一致</h3><p>其实不管是先更新数据库还是先更新缓存，或者先更新数据库再删除缓存，只要没办法保证第二个操作成功，就会导致数据不一致。</p>
-<p>更好的方式是，新增一个服务监听binlog，然后把发生变化的数据更新到缓存中。</p>
-<p>如果不考虑新增服务，<strong>最好的策略是先更新数据库，再删除缓存</strong>。这种策略在多线程环境下也可能出现数据不一致，但是概率非常低，需要满足3个条件才有可能发生：</p>
-<ol>
-<li>缓存刚好失效</li>
-<li>同时出现读请求+写请求</li>
-<li>更新数据库比查询数据库时间短</li>
-</ol>
-<p>A和B两个线程，线程A是查询请求，线程B是更新请求，缓存中的数据也刚好过期了：</p>
-<ol>
-<li>线程A查询缓存发现数据不存在，</li>
-<li>线程A读取数据库，得到X=1</li>
-<li>线程B更新数据库，把X更新为2</li>
-<li>线程B删除缓存</li>
-<li>线程A将X=1写入缓存</li>
-</ol>
-<p>如果一定要求强一致性，常见的方案是：两阶段提交、三阶段提交、Paxos、Raft这类分布式事务，但它们的性能都很差，而且实现起来也很复杂，这就违背了我们引入缓存的目的。之所以要引入缓存是为了解决<strong>性能</strong>问题，只要数据库和缓存完成操作之前，有其他请求进来，都可能查到中间状态的数据，如果非要追求强一致性，那就要求更新操作完成之前不能有其它请求进来，这个可以通过<a href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81">分布式锁</a>来实现。但是又会牺牲系统的可用性，并且分布式锁也有很多问题要解决。</p>
-<p>所以，既然决定使用缓存，就必须容忍「一致性」问题，否则不建议使用缓存。</p>
-<h3 id="⭐缓存雪崩"><a href="#⭐缓存雪崩" class="headerlink" title="⭐缓存雪崩"></a>⭐缓存雪崩</h3><p><strong>缓存雪崩是指短时间内大量缓存失效的情况，就会导致原本可以在Redis中处理的请求全都发送到数据库，导致数据库压力很大</strong>。</p>
-<p>产生缓存雪崩的原因通常是大量的key在同一时间过期。（缓存雪崩是热key大规模的过期失效，缓存击穿是单个热key过期失效）</p>
-<p>解决办法：</p>
-<ol>
-<li><p>针对不同的key设置不同的过期时间，可以在Redis中存数据的时候，把每个Key的失效时间加一个随机值。</p>
-</li>
-<li><p>或者在内存中定义一个二级缓存(Map)，提前把数据从数据库加载到内存中，缓存失效就直接走内存查询。</p>
-</li>
-</ol>
-<h3 id="⭐缓存击穿"><a href="#⭐缓存击穿" class="headerlink" title="⭐缓存击穿"></a>⭐<span id='缓存击穿'>缓存击穿</span></h3><p><strong>缓存击穿是指，某个非常频繁被访问的key突然过期，就会导致访问这个key的大量请求，就都发送到了后端数据库，导致数据库压力很大</strong>。</p>
-<p>解决办法：</p>
-<ol>
-<li><p>设置热点Key永不过期，并且选择volatile系列的数据淘汰算法。</p>
-</li>
-<li><p>也可以通过加锁来限制回表的并发。</p>
-<ul>
-<li><p>可以使用Redission来获取一个基于Redis的分布式锁，查询数据库之前先获取锁。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> RedissionClient redissionClient;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">query</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">String</span> <span class="variable">data</span> <span class="operator">=</span> redisTemplate.opsForValue().get(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;	<span class="comment">// 如果数据为空就通过Redission尝试获取分布式锁</span></span><br><span class="line">		<span class="type">RLock</span> <span class="variable">locker</span> <span class="operator">=</span> redissionClient.getLock(<span class="string">&quot;locker&quot;</span>);</span><br><span class="line">		<span class="comment">// 尝试获取分布式锁，获取不到会阻塞</span></span><br><span class="line">		<span class="keyword">if</span> (locker.tryLock()) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//获取到锁后，再次判断数据是否为空，因为其它线程可能已经把数据写回缓存了</span></span><br><span class="line">				data = redisTemplate.opsForValue().get(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;</span><br><span class="line">                    <span class="comment">// 从数据库获取数据</span></span><br><span class="line">					data = queryForMySQL();</span><br><span class="line">					redisTemplate.opsForValue().set(<span class="string">&quot;key&quot;</span>, data);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">				<span class="comment">// 释放锁</span></span><br><span class="line">				locker.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>不过也不一定非要使用分布式锁，因为这样会导致只有一个线程可以获取数据，其它线程都会阻塞。可以考虑使用进程内的锁，这样每一个节点都可以有一个线程回表查询数据，可以提升一些并发度，也不会对数据库有太大影响。</p>
-</li>
-</ul>
-</li>
-</ol>
-<h3 id="⭐缓存穿透"><a href="#⭐缓存穿透" class="headerlink" title="⭐缓存穿透"></a>⭐缓存穿透</h3><p><strong>缓存穿透是指缓存中查不到的数据不一定是数据没有缓存，有可能是原始数据压根就不存在</strong>。</p>
-<p>缓存穿透有两种解决办法：</p>
-<ul>
-<li>第一种办法是，对于不存在的数据，也同样设置一个特殊的value。比如当查询数据库时发现数据为空，就设置-1保存到缓存中，这样下次请求就可以命中缓存了。如果每次请求的key都是随机数，就会导致缓存中有大量无效的key。</li>
-<li>第二种办法：<a href="#BloomFilter">布隆过滤器</a>。</li>
-</ul>
-<p>如果业务规则比较明确的话，可以直接判断请求参数是否合法。</p>
-<p>其实这两种方法可以一起用，把布隆过滤器作为前置过滤，对于少量的误判再保存特殊值到缓存。</p>
-<h3 id="⭐布隆过滤器-BloomFilter"><a href="#⭐布隆过滤器-BloomFilter" class="headerlink" title="⭐布隆过滤器(BloomFilter)"></a>⭐<span id="布隆过滤器">布隆过滤器</span>(BloomFilter)</h3><p>布隆过滤器是一种概率性的数据结构，由一个数组和一系列随机映射函数组成，可以用来快速判断某个数据是否存在。</p>
-<p>它的原理是：</p>
-<ol>
-<li><p>当我们想标记某个数据的时候，布隆过滤器首先会使用多个哈希函数，分别计算这个数据的哈希值，可以得到多个哈希值。</p>
-</li>
-<li><p>然后把这些哈希值和数组长度取模，可以得到每个哈希值在数组中对应的位置。</p>
-</li>
-<li><p>然后把数组中的位置设置为1。</p>
-</li>
-<li><p>判断某个数据是否存在的时候，就检查这个数据在数组中对应的多个位置，只要有一个位置是0，就说明数据肯定不存在。</p>
-</li>
-</ol>
-<p>布隆过滤器不支持删除，因为多个数据通过哈希函数换算出来的下标可能是一样的，删除某一个key的数据可能会导致其他数据一起被删除。</p>
-<p>布隆过滤器还有一个问题就是会误判，因为它本身是一个数组，数组的长度是有限制的，可能会有多个值换算出来的点是同一个位置。所以数组的长度越大，误判的概率就会越低。</p>
-<p>可以使用Google的Guava工具包提供的BloomFilter类。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> BloomFilter&lt;Integer&gt; bloomFilter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstract</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">// 创建布隆过滤器，元素数量10000，期望误判率1%</span></span><br><span class="line">	bloomFilter = BloomFilter.create(Funnels.integerFunnel(), <span class="number">10000</span>, <span class="number">0.01</span>);</span><br><span class="line">	<span class="comment">// 填充布隆过滤器</span></span><br><span class="line">	IntStream.rangeClosed(<span class="number">1</span>, <span class="number">10000</span>).forEach(bloomFilter::put);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">query</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">	<span class="type">String</span> <span class="variable">data</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="comment">// 通过布隆过滤器判断</span></span><br><span class="line">	<span class="keyword">if</span> (bloomFilter.mightContain(id)) &#123;</span><br><span class="line">		<span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> <span class="string">&quot;user&quot;</span> + id;</span><br><span class="line">		<span class="comment">// 查询缓存</span></span><br><span class="line">		data = redisTemplate.opsForValue().get(key);</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;</span><br><span class="line">			data = queryForMySQL(id);</span><br><span class="line">            <span class="comment">// 双重判断，如果数据库中也没有数据，就设置特殊值到Redis中</span></span><br><span class="line">            <span class="keyword">if</span> (StringUtils.isEmpty(data)) &#123;</span><br><span class="line">                redisTemplate.opsForValue().set(key, <span class="string">&quot;NODATA&quot;</span>, <span class="number">60</span>, TimeUnit.SECOND);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				redisTemplate.opsForValue().set(key, data, <span class="number">30</span>, TimeUnit.MINUTE);                </span><br><span class="line">            &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="⭐热key问题"><a href="#⭐热key问题" class="headerlink" title="⭐热key问题"></a>⭐热key问题</h3><ul>
-<li>热key的问题就是，突然大量的请求去访问redis上某些特定的key，这样可能会造成流量过于集中，导致这台redis服务宕机引发雪崩。</li>
-<li>解决方案：<ol>
-<li>提前把热key打散到不同的服务器，降低压力。</li>
-<li>加入二级缓存，提前把热key数据从数据库加载到内存中，如果redis宕机，就直接内存查询。</li>
-</ol>
-</li>
-</ul>
-<h3 id="⭐排查Redis性能问题"><a href="#⭐排查Redis性能问题" class="headerlink" title="⭐排查Redis性能问题"></a>⭐排查Redis性能问题</h3><p>如果发现业务响应时间变长，首先需要定位到究竟是哪个环节慢，比较高效的做法是集成<strong>链路追踪</strong>，在服务访问外部资源的地方，记录下时间。</p>
-<p>假如发现操作Redis耗时变长了，就只需要关注Redis这条链路上。</p>
-<p>操作Redis耗时变长的原因主要有2个：</p>
-<ol>
-<li>业务服务和Redis之间网络存在问题，比如网速太慢，存在延迟、丢包等问题。</li>
-<li>Redis本身出现问题，需要进一步排查是具体原因。</li>
-</ol>
-<p>通常第一种情况发生的概率比较小，如果网络出现问题，这台服务器上的所有服务都会发生网络延迟的情况。</p>
-<p>可以通过基准测试判断Redis是不是真的变慢了：</p>
-<p><code>redis-cli -h 127.0.0.1 -p 6379 --intrinsic-latency 60</code>这个命令可以测试出60秒内最大响应延迟。</p>
-<p><strong>查看慢日志</strong>：</p>
-<p>Redis提供了慢日志，用来记录哪些命令执行耗时比较久。</p>
-<blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 执行时间超过5毫秒，记录为慢日志</span><br><span class="line">CONFIG SET slowlog-log-slower-than 5000</span><br><span class="line"># 只保留最近500条慢日志</span><br><span class="line">CONFIG SET slowlog-max-len 500</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>可以通过<code>SLOWLOG get 5</code>命令查看具体的慢日志，分析哪些命令比较耗时。</p>
-<p>如果有SET / DEL这种简单的命令出现在慢日志中，就有可能是bigkey导致的。</p>
-<p>可以通过<code>redis-cli -h 127.0.0.1 -p 6379 --bigkeys -i 0.01</code>命令扫描出bigkey的分布情况。</p>
-<p>如果写入的value非常大，Redis在分配内存的时候就会比较耗时，删除这个key也会比较耗时。所以应该避免写入bigkey。</p>
-<p>如果使用的是Redis4.0以上的版本，可以用UNLINK命令代替DEL。</p>
-<blockquote>
-<p>UNLINK命令可以把释放内存的操作放到后台线程去执行。</p>
-</blockquote>
-<p><strong>集中过期</strong>：</p>
-<p>如果是在某个时间点突然出现一波延时，可以排查一下是否存在大量key集中过期的情况。</p>
-<p>Redis的过期策略是<a href="#%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5">主动删除</a>+被动删除，主动删除是在主线程中执行的，Redis必须要把所有key都删除掉才能正常处理请求，如果要删除的key有很多、或者要删除的key很大，耗时就会很长。Redis的响应时间也会变长。</p>
-<p>解决办法是给过期时间增加一个随机数，把集中过期的时间点打散。</p>
-<p><strong>内存达到上限</strong>：</p>
-<p>当Redis使用的内存达到上限之后，每次写入新数据的时间会变长，这是因为Redis内存用完了之后，会触发淘汰策略，删除掉一部分数据之后，才能把新数据写进来。</p>
-<p>淘汰数据消耗的时间主要取决于配置的淘汰策略，一般比较常用的是 allkeys-lru / volatile-lru，如果存储的key比较大，淘汰数据的耗时也会比较久。</p>
-<p>解决办法：</p>
-<ol>
-<li>把淘汰策略改为随机淘汰，随机淘汰比LRU算法快很多，不过随机淘汰可能会把很热的key淘汰掉也会有一些别的问题。</li>
-<li>避免存储大key。</li>
-<li>增加服务器内存。</li>
-</ol>
-<h3 id="⭐应用场景"><a href="#⭐应用场景" class="headerlink" title="⭐应用场景"></a>⭐应用场景</h3><h4 id="⭐分布式锁"><a href="#⭐分布式锁" class="headerlink" title="⭐分布式锁"></a>⭐分布式锁</h4><p>加锁时，用Redis的<code>setnx key value</code>命令，这个命令的逻辑是这样的：当key不存在时，则设置key和value，并返回1，如果key已经存在了，直接返回0.</p>
-<p>如果客户端加完锁之后就掉线了，那其它节点就再也获取不到锁了，所以还要通过<code>set expire</code>命令设置过期时间。</p>
-<p>需要注意的是，如果客户端执行完<code>setnx</code>命令之后，还没来得及设置过期时间就掉线了，同样会产生死锁，所以需要Redis 2.6.12版本之后拓展了SET命令的参数：<code>SET lock 1 EX 10 NX</code>。</p>
-<p><strong>锁释放错误</strong>：</p>
-<p>如果代码执行时间超过了锁过期时间，就会导致锁提前释放，然后被其它节点持有，代码执行完后释放锁，这个时候释放的是其它节点的锁。</p>
-<blockquote>
-<ol>
-<li>节点A加锁成功，开始执行代码</li>
-<li>节点A代码执行时间超过了锁的过期时间，锁被自动释放</li>
-<li>节点B加锁成功，开始执行代码</li>
-<li>节点A代码执行完毕，释放锁（释放的是节点B的锁）</li>
-</ol>
-</blockquote>
-<p>解决办法是：加锁时将锁对应的value设置为当前节点的ID，释放锁时判断这把锁是否是自己加的。</p>
-<p>Redission就有自动续期的方案来避免锁过期，逻辑是是启动一个守护线程定时检测锁的失效时间，如果锁快过期了，代码还没执行完，就自动对锁进行续期。</p>
-<p><strong>主从切换问题</strong>：</p>
-<p>因为Redis主从同步数据是异步的，有可能出现这样的情况：</p>
-<ol>
-<li>节点A在主库上执行SET命令加锁成功</li>
-<li>主库还没来得及把SET命令同步给从库，就异常下线了</li>
-<li>从库被选举为新的主库，这个锁在新的主库上就丢了</li>
-</ol>
-<p>Redis的作者提供了一个解决方案：Redlock。Redlock方案有2个前提：</p>
-<ol>
-<li>不需要部署从库和哨兵，只部署主库。</li>
-<li>主库需要部署多个，官方推荐至少是5个（这些主库之间没有任何关系）。</li>
-</ol>
-<p>加锁的流程是这样的：</p>
-<ol>
-<li>客户端先获取当前时间戳T1</li>
-<li>客户端依次向这5个Redis实例发起加锁请求，并且每个请求都设置超时时间，如果加锁失败就向下一个Redis实例申请加锁。</li>
-<li>如果客户端在半数以上的Redis实例上加锁成功，则再次获取时间戳T2，如果T2 - T1 &lt; 锁过期时间，则认为加锁成功，否则加锁失败。</li>
-<li>如果加锁失败，需要向所有节点发起释放锁的请求。</li>
-</ol>
-<h4 id="⭐zset深度分页"><a href="#⭐zset深度分页" class="headerlink" title="⭐zset深度分页"></a>⭐zset深度分页</h4><ol>
-<li>将数据库中的主键保存到Zset集合中，假设需要按照创建时间排序，就把创建时间转换为时间戳作为zscore用于排序。</li>
-<li>分页查询时通过<code>zrange key start stop</code>命令获取目标记录的主键，然后根据主键回表。</li>
-<li>新增数据时使用<code>Zadd</code>命令将主键加入缓存。</li>
-<li>删除数据时使用<code>zrem</code>命令删除缓存。</li>
-</ol>
-<h3 id="⭐Redis-6-0新特性"><a href="#⭐Redis-6-0新特性" class="headerlink" title="⭐Redis 6.0新特性"></a>⭐Redis 6.0新特性</h3><h4 id="⭐多线程模型"><a href="#⭐多线程模型" class="headerlink" title="⭐多线程模型"></a>⭐多线程模型</h4><p>Redis 6.0版本采用了多个IO线程来处理网络请求，但是对于读写命令，Redis还是采用单线程来处理。</p>
-<p>具体的流程是这样的：</p>
-<ol>
-<li>首先客户端和主线程建立Socket连接后，Redis会把Socket放到一个等待队列中。</li>
-<li>然后通过轮询的方式把Socket连接分配给IO线程，主线程会进入等待状态。</li>
-<li>等IO线程解析完请求后，主线程会以单线程的方式执行这些命令。</li>
-<li>主线程执行完命令后，会把结果写入到缓冲区。</li>
-<li>最后IO线程会把结果返回给客户端。</li>
-</ol>
-<p>多线程机制默认是关闭的，可以在redis.conf配置文件中配置：</p>
-<ul>
-<li><code>io-threads-do-reads</code>：设置为yes表示开启多线程。</li>
-<li><code>io-threads</code>：设置线程数量，线程数量要小于CPU核心数。官方给的建议是6个线程。</li>
-</ul>
-<h4 id="⭐客户端缓存"><a href="#⭐客户端缓存" class="headerlink" title="⭐客户端缓存"></a>⭐客户端缓存</h4><p>客户端缓存就是Redis客户端可以把，读取到的数据缓存在本地，这样就相当于每个客户端都多了一个本地缓存，数据没有发生变化时直接读取本地缓存就能拿到数据，可以节省网络带宽，降低Redis的请求压力。</p>
-<p>如果数据被修改或者是失效了，Redis提供了两种方式来通知客户端做缓存失效：</p>
-<p><strong>普通模式</strong>：Redis会记录客户端读取过的key，并监控key是否发生变化。如果key发生变化，Redis就会给客户端发送<code>invalidate</code>消息，让客户端做缓存失效。</p>
-<p>如果一个key被连续修改两次，Redis只会通知客户端一次，只有客户端再次读取这个key之后，Redis才会再发送缓存失效消息。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLIENT TRACKING ON|OFF</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>广播模式</strong>：客户端可以注册要缓存的key的前缀，当这些前缀的key被修改时，Redis就会把缓存失效的消息发送给客户端。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLIENT TRACKING ON BCAST PREFIX keyPrefix</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h4><p>Redis 6.0版本支持创建不同用户来访问Redis。可以使用<code>ACL SETUSER</code>命令创建用户：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ACL SETUSER zhangsan on &gt; 123456</span><br></pre></td></tr></table></figure>
-
-
-
-<p>6.0版本还增加了以用户为单位的命令访问权限：</p>
-<ul>
-<li>+：给用户添加可执行的命令。</li>
-<li>-：减少用户可执行的命令。</li>
-<li>+@：把一类命令分配给用户执行。</li>
-<li>-@：把一类命令禁止用户执行。</li>
-<li>+@all：允许用户执行所有命令。</li>
-<li>-@all：禁止用户执行所有命令。</li>
-</ul>
-<p>假设要让用户zhangsan只能调用String类型的命令，不能调用Hash类型的命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ACL SETUSER zhangsan +@string -@hash</span><br></pre></td></tr></table></figure>
-
-
-
-<p>Redis 6.0版本还支持以key位粒度设置访问权限。可以用波浪号 ”~“和key的前缀对key进行权限控制。</p>
-<p>假设用户zhangsan只能对以 ”user“为前缀的key进行操作：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ACL SETUSER zhangsan ~user* +@all</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>缓存</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
       </tags>
   </entry>
   <entry>
