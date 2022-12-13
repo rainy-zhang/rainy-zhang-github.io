@@ -558,6 +558,22 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo next 隐藏分类和标签页面的评论框</title>
+    <url>/2022/12/13/hexo-next-%E9%9A%90%E8%97%8F%E5%88%86%E7%B1%BB%E5%92%8C%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86/</url>
+    <content><![CDATA[<p>在<code>categories/index.md</code>和<code>tags/index.md</code>文件头中添加：<code>comments: false</code>。</p>
+<p>比如：<img src="/2022/12/13/hexo-next-%E9%9A%90%E8%97%8F%E5%88%86%E7%B1%BB%E5%92%8C%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86/hexo-next-%E9%9A%90%E8%97%8F%E5%88%86%E7%B1%BB%E5%92%8C%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86.png" class="" title="image-20221213151555319"></p>
+<blockquote>
+<p>如果想要禁止某篇文章被评论，也可以使用这样的方式。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>questions</category>
+      </categories>
+      <tags>
+        <tag>hexo next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>性能调优</title>
     <url>/2022/12/08/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</url>
     <content><![CDATA[<h2 id="字符串性能优化"><a href="#字符串性能优化" class="headerlink" title="字符串性能优化"></a>字符串性能优化</h2><p>String对象的实现原理在不同的JDK版本是不同的：</p>
@@ -602,22 +618,6 @@
       </categories>
       <tags>
         <tag>调优</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo next 隐藏分类和标签页面的评论框</title>
-    <url>/2022/12/13/hexo-next-%E9%9A%90%E8%97%8F%E5%88%86%E7%B1%BB%E5%92%8C%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86/</url>
-    <content><![CDATA[<p>在<code>categories/index.md</code>和<code>tags/index.md</code>文件头中添加：<code>comments: false</code>。</p>
-<p>比如：<img src="/2022/12/13/hexo-next-%E9%9A%90%E8%97%8F%E5%88%86%E7%B1%BB%E5%92%8C%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86/hexo-next-%E9%9A%90%E8%97%8F%E5%88%86%E7%B1%BB%E5%92%8C%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86.png" class="" title="image-20221213151555319"></p>
-<blockquote>
-<p>如果想要禁止某篇文章被评论，也可以使用这样的方式。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>questions</category>
-      </categories>
-      <tags>
-        <tag>hexo next</tag>
       </tags>
   </entry>
   <entry>
